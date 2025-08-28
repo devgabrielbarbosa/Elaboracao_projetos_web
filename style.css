@@ -1,3 +1,11 @@
 @import "./CSS/global.css";
+
 @import "./CSS/header.css";
+
+@import "./CSS/slides.css";
+
+@import "./CSS/produtos.css";
+
+@import "./CSS/carrinho.css";
+
 @import "./CSS/footer.css";

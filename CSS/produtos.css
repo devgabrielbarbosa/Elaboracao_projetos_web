@@ -1,0 +1,179 @@
+/* Seções de produtos */
+section {
+  padding: 60px 20px;
+  background-color: #fff8f5; /* cor clara e aconchegante */
+  margin-bottom: 30px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+/* Títulos das seções */
+section h2 {
+  text-align: center;
+  font-size: 2rem;
+  color: #4b0608;
+  margin-bottom: 30px;
+}
+/* botão detalhe do produto*/
+
+.btn-detalhe {
+  background-color: #1976d2;   /* azul vibrante */
+  color: white;                /* texto branco */
+  border: none;                /* sem borda */
+  padding: 10px 20px;          /* tamanho confortável */
+  border-radius: 6px;          /* cantos arredondados */
+  font-size: 14px;             /* tamanho da fonte */
+  font-weight: bold;
+  cursor: pointer;             /* cursor de mão */
+  transition: all 0.3s ease;  /* animação suave */
+  box-shadow: 0 3px 5px rgba(0,0,0,0.2); /* sombra leve */
+}
+
+.btn-detalhe:hover {
+  background-color: #1565c0;   /* azul mais escuro no hover */
+  transform: translateY(-2px); /* efeito de elevação */
+  box-shadow: 0 5px 7px rgba(0,0,0,0.3);
+}
+
+.btn-detalhe:active {
+  transform: translateY(0);
+  box-shadow: 0 3px 5px rgba(0,0,0,0.2);
+}
+
+/* Container de produtos */
+.produtos {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px; /* espaço entre os produtos */
+}
+
+/* Cada produto */
+.produto {
+  background-color: #ffffff;
+  border: 2px solid #f2e6e6;
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+  width: 220px;
+  font-weight: 500;
+  color: #4b0608;
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+/* Efeito hover nos produtos */
+.produto:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(75,6,8,0.3);
+  border-color: #4b0608;
+}
+.produtos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.produto-card {
+  border: 1px solid #f2e6e6;
+  border-radius: 10px;
+  padding: 10px;
+  width: 200px;
+  text-align: center;
+  background-color: #fff8f5;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.produto-card img {
+  width: 100%;
+  border-radius: 8px;
+}
+
+.produto-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(75,6,8,0.3);
+}
+
+/* Modal */
+.modal {
+  display: none; 
+  position: fixed;
+  z-index: 1000;
+  padding-top: 80px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.5);
+}
+
+.modal-content {
+  background-color: #fff;
+  margin: auto;
+  padding: 20px;
+  border-radius: 12px;
+  width: 300px;
+  text-align: center;
+  position: relative;
+}
+
+.modal-content img {
+  width: 80%;
+  margin-bottom: 10px;
+}
+
+.modal-content .close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.quantidade {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px 0;
+}
+
+.quantidade button {
+  padding: 5px 10px;
+  margin: 0 10px;
+  cursor: pointer;
+}
+#add-carrinho {
+  background-color: #e53935;   /* vermelho vibrante */
+  color: white;                /* texto branco */
+  border: none;                /* sem borda */
+  padding: 12px 25px;          /* tamanho confortável */
+  border-radius: 8px;          /* cantos arredondados */
+  font-size: 16px;             /* tamanho da fonte */
+  font-weight: bold;
+  cursor: pointer;             /* cursor de mão */
+  transition: all 0.3s ease;  /* animação suave */
+  box-shadow: 0 4px 6px rgba(0,0,0,0.2); /* sombra leve */
+}
+
+#add-carrinho:hover {
+  background-color: #d32f2f;   /* vermelho mais escuro no hover */
+  transform: translateY(-2px); /* leve efeito de elevação */
+  box-shadow: 0 6px 8px rgba(0,0,0,0.3);
+}
+
+#add-carrinho:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+}
+/* Responsividade */
+@media (max-width: 768px) {
+  .produtos {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .produto {
+    width: 80%;
+  }
+}

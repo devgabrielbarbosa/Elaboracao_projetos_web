@@ -12,41 +12,92 @@
   </head>
 
   <body>
-  <header class="cabecalho">
-    <!-- Logo -->
-    <div>
-      <a href="#inicio">
-        <img
-          class="logo"
-          src="./IMG/WhatsApp Image 2025-08-20 at 12.23.42.jpeg"
-          alt="logo da Nicole Show"
-        />
-      </a>
-    </div>
-
-    <!-- Barra de pesquisa -->
-    <div class="search-box">
-      <input type="text" placeholder="Pesquisar..." />
-      <button><i class="fas fa-search"></i></button>
-    </div>
-
-    <!-- Ícones -->
-    <div class="icons">
-      <!-- Botão do menu hamburger -->
-      <button id="menu-toggle"><i class="fas fa-bars"></i></button>
-
-      <!-- Ícones que aparecem dentro do menu no mobile -->
-      <div class="menu-items" id="menu-items">
-        <button><i class="fas fa-shopping-cart"></i></button>
-        <button><i class="fas fa-user"></i></button>
-        <button><i class="fas fa-bell"></i></button>
+    <header class="cabecalho">
+      <!-- Logo -->
+      <div>
+        <a href="#inicio">
+          <img
+            class="logo"
+            src="./IMG/WhatsApp Image 2025-08-20 at 12.23.42.jpeg"
+            alt="logo da Nicole Show"
+          />
+        </a>
       </div>
-    </div>
-  </header>
 
+      <!-- Barra de pesquisa -->
+      <div class="search-box">
+        <input type="text" placeholder="Pesquisar..." />
+        <button><i class="fas fa-search"></i></button>
+      </div>
+
+      <!-- Ícones -->
+      <div class="icons">
+        <!-- Botão do menu hamburger -->
+        <button id="menu-toggle"><i class="fas fa-bars"></i></button>
+
+        <!-- Ícones que aparecem dentro do menu no mobile -->
+       <div class="menu-items" id="menu-items">
+  <button id="btn-carrinho">
+  <i class="fas fa-shopping-cart"></i>
+  <span id="qtd-carrinho">0</span>
+</button>
+  <button><i class="fas fa-user"></i></button>
+  <button><i class="fas fa-bell"></i></button>
+</div>
+
+      </div>
+    </header>
 
     <main>
-        hajsasvasvdhjsdbasugdaiusdaiusgdaudgau sdgasdasudagsdug
+      <section>
+        <div class="slider">
+          <button id="prev">⟨</button>
+
+          <div class="slide">
+            <img id="slide-img" src="" alt="banner" />
+            <a id="slide-btn" href="#" class="btn-banner">Ir para seção</a>
+          </div>
+
+          <button id="next">⟩</button>
+          <div id="dots-container"></div>
+        </div>
+      </section>
+      <section>
+    
+        <!-- Seção Brigadeiros -->
+         
+<section id="brigadeiros">
+  <h2>🍫 Brigadeiros</h2>
+  <div class="produtos">
+    <div class="produto-card" data-nome="Brigadeiro Tradicional" data-preco="3.50" data-img="./IMG/brigadeiro1.png">
+      <img src="./IMG/brigadeiro1.png" alt="Brigadeiro Tradicional">
+      <h3>Brigadeiro Tradicional</h3>
+      <button class="btn-detalhe" >Ver Detalhe</button>
+    </div>
+    <div class="produto-card" data-nome="Brigadeiro Gourmet" data-preco="5.00" data-img="./IMG/brigadeiro2.png">
+      <img src="./IMG/brigadeiro2.png" alt="Brigadeiro Gourmet">
+      <h3>Brigadeiro Gourmet</h3>
+      <button class="btn-detalhe">Ver Detalhe</button>
+    </div>
+  </div>
+</section>
+
+<!-- Modal -->
+<div id="modal-produto" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <img id="modal-img" src="" alt="">
+    <h3 id="modal-nome"></h3>
+    <p id="modal-preco"></p>
+    <div class="quantidade">
+      <button id="menos">-</button>
+      <span id="qtd">1</span>
+      <button id="mais">+</button>
+    </div>
+    <button id="add-carrinho">Adicionar ao Carrinho</button>
+  </div>
+</div>
+
     </main>
 
     <!-- Footer -->
@@ -58,7 +109,9 @@
         <div class="footer-container">
           <h3>Siga-nos</h3>
           <div class="social-icons">
-            <a href="https://www.instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.instagram.com" target="_blank"
+              ><i class="fab fa-instagram"></i
+            ></a>
             <a href="https://www.facebook.com" target="_blank"
               ><i class="fab fa-facebook-f"></i
             ></a>
