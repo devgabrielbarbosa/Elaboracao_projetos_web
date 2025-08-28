@@ -1,0 +1,37 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+:root{
+  --footer-bg: #1f1f1f;      /* fundo do footer */
+  --footer-accent: #6f0f12;  /* cor de destaque (marrom/bordô) */
+  --muted: #bfbfbf;
+  --light: #ffffff;
+}
+
+ body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+header {
+  display: flex;
+  align-items: center;
+  background: #570a0d;
+  padding: 10px 20px;
+  color: white;
+  justify-content: space-between;
+}
+
+a{
+    text-decoration: none;
+    color: white;
+
+}
+
+
+  main {
+    flex: 1; /* garante que o footer fique no final se a página for pequena */
+  }
