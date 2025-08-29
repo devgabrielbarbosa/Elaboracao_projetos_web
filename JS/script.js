@@ -9,24 +9,25 @@ toggleBtn.addEventListener("click", () => {
 // ---------------- SLIDER ----------------
 const slides = [
   {
-    img: "../IMG/banner brigadeiro.png",
+    img: "IMG/banner-brigadeiro.png",
     alt: "banner de brigadeiro",
     link: "#brigadeiros",
     text: "Ver Brigadeiros"
   },
   {
-    img: "../IMG/banner-barra-choclate.png",
+    img: "IMG/banner-barra-chocolate.png",
     alt: "banner de barras de chocolate",
     link: "#chocolates",
     text: "Ver Chocolates"
   },
   {
-    img: "../IMG/banner-trufas.png",
+    img: "IMG/banner-trufas.png",
     alt: "banner de trufas",
     link: "#trufas",
     text: "Ver Trufas"
   }
 ];
+
 
 const slideImg = document.getElementById("slide-img");
 const slideBtn = document.getElementById("slide-btn");
