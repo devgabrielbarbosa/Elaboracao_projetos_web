@@ -1,113 +1,421 @@
-body {
-  font-family: Arial, sans-serif;
-  background-color: #fff8f5;
-  color: #4b0608;
-}
-.main{
-    max-width: 1024px;
-    margin: 0 auto;
-}
-h1 {
-  text-align: center;
-  margin-bottom: 30px;
-}
 
-/* Container do carrinho */
-#carrinho-itens {
+/* ================= Container do Carrinho ================= */
+#itens-carrinho {
   display: flex;
   flex-direction: column;
   gap: 15px;
+  margin: 20px 0;
 }
 
-/* Cada item do carrinho */
-.item-carrinho {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  padding: 15px;
-  border-radius: 10px;
-  background-color: #fff;
-  box-shadow: 0 3px 8px rgba(0,0,0,0.1);
-  transition: transform 0.2s;
-}
-
-.item-carrinho:hover {
-  transform: translateY(-3px);
-}
-
-/* Imagem do produto */
-.item-carrinho img {
-  width: 80px;
-  height: 80px;
-  object-fit: cover;
-  border-radius: 8px;
-  border: 1px solid #f2e6e6;
-}
-
-/* Informações do produto */
-.item-carrinho div {
-  display: flex;
-  flex-direction: column;
-}
-
-/* Nome do produto */
-.item-carrinho h3 {
-  margin: 0 0 5px 0;
-  font-size: 1.1rem;
-}
-
-/* Preço e quantidade */
-.item-carrinho p {
-  margin: 0;
-  font-size: 0.95rem;
-  color: #7a3a3a;
-}
-
-/* Total do carrinho */
-#total {
-  margin-top: 20px;
-  text-align: right;
-  font-size: 1.2rem;
-  font-weight: bold;
-  color: #4b0608;
-}
-
-/* Responsividade */
-@media (max-width: 768px) {
-  .item-carrinho {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .item-carrinho img {
-    width: 100%;
-    height: auto;
-  }
-
-  #total {
-    text-align: center;
-  }
-}
+/* ================= Cada Item do Carrinho ================= */
 .carrinho-item {
   display: flex;
   align-items: center;
-  margin-bottom: 10px;
+  justify-content: space-between;
+  background-color: #fff8f5;
+  border: 1px solid #f2e6e6;
+  padding: 15px 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+  transition: transform 0.2s, box-shadow 0.2s;
 }
+
+.carrinho-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+}
+
+/* Imagem do produto */
 .carrinho-img {
-  width: 50px;
-  height: 50px;
-  margin-right: 10px;
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-right: 15px;
+  border: 1px solid #f2e6e6;
 }
+
+/* Nome e preço */
 .carrinho-nome {
+  font-weight: 600;
+  color: #4b0608;
   flex: 1;
 }
+
 .carrinho-preco {
-  margin: 0 10px;
+  font-weight: bold;
+  color: #e53935;
+  margin-left: 10px;
+  padding: 10px;
 }
+
+/* Controle de quantidade */
+.carrinho-qtd {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
 .carrinho-qtd button {
-  width: 25px;
-  height: 25px;
+  background-color: #4b0608;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  width: 28px;
+  height: 28px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.2s;
+  gap: 5px;
+  padding: 5px;
 }
-.carrinho-qtd span {
-  margin: 0 5px;
+
+.carrinho-qtd button:hover {
+  background-color: #701818;
+}
+
+/* ================= Botão Limpar Carrinho ================= */
+#limpar-carrinho {
+  background-color: #e53935;
+  color: #fff;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 20px;
+}
+
+#limpar-carrinho:hover {
+  background-color: #d32f2f;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+.modal {
+  display: none; 
+  position: fixed; 
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background-color: rgba(0,0,0,0.5);
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 500px;
+}
+
+.modal .close {
+  float: right;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+:root{
+  --primary:#4b0608;   /* cor do header */
+  --accent:#570a0d;    /* variação */
+  --bg:#f5f5f6;
+  --card:#ffffff;
+  --muted:#777;
+  --radius:10px;
+  --glass: rgba(255,255,255,0.85);
+  --transition: 200ms ease;
+}
+
+/* -------------------------
+  RESUMO-PEQUENO (na main)
+   -------------------------*/
+.resumo-carrinho{
+  margin-top: 18px;
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(180deg, var(--glass), var(--bg));
+  padding: 12px 14px;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.04);
+  flex-wrap:wrap;
+}
+
+.resumo-carrinho p{
+  margin: 0;
+  font-size: 0.95rem;
+  color: #222;
+}
+
+.resumo-carrinho #total-valor{
+  font-weight:700;
+  margin-left: 6px;
+}
+
+#btn-finalizar{
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 700;
+  box-shadow: 0 6px 14px rgba(87,10,13,0.14);
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+#btn-finalizar:hover{ transform: translateY(-2px); box-shadow: 0 10px 20px rgba(87,10,13,0.18); }
+#btn-finalizar:active{ transform: translateY(0); }
+
+/* -------------------------
+         MODAL
+   -------------------------*/
+.modal {
+  display: none; /* mostrado via JS (flex) */
+  position: fixed;
+  inset: 0;                 /* top:0; right:0; bottom:0; left:0; */
+  background: rgba(0,0,0,0.45);
+  z-index: 9999;
+  justify-content: center;
+  align-items: center;
+  padding: 28px;
+}
+
+/* animação de entrada */
+.modal.show {
+  animation: fadeIn 180ms ease;
+}
+@keyframes fadeIn{
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Conteúdo do modal */
+.modal-content{
+  width: 100%;
+  max-width: 560px;
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 18px 18px 16px 18px;
+  box-shadow: 0 18px 40px rgba(0,0,0,0.18);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-height: calc(100vh - 120px);
+  overflow: hidden;
+}
+
+/* botão fechar */
+.modal .close{
+  position: absolute;
+  right: 14px;
+  top: 10px;
+  background: transparent;
+  border: none;
+  font-size: 1.4rem;
+  cursor: pointer;
+  color: var(--muted);
+}
+.modal .close:hover{ color: #000; }
+
+/* título do modal */
+.modal-content h2{
+  margin: 0;
+  font-size: 1.15rem;
+  color: #111;
+}
+
+/* container de itens com scroll */
+#resumo-itens{
+  overflow: auto;
+  padding-right: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* linha de item no resumo */
+#resumo-itens > div{
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  padding: 8px 4px;
+  border-radius: 8px;
+  background: linear-gradient(180deg, #fff, #fafafa);
+  border: 1px solid rgba(0,0,0,0.03);
+}
+
+/* bloco esquerda: imagem + nome */
+#resumo-itens img{
+  width: 52px;
+  height: 52px;
+  object-fit: cover;
+  border-radius: 8px;
+  flex-shrink: 0;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.05);
+}
+#resumo-itens .item-info{ display:flex; flex-direction:column; gap:4px; }
+#resumo-itens .item-info .nome{ font-weight:700; font-size:0.98rem; }
+#resumo-itens .item-info .meta{ font-size:0.86rem; color:var(--muted); }
+
+/* preço e botão remover */
+.remover-item-resumo{
+  margin-top: 6px;
+  display:inline-block;
+  background: transparent;
+  border: 1px solid rgba(0,0,0,0.06);
+  padding: 6px 8px;
+  border-radius: 8px;
+  cursor:pointer;
+  font-size:0.86rem;
+}
+.remover-item-resumo:hover{ background: #fff6f6; border-color: rgba(87,10,13,0.12); }
+
+/* total no modal */
+.modal-content p.total{
+  margin: 0;
+  font-weight: 700;
+  font-size: 1.05rem;
+  text-align: right;
+}
+
+/* FORM do pedido */
+#form-pedido{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  margin-top: 6px;
+}
+#form-pedido input[type="text"],
+#form-pedido input[type="tel"],
+#form-pedido textarea{
+  width:100%;
+  padding:10px 12px;
+  border-radius:8px;
+  border:1px solid rgba(0,0,0,0.08);
+  background: #fff;
+  font-size:0.95rem;
+  box-sizing: border-box;
+  resize: vertical;
+}
+#form-pedido textarea{ min-height:72px; max-height:160px; }
+
+/* botão confirmar no modal */
+#form-pedido button[type="submit"]{
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  padding: 12px;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 4px;
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+#form-pedido button[type="submit"]:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 10px 18px rgba(75,6,8,0.14);
+}
+
+/* botão de submit desabilitado */
+#form-pedido button[disabled]{
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* -------------------------
+   ESTILIZAÇÕES ADICIONAIS
+   -------------------------*/
+/* itens da lista do carrinho na página principal */
+.carrinho-item{
+  display:flex;
+  gap:12px;
+  align-items:center;
+  padding:10px;
+  border-radius:8px;
+  background: var(--card);
+  border:1px solid rgba(0,0,0,0.03);
+  margin-bottom:10px;
+}
+
+/* botões + / - pequenos */
+.carrinho-qtd button {
+  width:34px;
+  height:34px;
+  border-radius:8px;
+  border:1px solid rgba(0,0,0,0.08);
+  cursor:pointer;
+  font-weight:700;
+}
+
+/* badge do carrinho */
+#qtd-carrinho{
+  display:inline-block;
+  min-width:20px;
+  font-size:0.82rem;
+  background: #fff;
+  color: var(--primary);
+  border-radius:999px;
+  margin-left:6px;
+  border: 1px solid rgba(0,0,0,0.06);
+}
+
+/* responsividade */
+@media (max-width:520px){
+  .modal-content{ padding: 14px; max-width: 96%; border-radius:12px; }
+  #resumo-itens img{ width:46px; height:46px; }
+  .resumo-carrinho{ flex-direction: column; align-items: stretch; gap:10px; }
+  #btn-finalizar{ width:100%; }
+}
+
+
+/* ================= Responsividade ================= */
+/* Tablets (até 768px) */
+@media (max-width: 768px) {
+  .carrinho-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .carrinho-img {
+    width: 50px;
+    height: 50px;
+  }
+
+  .carrinho-preco {
+    margin-left: 0;
+  }
+
+  #limpar-carrinho {
+    width: 100%;
+  }
+}
+
+/* Celulares pequenos (até 480px) */
+@media (max-width: 480px) {
+  h1 {
+    font-size: 1.6rem;
+  }
+
+  .carrinho-img {
+    width: 45px;
+    height: 45px;
+  }
+
+  .carrinho-qtd button {
+    width: 24px;
+    height: 24px;
+  }
+
+  #limpar-carrinho {
+    font-size: 14px;
+    padding: 10px 20px;
+  }
 }

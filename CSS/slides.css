@@ -11,7 +11,7 @@
 }
 
 .slide img {
-    margin: 30px auto;
+  margin: 30px auto;
   width: 100%;
   display: block;
   height: 300px;
@@ -64,4 +64,88 @@
 
 .dot.active {
   background: #4b0608;
+}
+/* Tablets (768px a 1024px) */
+@media (max-width: 1024px) {
+  .slider {
+    max-width: 700px;
+    top: 70px;
+  }
+
+  .slide img {
+    height: 250px;
+    margin: 20px auto;
+  }
+
+  .btn-banner {
+    padding: 8px 12px;
+    font-size: 14px;
+  }
+
+  #prev, #next {
+    font-size: 20px;
+    padding: 8px;
+  }
+
+  .dot {
+    height: 10px;
+    width: 10px;
+  }
+}
+
+/* Celulares (até 767px) */
+@media (max-width: 767px) {
+  .slider {
+    max-width: 100%;
+    top: 20px;
+  }
+
+  .slide img {
+    height: 180px;
+    margin: 15px auto;
+  }
+
+  .btn-banner {
+    padding: 6px 10px;
+    font-size: 12px;
+    bottom: 15px;
+    left: 15px;
+  }
+
+  #prev, #next {
+    font-size: 18px;
+    padding: 6px;
+  }
+
+  .dot {
+    height: 8px;
+    width: 8px;
+    margin: 0 3px;
+  }
+}
+
+/* Extra pequenos (até 480px) */
+@media (max-width: 480px) {
+  .slider {
+    max-width: 100%;
+    top: 90px;
+  }
+  .slide img {
+    height: 150px;
+  }
+
+  .btn-banner {
+    padding: 5px 8px;
+    font-size: 11px;
+  }
+
+  #prev, #next {
+    font-size: 16px;
+    padding: 5px;
+  }
+
+  .dot {
+    height: 6px;
+    width: 6px;
+  }
 }

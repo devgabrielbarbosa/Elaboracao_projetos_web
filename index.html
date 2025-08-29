@@ -2,7 +2,7 @@
 <html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Página inicial</title>
     <link rel="stylesheet" href="./style.css" />
     <link
@@ -36,14 +36,18 @@
         <button id="menu-toggle"><i class="fas fa-bars"></i></button>
 
         <!-- Ícones que aparecem dentro do menu no mobile -->
-       <div class="menu-items" id="menu-items">
-  <button id="btn-carrinho">
-  <i class="fas fa-shopping-cart"></i>
-  <span id="qtd-carrinho">0</span>
-</button>
-  <button><i class="fas fa-user"></i></button>
-  <button><i class="fas fa-bell"></i></button>
-</div>
+            <div class="menu-items" id="menu-items">
+        <button id="btn-carrinho">
+        <i class="fas fa-shopping-cart"></i>
+        <span id="qtd-carrinho">0</span>
+      </button>
+       <!-- Botão de perfil -->
+        <button id="btn-perfil">
+          <i class="fas fa-user"></i>
+        </button>
+
+        <button><i class="fas fa-bell"></i></button>
+      </div>
 
       </div>
     </header>
@@ -69,18 +73,107 @@
 <section id="brigadeiros">
   <h2>🍫 Brigadeiros</h2>
   <div class="produtos">
-    <div class="produto-card" data-nome="Brigadeiro Tradicional" data-preco="3.50" data-img="./IMG/brigadeiro1.png">
-      <img src="./IMG/brigadeiro1.png" alt="Brigadeiro Tradicional">
+    <div class="produto-card" data-nome="Brigadeiro Tradicional" data-preco="3.50" data-img="./IMG/brigadeiro.jpg">
+      <img src="./IMG/brigadeiro.jpg" alt="Brigadeiro Tradicional">
       <h3>Brigadeiro Tradicional</h3>
-      <button class="btn-detalhe" >Ver Detalhe</button>
+      <button class="btn-detalhe">Ver Detalhe</button>
     </div>
-    <div class="produto-card" data-nome="Brigadeiro Gourmet" data-preco="5.00" data-img="./IMG/brigadeiro2.png">
-      <img src="./IMG/brigadeiro2.png" alt="Brigadeiro Gourmet">
+    <div class="produto-card" data-nome="Brigadeiro Gourmet" data-preco="5.00" data-img="./IMG/briadeiro-meio-amargo.jpg">
+      <img src="./IMG/briadeiro-meio-amargo.jpg" alt="Brigadeiro Gourmet">
       <h3>Brigadeiro Gourmet</h3>
+      <button class="btn-detalhe">Ver Detalhe</button>
+    </div>
+    <div class="produto-card" data-nome="Brigadeiro de Pistache" data-preco="6.00" data-img="./IMG/briadeiro-pistach.jpg">
+      <img src="./IMG/briadeiro-pistach.jpg" alt="Brigadeiro de Pistache">
+      <h3>Brigadeiro de Pistache</h3>
+      <button class="btn-detalhe">Ver Detalhe</button>
+    </div>
+    <div class="produto-card" data-nome="Brigadeiro de Chocolate Branco" data-preco="5.50" data-img="./IMG/brigadeiro-chocolate-branco.jpg">
+      <img src="./IMG/brigadeiro-chocolate-branco.jpg" alt="Brigadeiro de Chocolate Branco">
+      <h3>Brigadeiro de Chocolate Branco</h3>
       <button class="btn-detalhe">Ver Detalhe</button>
     </div>
   </div>
 </section>
+
+<section id="trufas">
+  <h2>🍬 Trufas</h2>
+  <div class="produtos">
+    <div class="produto-card" data-nome="Trufa de Chocolate Belga" data-preco="7.50" data-img="./IMG/trufa-chocolate.jpg">
+      <img src="./IMG/trufa-chocolate.jpg" alt="Trufa de Chocolate Belga">
+      <h3>Trufa de Chocolate Belga</h3>
+      <button class="btn-detalhe">Ver Detalhe</button>
+    </div>
+    <div class="produto-card" data-nome="Trufa de Nutella" data-preco="8.00" data-img="./IMG/trufa-nutela.jpg">
+      <img src="./IMG/trufa-nutela.jpg" alt="Trufa de Nutella">
+      <h3>Trufa de Nutella</h3>
+      <button class="btn-detalhe">Ver Detalhe</button>
+    </div>
+    <div class="produto-card" data-nome="Trufa de Maracujá" data-preco="7.00" data-img="./IMG/trufa-maracuja.jpg">
+      <img src="./IMG/trufa-maracuja.jpg" alt="Trufa de Maracujá">
+      <h3>Trufa de Maracujá</h3>
+      <button class="btn-detalhe">Ver Detalhe</button>
+    </div>
+    <div class="produto-card" data-nome="Trufa 50% Cacau" data-preco="7.50" data-img="./IMG/trufa-meio-amargo.jpg">
+      <img src="./IMG/trufa-meio-amargo.jpg" alt="Trufa 50% Cacau">
+      <h3>Trufa 50% Cacau</h3>
+      <button class="btn-detalhe">Ver Detalhe</button>
+    </div>
+  </div>
+</section>
+
+<section id="barras-chocolate">
+  <h2>🍫 Barras de Chocolate</h2>
+  <div class="produtos">
+    <div class="produto-card" data-nome="Barra de Chocolate Ao Leite" data-preco="6.50" data-img="./IMG/barra-cholate-ao-leite.jpg">
+      <img src="./IMG/barra-cholate-ao-leite.jpg" alt="Barra de Chocolate Ao Leite">
+      <h3>Chocolate Ao Leite</h3>
+      <button class="btn-detalhe">Ver Detalhe</button>
+    </div>
+    <div class="produto-card" data-nome="Barra de Chocolate Meio Amargo" data-preco="6.80" data-img="./IMG/barra-chocolate.jpg">
+      <img src="./IMG/barra-chocolate.jpg" alt="Barra de Chocolate Meio Amargo">
+      <h3>Chocolate Meio Amargo</h3>
+      <button class="btn-detalhe">Ver Detalhe</button>
+    </div>
+    <div class="produto-card" data-nome="Barra de Chocolate Branco" data-preco="6.90" data-img="./IMG/barra-cholate-branco.jpg">
+      <img src="./IMG/barra-cholate-branco.jpg" alt="Barra de Chocolate Branco">
+      <h3>Chocolate Branco</h3>
+      <button class="btn-detalhe">Ver Detalhe</button>
+    </div>
+    <div class="produto-card" data-nome="Barra de Chocolate com Castanhas" data-preco="7.50" data-img="./IMG/barra-chocolate-amendoin.jpg">
+      <img src="./IMG/barra-chocolate-amendoin.jpg" alt="Barra de Chocolate com Castanhas">
+      <h3>Chocolate com Castanhas</h3>
+      <button class="btn-detalhe">Ver Detalhe</button>
+    </div>
+  </div>
+</section>
+
+<section id="barras-fitness">
+  <h2>💪 Barras Fitness</h2>
+  <div class="produtos">
+    <div class="produto-card" data-nome="Barra Proteica Chocolate" data-preco="9.50" data-img="./IMG/barra-fitnis-chocolate.jp">
+      <img src="./IMG/barra-fitnis-chocolate.jpg" alt="Barra Proteica Chocolate">
+      <h3>Proteica Chocolate </h3>
+      <button class="btn-detalhe">Ver Detalhe</button>
+    </div>
+    <div class="produto-card" data-nome="Barra Proteica Amendoim" data-preco="9.80" data-img="./IMG/barra-fitnis-amendoin.jpg">
+      <img src="./IMG/barra-fitnis-amendoin.jpg" alt="Barra Proteica Amendoim">
+      <h3>Proteica Amendoim</h3>
+      <button class="btn-detalhe">Ver Detalhe</button>
+    </div>
+    <div class="produto-card" data-nome="Barra Proteica Cookies" data-preco="10.00" data-img="./IMG/barra-ftnis-cookies.jpg">
+      <img src="./IMG/barra-ftnis-cookies.jpg" alt="Barra Proteica Cookies">
+      <h3>Proteica Cookies</h3>
+      <button class="btn-detalhe">Ver Detalhe</button>
+    </div>
+    <div class="produto-card" data-nome="Barra Proteica Cacau 50%" data-preco="9.70" data-img="./IMG/barra-fints-cacau.jpg">
+      <img src="./IMG/barra-fints-cacau.jpg" alt="Barra Proteica Cacau 50%">
+      <h3>Proteica Cacau 50%</h3>
+      <button class="btn-detalhe">Ver Detalhe</button>
+    </div>
+  </div>
+</section>
+
 
 <!-- Modal -->
 <div id="modal-produto" class="modal">

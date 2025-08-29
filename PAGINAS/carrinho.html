@@ -2,7 +2,7 @@
 <html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Carrinho</title>
     <link rel="stylesheet" href="../style.css" />
     <link
@@ -32,24 +32,59 @@
 
       <!-- Ícones -->
       <div class="icons">
+  
+              <!-- Botão Voltar -->
+      <button id="btn-voltar" style="background:none; border:none; cursor:pointer; font-size:1.5rem;">
+        <i class="fa-solid fa-arrow-left"></i>
+      </button>
+
         <button id="menu-toggle"><i class="fas fa-bars"></i></button>
         <div class="menu-items" id="menu-items">
+       <!-- carrinho -->
           <button id="btn-carrinho">
-  <i class="fas fa-shopping-cart"></i>
-  <span id="qtd-carrinho">0</span>
-</button>
-          <button><i class="fas fa-user"></i></button>
+          <i class="fas fa-shopping-cart"></i>
+          <span id="qtd-carrinho">0</span>
+        </button>
+           <!-- Botão de perfil -->
+        <button id="btn-perfil">
+          <i class="fas fa-user"></i>
+        </button>
           <button><i class="fas fa-bell"></i></button>
         </div>
       </div>
     </header>
 
-    <main class="main">
-      <h1>🛒 Carrinho</h1>
-      <div id="itens-carrinho"></div>
-      <button id="limpar-carrinho">Limpar carrinho</button>
+  <main class="main">
+  <h1>🛒 Carrinho</h1>
 
-    </main>
+  <!-- Lista de itens do carrinho -->
+  <div id="itens-carrinho"></div>
+
+  <!-- Resumo do carrinho -->
+  <div class="resumo-carrinho">
+    <p>Total de itens: <span id="total-itens">0</span></p>
+    <p>Valor total: R$ <span id="total-valor">0.00</span></p>
+    <button id="btn-finalizar">Finalizar Pedido</button>
+  </div>
+
+  <!-- Modal de resumo do pedido -->
+  <div id="modal-resumo" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Resumo do Pedido</h2>
+      <div id="resumo-itens"></div>
+      <p>Total: R$ <span id="resumo-total">0.00</span></p>
+      <form id="form-pedido">
+        <input type="text" placeholder="Nome" required />
+        <input type="text" placeholder="Endereço" required />
+        <input type="text" placeholder="Telefone" required />
+        <textarea placeholder="Observações"></textarea>
+        <button type="submit">Confirmar Pedido</button>
+      </form>
+    </div>
+  </div>
+</main>
+
 
     <footer class="footer">
       <div class="footer-content">
@@ -72,6 +107,6 @@
 
     <!-- Script do carrinho -->
      <script src="../JS/carrinho.js"></script>
-    
+    <script src="../JS/script.js" defer></script>
   </body>
 </html>

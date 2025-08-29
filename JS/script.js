@@ -1,14 +1,13 @@
-// menu haburger
+// ---------------- MENU HAMBURGER ----------------
+const toggleBtn = document.getElementById("menu-toggle");
+const menuItems = document.getElementById("menu-items");
 
- const toggleBtn = document.getElementById("menu-toggle");
-  const menuItems = document.getElementById("menu-items");
+toggleBtn.addEventListener("click", () => {
+  menuItems.classList.toggle("show");
+});
 
-  toggleBtn.addEventListener("click", () => {
-    menuItems.classList.toggle("show");
-  });
-
-// slider
- const slides = [
+// ---------------- SLIDER ----------------
+const slides = [
   {
     img: "../IMG/banner brigadeiro.png",
     alt: "banner de brigadeiro",
@@ -75,10 +74,7 @@ setInterval(() => {
   showSlide(currentIndex + 1);
 }, 6000);
 
-
-
-/// Modal Produto
-
+// ---------------- MODAL PRODUTO ----------------
 const btnDetalhes = document.querySelectorAll(".btn-detalhe");
 const modal = document.getElementById("modal-produto");
 const modalImg = document.getElementById("modal-img");
@@ -91,31 +87,32 @@ const qtdSpan = document.getElementById("qtd");
 const addCarrinho = document.getElementById("add-carrinho");
 
 const btnCarrinho = document.getElementById("btn-carrinho");
-const qtdCarrinho = document.getElementById("qtd-carrinho"); // span dentro do botão
+const qtdCarrinho = document.getElementById("qtd-carrinho");
 
 let qtd = 0;
 let produtoAtual = {};
 
-// Função para atualizar quantidade total no botão do carrinho
+// Atualizar quantidade total no botão do carrinho
 function atualizarQtdCarrinho() {
   const carrinho = JSON.parse(localStorage.getItem("carrinho")) || [];
   const total = carrinho.reduce((acc, item) => acc + item.qtd, 0);
   qtdCarrinho.textContent = total;
 }
-
-// Inicializa quantidade do carrinho ao carregar
 atualizarQtdCarrinho();
 
 // Abrir modal ao clicar no botão detalhe
 btnDetalhes.forEach(btn => {
   btn.addEventListener("click", (e) => {
     const card = e.target.closest(".produto-card");
+
+    // ⚠️ precisa que o card tenha os atributos data-nome, data-preco e data-img
     produtoAtual = {
-      nome: card.dataset.nome,
-      preco: parseFloat(card.dataset.preco),
-      img: card.dataset.img
+      nome: card.dataset.nome || "Produto sem nome",
+      preco: parseFloat(card.dataset.preco) || 0,
+      img: card.dataset.img || "../IMG/sem-imagem.png" // fallback
     };
 
+    // Preenche o modal
     modalImg.src = produtoAtual.img;
     modalNome.textContent = produtoAtual.nome;
     modalPreco.textContent = `R$ ${produtoAtual.preco.toFixed(2)}`;
@@ -142,50 +139,58 @@ mais.addEventListener("click", () => {
   qtdSpan.textContent = qtd;
 });
 
-// Adicionar ao carrinho e mostrar mensagem
+// Adicionar ao carrinho
 addCarrinho.addEventListener("click", () => {
+  // Certifique-se que produtoAtual já está preenchido com nome, preco e img
+  if (!produtoAtual || !produtoAtual.nome) {
+    alert("Erro: Produto inválido!");
+    return;
+  }
+
   const item = {
     nome: produtoAtual.nome,
     preco: produtoAtual.preco,
     qtd: qtd,
-    img: produtoAtual.img
+    img: produtoAtual.img  // ⚠️ aqui é importante pegar a imagem
   };
 
-  // Pegar carrinho atual do localStorage
+  // Pega o carrinho do localStorage
   let carrinho = JSON.parse(localStorage.getItem("carrinho")) || [];
 
-  // Verificar se o produto já existe no carrinho
+  // Verifica se o produto já existe no carrinho
   const indexExistente = carrinho.findIndex(prod => prod.nome === item.nome);
   if (indexExistente > -1) {
-    // Se existir, apenas aumenta a quantidade
+    // Se já existe, apenas atualiza a quantidade
     carrinho[indexExistente].qtd += qtd;
   } else {
-    // Senão, adiciona novo item
+    // Senão adiciona o novo item
     carrinho.push(item);
   }
 
-  // Salvar de volta no localStorage
+  // Salva no localStorage
   localStorage.setItem("carrinho", JSON.stringify(carrinho));
 
-  // Atualizar número no botão do carrinho
+  // Atualiza o contador no botão do carrinho
   atualizarQtdCarrinho();
 
-  // Fechar modal
+  // Fecha o modal do produto
   modal.style.display = "none";
 
-  // Mostrar mensagem de confirmação
+  // Mensagem de confirmação
   const mensagem = document.createElement("div");
   mensagem.textContent = `${produtoAtual.nome} adicionado ao carrinho!`;
-  mensagem.className = "mensagem-carrinho"; // estilize no CSS
+  mensagem.className = "mensagem-carrinho";
   document.body.appendChild(mensagem);
-
-  // Remover mensagem depois de 2 segundos
-  setTimeout(() => {
-    mensagem.remove();
-  }, 2000);
+  setTimeout(() => mensagem.remove(), 2000);
 });
 
 // Botão do carrinho no header
 btnCarrinho.addEventListener("click", () => {
   window.location.href = "../PAGINAS/carrinho.html";
+});
+
+// ---------------- PERFIL USUÁRIO ----------------
+const btnPerfil = document.getElementById("btn-perfil");
+btnPerfil.addEventListener("click", () => {
+  window.location.href = "../PAGINAS/profile.html"; 
 });
