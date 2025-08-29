@@ -9,19 +9,19 @@ toggleBtn.addEventListener("click", () => {
 // ---------------- SLIDER ----------------
 const slides = [
   {
-    img: "../IMG/banner brigadeiro.png",
+    img: "IMG/banner brigadeiro.png",
     alt: "banner de brigadeiro",
     link: "#brigadeiros",
     text: "Ver Brigadeiros"
   },
   {
-    img: "../IMG/banner-barra-choclate.png",
+    img: "IMG/banner-barra-choclate.png",
     alt: "banner de barras de chocolate",
     link: "#chocolates",
     text: "Ver Chocolates"
   },
   {
-    img: "../IMG/banner-trufas.png",
+    img: "IMG/banner-trufas.png",
     alt: "banner de trufas",
     link: "#trufas",
     text: "Ver Trufas"
@@ -184,13 +184,40 @@ addCarrinho.addEventListener("click", () => {
   setTimeout(() => mensagem.remove(), 2000);
 });
 
-// Botão do carrinho no header
-btnCarrinho.addEventListener("click", () => {
-  window.location.href = "../PAGINAS/carrinho.html";
+// --- Helpers para montar URLs corretas (GitHub Pages / local) ---
+function siteBasePath() {
+  if (location.hostname.includes('github.io')) {
+    const parts = location.pathname.split('/').filter(Boolean);
+    if (parts.length > 0) return `/${parts[0]}`; // '/NOME-DO-REPO'
+  }
+  return ''; // domínio custom ou local
+}
+
+function buildUrl(relativePath) {
+  // relativePath ex: 'PAGINAS/carrinho.html'
+  if (location.protocol === 'file:') {
+    // local file: monta relativo ao diretório atual do arquivo
+    const path = location.pathname;
+    const dir = path.substring(0, path.lastIndexOf('/'));
+    // file:// + caminho absoluto no sistema (funciona para testes locais)
+    return `file://${dir}/${relativePath}`;
+  } else {
+    const base = siteBasePath();
+    // garante que não haja '//' extras
+    return `${location.origin}${base}/${relativePath}`.replace(/([^:]\/)\/+/g, '$1');
+  }
+}
+
+// --- Substitui as ações dos botões ---
+const btnPerfil = document.getElementById('btn-perfil');
+
+btnCarrinho?.addEventListener('click', (e) => {
+  e?.preventDefault();
+  window.location.href = buildUrl('PAGINAS/carrinho.html');
 });
 
-// ---------------- PERFIL USUÁRIO ----------------
-const btnPerfil = document.getElementById("btn-perfil");
-btnPerfil.addEventListener("click", () => {
-  window.location.href = "../PAGINAS/profile.html"; 
+btnPerfil?.addEventListener('click', (e) => {
+  e?.preventDefault();
+  window.location.href = buildUrl('PAGINAS/profile.html');
 });
+
