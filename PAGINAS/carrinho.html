@@ -2,7 +2,7 @@
 <html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Carrinho</title>
     <link rel="stylesheet" href="../style.css" />
     <link
@@ -32,24 +32,90 @@
 
       <!-- Ícones -->
       <div class="icons">
+  
+              <!-- Botão Voltar -->
+      <button id="btn-voltar" style="background:none; border:none; cursor:pointer; font-size:1.5rem;">
+        <i class="fa-solid fa-arrow-left"></i>
+      </button>
+
         <button id="menu-toggle"><i class="fas fa-bars"></i></button>
         <div class="menu-items" id="menu-items">
+       <!-- carrinho -->
           <button id="btn-carrinho">
-  <i class="fas fa-shopping-cart"></i>
-  <span id="qtd-carrinho">0</span>
-</button>
-          <button><i class="fas fa-user"></i></button>
+          <i class="fas fa-shopping-cart"></i>
+          <span id="qtd-carrinho">0</span>
+        </button>
+           <!-- Botão de perfil -->
+        <button id="btn-perfil">
+          <i class="fas fa-user"></i>
+        </button>
           <button><i class="fas fa-bell"></i></button>
         </div>
       </div>
     </header>
 
-    <main class="main">
-      <h1>🛒 Carrinho</h1>
-      <div id="itens-carrinho"></div>
-      <button id="limpar-carrinho">Limpar carrinho</button>
+  <main class="main">
+  <h1>🛒 Carrinho</h1>
 
-    </main>
+  <!-- Lista de itens do carrinho -->
+  <div id="itens-carrinho"></div>
+
+  <!-- Resumo do carrinho -->
+  <div class="resumo-carrinho">
+    <p>Total de itens: <span id="total-itens">0</span></p>
+    <p>Valor total: R$ <span id="total-valor">0.00</span></p>
+    <button id="btn-finalizar">Resumo do Pedido
+
+    </button>
+
+  </div>
+
+<!-- Modal Finalizar Pedido (HTML pronto) -->
+<div id="modal-resumo" class="modal-finalizar" style="display:none; position:fixed; inset:0; align-items:center; justify-content:center; background:rgba(0,0,0,0.5); z-index:9999;">
+  <div class="modal-conteudo" style="width:92%; max-width:480px; background:#fff; padding:20px; border-radius:10px; position:relative;">
+    <button type="button" class="close" aria-label="Fechar" style="position:absolute; right:12px; top:12px; background:none; border:none; font-size:20px; cursor:pointer;">&times;</button>
+
+    <h2 style="margin-top:0; margin-bottom:12px;">Finalizar Pedido</h2>
+
+    <form id="form-pedido">
+      <input type="text" name="nome" placeholder="Nome" required
+             style="display:block; margin-bottom:10px; width:100%; padding:10px; box-sizing:border-box;" />
+
+      <input type="text" name="endereco" placeholder="Endereço" required
+             style="display:block; margin-bottom:10px; width:100%; padding:10px; box-sizing:border-box;" />
+
+      <input type="number" name="telefone" placeholder="Telefone" required
+             style="display:block; margin-bottom:10px; width:100%; padding:10px; box-sizing:border-box;" />
+
+      <textarea name="observacoes" placeholder="Observações (opcional)"
+                style="display:block; margin-bottom:10px; width:100%; padding:10px; box-sizing:border-box; min-height:80px;"></textarea>
+
+      <label for="forma-pagamento" style="display:block; font-weight:600; margin-bottom:6px;">Forma de Pagamento</label>
+      <select name="forma-pagamento" id="forma-pagamento"
+              style="display:block; margin-bottom:12px; width:100%; padding:10px; box-sizing:border-box;">
+        <option value="debito">Débito</option>
+        <option value="credito">Crédito</option>
+        <option value="pix">PIX</option>
+        <option value="entrega">Pagamento na Entrega</option>
+      </select>
+
+      <!-- PIX: fica oculto até a opção PIX ser selecionada -->
+      <div id="pix-codigo" style="display:none; margin-bottom:12px; text-align:center;">
+        <p style="margin:6px 0;">Chave PIX: <strong><span id="chave-pix">seu-pix@exemplo.com</span></strong></p>
+        <img src="QR_CODE_URL_AQUI" alt="QR Code PIX" style="width:160px; height:160px; object-fit:contain; display:block; margin:6px auto;">
+        <button type="button" id="copiar-pix" style="margin-top:6px; padding:8px 12px; cursor:pointer;">Copiar Chave PIX</button>
+      </div>
+
+      <div style="display:flex; gap:8px; justify-content:flex-end; margin-top:6px;">
+        <button type="button" class="btn-cancelar" style="padding:10px 14px; background:#6f0606; border-radius:8px; border:none; cursor:pointer;">Cancelar</button>
+        <button type="submit" style="padding:10px 14px; background:#04691f; color:#fff; border:none; border-radius:8px; cursor:pointer;">Confirmar Pedido</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+</main>
+
 
     <footer class="footer">
       <div class="footer-content">
@@ -72,6 +138,6 @@
 
     <!-- Script do carrinho -->
      <script src="../JS/carrinho.js"></script>
-    
+    <script src="../JS/script.js" defer></script>
   </body>
 </html>

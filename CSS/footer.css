@@ -8,12 +8,13 @@
   margin-top: 0;
   width: 100% ;
   display: flex;
-  margin: 20px;
+ color: white;
   align-items: center;
   gap: 18px;
   margin-left: auto;
   margin-right: auto;
   text-align: center;
+  width: 100%;
 }
 .footer-content {
     display: flex;
@@ -25,25 +26,17 @@
     margin:  0 auto;
 }
 
-
+.footer-logo p, .footer-bottom p{
+  margin: 0;
+  font-size: 14px;
+  color: white !important;
+}
 
 /* Logo & autor */
 .footer-logo {
   display: flex;
   align-items: center;
   gap: 20px;
-}
-
-.footer-logo p {
-  margin: 0;
-  font-size: 13px;
-  color: var(--muted);
-}
-.footer-logo p span {
-  color: var(--light);
-  font-weight: 600;
-  display: block;
-  font-size: 13px;
 }
 
 /* Container central: título + ícones */
@@ -106,4 +99,110 @@
   font-size: 13px;
   color: var(--muted);
   text-align: center;
+}
+/* ================== Responsividade Footer ================== */
+
+/* Tablets (768px a 1024px) */
+@media (max-width: 1024px) {
+  .footer-content {
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .footer-logo {
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+  }
+
+  .footer-container {
+    flex: 1 1 100%;
+    text-align: center;
+  }
+
+  .social-icons {
+    gap: 10px;
+  }
+
+  .social-icons a {
+    width: 40px;
+    height: 40px;
+    font-size: 16px;
+  }
+}
+
+/* Celulares (até 767px) */
+@media (max-width: 767px) {
+  .footer {
+    flex-direction: column;
+    padding: 15px;
+    gap: 15px;
+  }
+
+  .footer-content {
+    flex-direction: column;
+    gap: 15px;
+    align-items: center;
+  }
+
+  .footer-logo {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .footer-logo p {
+    font-size: 12px;
+  }
+
+  .footer-logo p span {
+    font-size: 12px;
+  }
+
+  .footer-container h3 {
+    font-size: 14px;
+  }
+
+  .social-icons {
+    gap: 8px;
+  }
+
+  .social-icons a {
+    width: 36px;
+    height: 36px;
+    font-size: 16px;
+  }
+
+  .footer-bottom {
+    font-size: 12px;
+    padding-top: 10px;
+  }
+}
+
+/* Extra pequenos (até 480px) */
+@media (max-width: 480px) {
+  .footer {
+    padding: 10px;
+  }
+
+  .footer-logo p,
+  .footer-logo p span {
+    font-size: 11px;
+  }
+
+  .footer-container h3 {
+    font-size: 13px;
+  }
+
+  .social-icons a {
+    width: 32px;
+    height: 32px;
+    font-size: 14px;
+  }
+
+  .footer-bottom {
+    font-size: 11px;
+    padding-top: 8px;
+  }
 }

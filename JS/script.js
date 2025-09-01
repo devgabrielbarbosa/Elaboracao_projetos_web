@@ -1,191 +1,172 @@
-// menu haburger
-
- const toggleBtn = document.getElementById("menu-toggle");
+document.addEventListener("DOMContentLoaded", () => {
+  // ---------------- MENU HAMBURGER ----------------
+  const toggleBtn = document.getElementById("menu-toggle");
   const menuItems = document.getElementById("menu-items");
 
-  toggleBtn.addEventListener("click", () => {
+  toggleBtn?.addEventListener("click", () => {
     menuItems.classList.toggle("show");
   });
 
-// slider
- const slides = [
-  {
-    img: "../IMG/banner brigadeiro.png",
-    alt: "banner de brigadeiro",
-    link: "#brigadeiros",
-    text: "Ver Brigadeiros"
-  },
-  {
-    img: "../IMG/banner-barra-choclate.png",
-    alt: "banner de barras de chocolate",
-    link: "#chocolates",
-    text: "Ver Chocolates"
-  },
-  {
-    img: "../IMG/banner-trufas.png",
-    alt: "banner de trufas",
-    link: "#trufas",
-    text: "Ver Trufas"
+  // ---------------- SLIDER ----------------
+  const slides = [
+    { img: "IMG/banner-brigadeiro.png", alt: "banner de brigadeiro", link: "#brigadeiros", text: "Ver Brigadeiros" },
+    { img: "IMG/banner-barra-chocolate.png", alt: "banner de barras de chocolate", link: "#chocolates", text: "Ver Chocolates" },
+    { img: "IMG/banner-trufas.png", alt: "banner de trufas", link: "#trufas", text: "Ver Trufas" }
+  ];
+
+  const slideImg = document.getElementById("slide-img");
+  const slideBtn = document.getElementById("slide-btn");
+  const prevBtn = document.getElementById("prev");
+  const nextBtn = document.getElementById("next");
+  const dotsContainer = document.getElementById("dots-container");
+
+  let currentIndex = 0;
+
+  slides.forEach((_, index) => {
+    const dot = document.createElement("span");
+    dot.classList.add("dot");
+    if (index === 0) dot.classList.add("active");
+    dot.addEventListener("click", () => showSlide(index));
+    dotsContainer.appendChild(dot);
+  });
+  const dots = document.querySelectorAll(".dot");
+
+  function showSlide(index) {
+    if (index >= slides.length) index = 0;
+    if (index < 0) index = slides.length - 1;
+    currentIndex = index;
+
+    const slide = slides[index];
+    slideImg.src = slide.img;
+    slideImg.alt = slide.alt;
+    slideBtn.href = slide.link;
+    slideBtn.textContent = slide.text;
+
+    dots.forEach((dot, i) => dot.classList.toggle("active", i === index));
   }
-];
 
-const slideImg = document.getElementById("slide-img");
-const slideBtn = document.getElementById("slide-btn");
-const prevBtn = document.getElementById("prev");
-const nextBtn = document.getElementById("next");
-const dotsContainer = document.getElementById("dots-container");
+  prevBtn?.addEventListener("click", () => showSlide(currentIndex - 1));
+  nextBtn?.addEventListener("click", () => showSlide(currentIndex + 1));
 
-let currentIndex = 0;
+  showSlide(currentIndex);
+  setInterval(() => showSlide(currentIndex + 1), 4000);
 
-// Criar dots
-slides.forEach((_, index) => {
-  const dot = document.createElement("span");
-  dot.classList.add("dot");
-  if (index === 0) dot.classList.add("active");
-  dot.addEventListener("click", () => showSlide(index));
-  dotsContainer.appendChild(dot);
-});
-const dots = document.querySelectorAll(".dot");
+  // ---------------- FUNÇÃO PARA URL ----------------
+  function siteBasePath() {
+    if (location.hostname.includes("github.io")) {
+      const parts = location.pathname.split("/").filter(Boolean);
+      if (parts.length > 0) return `/${parts[0]}`;
+    }
+    return "";
+  }
 
-function showSlide(index) {
-  if (index >= slides.length) index = 0;
-  if (index < 0) index = slides.length - 1;
-  currentIndex = index;
+  function buildUrl(relativePath) {
+    if (location.protocol === "file:") {
+      const path = location.pathname;
+      const dir = path.substring(0, path.lastIndexOf("/"));
+      return `file://${dir}/${relativePath}`;
+    } else {
+      const base = siteBasePath();
+      return `${location.origin}${base}/${relativePath}`.replace(/([^:]\/)\/+/g, "$1");
+    }
+  }
 
-  const slide = slides[index];
-  slideImg.src = slide.img;
-  slideImg.alt = slide.alt;
-  slideBtn.href = slide.link;
-  slideBtn.textContent = slide.text;
-
-  dots.forEach((dot, i) => {
-    dot.classList.toggle("active", i === index);
-  });
-}
-
-// Botões
-prevBtn.addEventListener("click", () => showSlide(currentIndex - 1));
-nextBtn.addEventListener("click", () => showSlide(currentIndex + 1));
-
-// Inicial
-showSlide(currentIndex);
-
-// Automático
-setInterval(() => {
-  showSlide(currentIndex + 1);
-}, 6000);
-
-
-
-/// Modal Produto
-
-const btnDetalhes = document.querySelectorAll(".btn-detalhe");
-const modal = document.getElementById("modal-produto");
-const modalImg = document.getElementById("modal-img");
-const modalNome = document.getElementById("modal-nome");
-const modalPreco = document.getElementById("modal-preco");
-const closeModal = document.querySelector(".modal .close");
-const menos = document.getElementById("menos");
-const mais = document.getElementById("mais");
-const qtdSpan = document.getElementById("qtd");
-const addCarrinho = document.getElementById("add-carrinho");
-
-const btnCarrinho = document.getElementById("btn-carrinho");
-const qtdCarrinho = document.getElementById("qtd-carrinho"); // span dentro do botão
-
-let qtd = 0;
-let produtoAtual = {};
-
-// Função para atualizar quantidade total no botão do carrinho
-function atualizarQtdCarrinho() {
-  const carrinho = JSON.parse(localStorage.getItem("carrinho")) || [];
-  const total = carrinho.reduce((acc, item) => acc + item.qtd, 0);
-  qtdCarrinho.textContent = total;
-}
-
-// Inicializa quantidade do carrinho ao carregar
-atualizarQtdCarrinho();
-
-// Abrir modal ao clicar no botão detalhe
-btnDetalhes.forEach(btn => {
-  btn.addEventListener("click", (e) => {
-    const card = e.target.closest(".produto-card");
-    produtoAtual = {
-      nome: card.dataset.nome,
-      preco: parseFloat(card.dataset.preco),
-      img: card.dataset.img
-    };
-
-    modalImg.src = produtoAtual.img;
-    modalNome.textContent = produtoAtual.nome;
-    modalPreco.textContent = `R$ ${produtoAtual.preco.toFixed(2)}`;
-    qtd = 1;
-    qtdSpan.textContent = qtd;
-
-    modal.style.display = "block";
-  });
-});
-
-// Fechar modal
-closeModal.addEventListener("click", () => modal.style.display = "none");
-window.addEventListener("click", e => {
-  if (e.target === modal) modal.style.display = "none";
-});
-
-// Alterar quantidade
-menos.addEventListener("click", () => {
-  if (qtd > 1) qtd--;
-  qtdSpan.textContent = qtd;
-});
-mais.addEventListener("click", () => {
-  qtd++;
-  qtdSpan.textContent = qtd;
-});
-
-// Adicionar ao carrinho e mostrar mensagem
-addCarrinho.addEventListener("click", () => {
-  const item = {
-    nome: produtoAtual.nome,
-    preco: produtoAtual.preco,
-    qtd: qtd,
-    img: produtoAtual.img
-  };
-
-  // Pegar carrinho atual do localStorage
+  // ---------------- CARRINHO ----------------
   let carrinho = JSON.parse(localStorage.getItem("carrinho")) || [];
 
-  // Verificar se o produto já existe no carrinho
-  const indexExistente = carrinho.findIndex(prod => prod.nome === item.nome);
-  if (indexExistente > -1) {
-    // Se existir, apenas aumenta a quantidade
-    carrinho[indexExistente].qtd += qtd;
-  } else {
-    // Senão, adiciona novo item
-    carrinho.push(item);
+  function atualizarQtdCarrinho() {
+    const total = carrinho.reduce((acc, item) => acc + item.qtd, 0);
+    const qtdCarrinho = document.getElementById("qtd-carrinho");
+    if (qtdCarrinho) qtdCarrinho.textContent = total;
   }
-
-  // Salvar de volta no localStorage
-  localStorage.setItem("carrinho", JSON.stringify(carrinho));
-
-  // Atualizar número no botão do carrinho
   atualizarQtdCarrinho();
 
-  // Fechar modal
-  modal.style.display = "none";
+  document.querySelectorAll(".produto-card").forEach(card => {
+    const addCarrinho = card.querySelector(".add-carrinho");
 
-  // Mostrar mensagem de confirmação
-  const mensagem = document.createElement("div");
-  mensagem.textContent = `${produtoAtual.nome} adicionado ao carrinho!`;
-  mensagem.className = "mensagem-carrinho"; // estilize no CSS
-  document.body.appendChild(mensagem);
+    addCarrinho?.addEventListener("click", () => {
+      const produtoAtual = {
+        nome: card.dataset.nome,
+        preco: parseFloat(card.dataset.preco),
+        img: buildUrl(card.dataset.img),
+        qtd: 1 // sempre 1 por clique
+      };
 
-  // Remover mensagem depois de 2 segundos
-  setTimeout(() => {
-    mensagem.remove();
-  }, 2000);
-});
+      const indexExistente = carrinho.findIndex(p => p.nome === produtoAtual.nome);
+      if (indexExistente > -1) {
+        carrinho[indexExistente].qtd += 1; // soma 1
+      } else {
+        carrinho.push({ ...produtoAtual });
+      }
 
-// Botão do carrinho no header
-btnCarrinho.addEventListener("click", () => {
-  window.location.href = "../PAGINAS/carrinho.html";
+      localStorage.setItem("carrinho", JSON.stringify(carrinho));
+      atualizarQtdCarrinho();
+
+      const mensagem = document.createElement("div");
+      mensagem.textContent = `${produtoAtual.nome} adicionado ao carrinho!`;
+      mensagem.className = "mensagem-carrinho";
+      mensagem.style.cssText = `
+        position: fixed;
+        top: 200px;
+        right: 100px;
+        background-color: #4CAF50;
+        color: white;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        z-index: 1000;
+        font-weight: bold;
+      `;
+      document.body.appendChild(mensagem);
+      setTimeout(() => mensagem.remove(), 2000);
+    });
+  });
+
+  // ---------------- BOTÕES DE NAVEGAÇÃO ----------------
+  const btnCarrinho = document.getElementById("btn-carrinho");
+  const btnPerfil = document.getElementById("btn-perfil");
+
+  btnCarrinho?.addEventListener("click", e => {
+    e.preventDefault();
+    window.location.href = buildUrl("PAGINAS/carrinho.html");
+  });
+
+  btnPerfil?.addEventListener("click", e => {
+    e.preventDefault();
+    window.location.href = buildUrl("PAGINAS/profile.html");
+  });
+
+  // ---------------- PESQUISA ----------------
+  const input = document.getElementById("campo-pesquisa");
+  const btnPesquisa = document.getElementById("pesquisa");
+  const produtos = document.querySelectorAll(".produto-card");
+
+  const msg = document.createElement("h1");
+  msg.textContent = "Produto não encontrado.";
+  msg.style.textAlign = "center";
+  msg.style.color = "red";
+  msg.style.display = "none";
+  document.querySelector(".pesquisa-result").after(msg);
+
+  function pesquisar() {
+    const termo = input.value.toLowerCase().trim();
+    let encontrou = false;
+
+    produtos.forEach(produto => {
+      const nome = produto.dataset.nome.toLowerCase();
+      if (nome.includes(termo) || termo === "") {
+        produto.style.display = "block";
+        if (nome.includes(termo)) encontrou = true;
+      } else {
+        produto.style.display = "none";
+      }
+    });
+
+    msg.style.display = (termo !== "" && !encontrou) ? "block" : "none";
+  }
+
+  btnPesquisa?.addEventListener("click", pesquisar);
+  input?.addEventListener("keyup", e => {
+    if (e.key === "Enter" || input.value.trim() === "") pesquisar();
+  });
 });

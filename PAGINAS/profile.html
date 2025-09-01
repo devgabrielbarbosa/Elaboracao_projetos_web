@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Perfil do Cliente</title>
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+
+     <header class="cabecalho">
+                <!-- Logo -->
+                <div>
+                    <a href="../index.html">
+                    <img
+                        class="logo"
+                        src="../IMG/WhatsApp Image 2025-08-20 at 12.23.42.jpeg"
+                        alt="logo da Nicole Show"
+                    />
+                    </a>
+                </div>
+
+                <!-- Barra de pesquisa -->
+                <div class="search-box">
+                    <input type="text" placeholder="Pesquisar..." />
+                    <button><i class="fas fa-search"></i></button>
+                </div>
+
+                <!-- Ícones -->
+                <div class="icons">
+                  <!-- Botão Voltar -->
+            <button id="btn-voltar" style="background:none; border:none; cursor:pointer; font-size:1.5rem;">
+              <i class="fa-solid fa-arrow-left"></i>
+            </button>
+                    <button id="menu-toggle"><i class="fas fa-bars"></i></button>
+                    <div class="menu-items" id="menu-items">
+                    <button id="btn-carrinho">
+            <i class="fas fa-shopping-cart"></i>
+            <span id="qtd-carrinho">0</span>
+            </button>
+          <button><i class="fas fa-user"></i></button>
+          <button><i class="fas fa-bell"></i></button>
+        </div>
+      </div>
+    </header>
+    <main>
+  <div class="profile-container">
+
+    <!-- Topo: avatar, nome e ações -->
+    <div class="profile-top">
+      <img id="profile-pic" class="profile-pic" src="../IMG/default-avatar.png" alt="Foto de perfil">
+      <input type="file" id="upload" accept="image/*" style="display:none">
+      <div class="avatar-actions">
+        <button class="btn-upload" id="btn-change">Trocar foto</button>
+        <button class="btn-remove" id="btn-remove">Remover foto</button>
+      </div>
+
+      <div class="profile-ident">
+        <h3 id="display-name">Nome do Cliente</h3>
+        <h4 id="display-email" class="muted">exemplo@mail.com</h4>
+      </div>
+
+      <div class="top-actions">
+        <button id="btn-edit" class="btn-primary">Editar Perfil</button>
+        <button id="btn-logout" class="btn-outline-red">Sair</button>
+        <button id="btn-carrinho" class="btn-outline">Carrinho</button>
+      </div>
+    </div>
+
+    <!-- Seção: Informações Pessoais -->
+    <div class="section">
+      <h2>Informações Pessoais</h2>
+      <form id="profile-form">
+        <div class="form-group">
+          <label for="nome">Nome</label>
+          <input type="text" id="nome" disabled>
+        </div>
+
+        <div class="form-group">
+          <label for="telefone">Telefone</label>
+          <input type="text" id="telefone" disabled>
+        </div>
+
+        <div class="form-group full">
+          <label for="email">E-mail</label>
+          <input type="email" id="email" disabled>
+        </div>
+
+        <div class="form-group full">
+          <label for="endereco">Endereço</label>
+          <input type="text" id="endereco" disabled>
+        </div>
+
+        <div class="form-actions full">
+          <label>Receber notificações</label>
+          <div class="toggle-wrap">
+            <input id="toggle-notif" type="checkbox" />
+            <label for="toggle-notif" class="toggle"></label>
+          </div>
+        </div>
+
+        <div class="buttons-row full">
+          <button type="button" id="btn-save" class="btn-save" style="display:none">Salvar</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Seção: Últimos Pedidos -->
+    <div class="section">
+      <h2>Últimos Pedidos</h2>
+
+      <ul class="orders" id="orders-list">
+        <li>
+          <div class="order-left">
+            <strong>Pedido #1234</strong>
+            <div class="meta">Trufas de Chocolate</div>
+            <div class="meta">Valor: R$25,00</div>
+            <div class="meta">Entrega: 10/08/2025</div>
+          </div>
+          <button class="btn-repetir" data-produto='[{"nome":"Trufas de Chocolate","preco":25,"qtd":1}]'>Repetir</button>
+        </li>
+        <li>
+          <div class="order-left">
+            <strong>Pedido #1235</strong>
+            <div class="meta">Barra Fitness</div>
+            <div class="meta">Valor: R$15,00</div>
+            <div class="meta">Entrega: 17/08/2025</div>
+          </div>
+          <button class="btn-repetir" data-produto='[{"nome":"Barra Fitness","preco":15,"qtd":1}]'>Repetir</button>
+        </li>
+        <li>
+          <div class="order-left">
+            <strong>Pedido #1236</strong>
+            <div class="meta">Combo Especial</div>
+            <div class="meta">Valor: R$40,00</div>
+            <div class="meta">Entrega: 20/08/2025</div>
+          </div>
+          <button class="btn-repetir" data-produto='[{"nome":"Combo Especial","preco":40,"qtd":1}]'>Repetir</button>
+        </li>
+      </ul>
+
+      <a href="#" class="link-ghost">Ver todos os pedidos</a>
+    </div>
+
+    <!-- Seção: Métodos de Pagamento -->
+    <div class="section">
+      <h2>Métodos de Pagamento</h2>
+
+      <div class="payment-methods">
+        <button class="card-visual">
+          <div class="card-brand">VISA</div>
+          <div class="card-number">**** •••• •••• 1234</div>
+          <div class="card-info">
+            <span>Val: 12/32</span>
+            <span>CVV: •••</span>
+          </div>
+          <div class="card-name">João da Silva</div>
+        </button>
+
+        <button class="method-btn">💳 Cartão de Crédito</button>
+        <button class="method-btn">💵 Pix</button>
+        <button class="method-btn">📦 Pagar na Entrega</button>
+
+        <button id="add-card" class="btn-outline">Adicionar cartão +</button>
+      </div>
+    </div>
+  </div>
+  
+<!-- Modal Adicionar Cartão (fora do main) -->
+<div id="modal-card" class="modal">
+  <div class="modal-content">
+    <span class="modal-close">&times;</span>
+    <h3>Adicionar Cartão</h3>
+    <form id="form-card">
+      <div class="form-group">
+        <label for="card-number">Número do cartão</label>
+        <input type="number" id="card-number" required>
+      </div>
+      <div class="form-group">
+        <label for="card-name">Nome no cartão</label>
+        <input type="text" id="card-name" required>
+      </div>
+      <div class="form-group">
+        <label for="card-valid">Validade</label>
+        <input type="number" id="card-valid" placeholder="MM/AA" required>
+      </div>
+      <div class="form-group">
+        <label for="card-cvv">CVV</label>
+        <input type="number" id="card-cvv" required>
+      </div>
+      <button type="submit" class="btn-save">Adicionar Cartão</button>
+    </form>
+  </div>
+</div>
+<section>
+  <div>
+    <button id="excluir">Excluir contato</button>
+  </div>
+</section>
+</main>
+
+
+  <footer class="footer">
+      <div class="footer-content">
+        <div class="footer-logo">
+          <p>© 2025 Nicole Show. Todos os direitos reservados.</p>
+        </div>
+        <div class="footer-container">
+          <h3>Siga-nos</h3>
+          <div class="social-icons">
+            <a href="https://www.instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.facebook.com" target="_blank"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://www.linkedin.com" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>Desenvolvido por Gabriel, <span>Versão 0.1</span></p>
+        </div>
+      </div>
+    </footer>
+
+  <script src="../JS/profile.js"></script>
+  <script src="../JS/script.js"></script>
+</body>
+</html>

@@ -1,0 +1,80 @@
+  /* ==================== Links de Contato / Navegação ==================== */
+  .links-contato {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin: 100px 0;
+    flex-wrap: wrap;
+    text-align: center;
+    color: white;
+  }
+ .links-contato h3 {
+    width: 100%;
+    color: #4b0608;
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+  }
+
+  .link-categoria {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80px;
+    height: 80px;
+    background-color: #4b0608;
+    text-align: center;
+    border-radius: 50%;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 0.85rem;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+  }
+
+  .link-categoria:hover {
+    background-color: #610404;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 10px rgba(0,0,0,0.3);
+  }
+/* ==================== Responsividade Links de Contato ==================== */
+
+/* Tablets (769px a 1024px) */
+@media (max-width: 1024px) {
+  .links-contato {
+    gap: 12px;
+  }
+
+  .link-categoria {
+    width: 70px;
+    height: 70px;
+    font-size: 0.8rem;
+  }
+}
+
+/* Celulares médios (481px a 768px) */
+@media (max-width: 768px) {
+  .links-contato {
+    gap: 10px;
+  }
+
+  .link-categoria {
+    width: 60px;
+    height: 60px;
+    font-size: 0.75rem;
+  }
+}
+
+/* Celulares pequenos (até 480px) */
+@media (max-width: 480px) {
+  .links-contato {
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .link-categoria {
+    width: 50px;
+    height: 50px;
+    font-size: 0.7rem;
+  }
+}

@@ -2,7 +2,7 @@
 <html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Página inicial</title>
     <link rel="stylesheet" href="./style.css" />
     <link
@@ -26,9 +26,10 @@
 
       <!-- Barra de pesquisa -->
       <div class="search-box">
-        <input type="text" placeholder="Pesquisar..." />
-        <button><i class="fas fa-search"></i></button>
+        <input type="text" id="campo-pesquisa" placeholder="Pesquisar..." />
+        <button id="pesquisa"><i class="fas fa-search"></i></button>
       </div>
+
 
       <!-- Ícones -->
       <div class="icons">
@@ -36,19 +37,22 @@
         <button id="menu-toggle"><i class="fas fa-bars"></i></button>
 
         <!-- Ícones que aparecem dentro do menu no mobile -->
-       <div class="menu-items" id="menu-items">
-  <button id="btn-carrinho">
-  <i class="fas fa-shopping-cart"></i>
-  <span id="qtd-carrinho">0</span>
-</button>
-  <button><i class="fas fa-user"></i></button>
-  <button><i class="fas fa-bell"></i></button>
-</div>
+        <div class="menu-items" id="menu-items">
+          <button id="btn-carrinho">
+            <i class="fas fa-shopping-cart"></i>
+            <span id="qtd-carrinho">0</span>
+          </button>
+          <!-- Botão de perfil -->
+          <button id="btn-perfil">
+            <i class="fas fa-user"></i>
+          </button>
 
+          <button><i class="fas fa-bell"></i></button>
+        </div>
       </div>
     </header>
 
-    <main>
+    <main class="main-produtos">
       <section>
         <div class="slider">
           <button id="prev">⟨</button>
@@ -59,47 +63,372 @@
           </div>
 
           <button id="next">⟩</button>
-          <div id="dots-container"></div>
+        <div id="dots-container" class="dots-container"></div>
+
         </div>
       </section>
-      <section>
+      <!-- Sessão de links de contato / navegação interna -->
+      <section class="links-contato">
+        <h3>Categorias</h3>
+        <a href="#brigadeiros" class="link-categoria">Brigadeiros</a>
+        <a href="#trufas" class="link-categoria">Trufas</a>
+        <a href="#chocolates" class="link-categoria">Barras de Chocolate</a>
+        <a href="#fitness" class="link-categoria">Barras Fitness</a>
+      </section>
+
+      <section class="pesquisa-result"></section>
+
+      <!-- ================= BRIGADEIROS ================= -->
+      <section id="brigadeiros">
+        <h2>🍫 Brigadeiros</h2>
+        <div class="produtos">
+          <div
+            class="produto-card"
+            data-nome="Brigadeiro Tradicional"
+            data-preco="3.50"
+            data-img="./IMG/brigadeiro.jpg"
+          >
+            <img src="./IMG/brigadeiro.jpg" alt="Brigadeiro Tradicional" />
+            <div>
+              <h3>Brigadeiro Tradicional</h3>
+              <p class="descricao-produto">
+                Clássico doce brasileiro feito com leite condensado e chocolate.
+              </p>
+              <p><strong> R$3,50</strong></p>
+  
+              <button class="add-carrinho">Adicionar ao Carrinho</button>
+
+            </div>
+          </div>
+
+          <div
+            class="produto-card"
+            data-nome="Brigadeiro Gourmet"
+            data-preco="4.50"
+            data-img="./IMG/brigadeiro-meio-amargo.jpg"
+          >
+            <img
+              src="./IMG/brigadeiro-meio-amargo.jpg"
+              alt="Brigadeiro Gourmet"
+            />
+            <div>
+              <h3>Brigadeiro Gourmet</h3>
+              <p class="descricao-produto">
+                Feito com chocolate premium e ingredientes selecionados.
+              </p>
+              <p><strong> R$4,50</strong></p>
     
-        <!-- Seção Brigadeiros -->
-         
-<section id="brigadeiros">
-  <h2>🍫 Brigadeiros</h2>
-  <div class="produtos">
-    <div class="produto-card" data-nome="Brigadeiro Tradicional" data-preco="3.50" data-img="./IMG/brigadeiro1.png">
-      <img src="./IMG/brigadeiro1.png" alt="Brigadeiro Tradicional">
-      <h3>Brigadeiro Tradicional</h3>
-      <button class="btn-detalhe" >Ver Detalhe</button>
-    </div>
-    <div class="produto-card" data-nome="Brigadeiro Gourmet" data-preco="5.00" data-img="./IMG/brigadeiro2.png">
-      <img src="./IMG/brigadeiro2.png" alt="Brigadeiro Gourmet">
-      <h3>Brigadeiro Gourmet</h3>
-      <button class="btn-detalhe">Ver Detalhe</button>
-    </div>
-  </div>
-</section>
+              <button class="add-carrinho">Adicionar ao Carrinho</button>
 
-<!-- Modal -->
-<div id="modal-produto" class="modal">
-  <div class="modal-content">
-    <span class="close">&times;</span>
-    <img id="modal-img" src="" alt="">
-    <h3 id="modal-nome"></h3>
-    <p id="modal-preco"></p>
-    <div class="quantidade">
-      <button id="menos">-</button>
-      <span id="qtd">1</span>
-      <button id="mais">+</button>
-    </div>
-    <button id="add-carrinho">Adicionar ao Carrinho</button>
-  </div>
-</div>
+            </div>
+          </div>
 
-    </main>
+          <div
+            class="produto-card"
+            data-nome="Brigadeiro Pistache"
+            data-preco="5.00"
+            data-img="./IMG/brigadeiro-pistach.jpg"
+          >
+            <img src="./IMG/brigadeiro-pistach.jpg" alt="Brigadeiro Pistache" />
+            <div>
+              <h3>Brigadeiro Pistache</h3>
+              <p class="descricao-produto">
+                Sabor exclusivo com pistache selecionado e chocolate branco.
+              </p>
+              <p><strong> R$5,00</strong></p>
 
+              <button class="add-carrinho">Adicionar ao Carrinho</button>
+
+            </div>
+          </div>
+
+          <div
+            class="produto-card"
+            data-nome="Brigadeiro Chocolate Branco"
+            data-preco="4.00"
+            data-img="./IMG/brigadeiro-chocolate-branco.jpg"
+          >
+            <img
+              src="./IMG/brigadeiro-chocolate-branco.jpg"
+              alt="Brigadeiro Chocolate Branco"
+            />
+            <div>
+              <h3>Brigadeiro Chocolate Branco</h3>
+              <p class="descricao-produto">
+                Delicioso brigadeiro feito com chocolate branco cremoso.
+              </p>
+              <p><strong> R$4,00</strong></p>
+  
+              <button class="add-carrinho">Adicionar ao Carrinho</button>  
+
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= TRUFAS ================= -->
+      <section id="trufas">
+        <h2>🍬 Trufas</h2>
+        <div class="produtos">
+          <div
+            class="produto-card"
+            data-nome="Trufa Chocolate Belga"
+            data-preco="6.00"
+            data-img="./IMG/trufa-nutela.jpg"
+          >
+            <img src="./IMG/trufa-nutela.jpg" alt="Trufa Chocolate Belga" />
+            <div>
+              <h3>Trufa Chocolate Belga</h3>
+              <p class="descricao-produto">
+                Trufa rica e cremosa com chocolate belga de alta qualidade.
+              </p>
+              <p><strong> R$6,00</strong></p>
+              <button class="add-carrinho">Adicionar ao Carrinho</button>
+
+            </div>
+          </div>
+
+          <div
+            class="produto-card"
+            data-nome="Trufa Nutella"
+            data-preco="6.50"
+            data-img="./IMG/trufa-chocolate.jpg"
+          >
+            <img src="./IMG/trufa-chocolate.jpg" alt="Trufa Nutella" />
+            <div>
+              <h3>Trufa Nutella</h3>
+              <p class="descricao-produto">
+                Deliciosa trufa recheada com creme de Nutella.
+              </p>
+              <p><strong> R$6,50</strong></p>
+
+              <button class="add-carrinho">Adicionar ao Carrinho</button>
+
+            </div>
+          </div>
+
+          <div
+            class="produto-card"
+            data-nome="Trufa Maracujá"
+            data-preco="5.50"
+            data-img="./IMG/trufa-maracuja.jpg"
+          >
+            <img src="./IMG/trufa-maracuja.jpg" alt="Trufa Maracujá" />
+            <div>
+              <h3>Trufa Maracujá</h3>
+              <p class="descricao-produto">
+                Sabor tropical e refrescante com creme de maracujá.
+              </p>
+              <p><strong> R$5,50</strong></p>
+  
+              <button class="add-carrinho">Adicionar ao Carrinho</button>
+
+            </div>
+          </div>
+
+          <div
+            class="produto-card"
+            data-nome="Trufa Café"
+            data-preco="5.50"
+            data-img="./IMG/trufa-meio-amargo.jpg"
+          >
+            <img src="./IMG/trufa-meio-amargo.jpg" alt="Trufa Café" />
+            <div>
+              <h3>Trufa Café</h3>
+              <p class="descricao-produto">
+                Trufa sofisticada com intenso sabor de café.
+              </p>
+              <p><strong> R$5,50</strong></p>
+
+              <button class="add-carrinho">Adicionar ao Carrinho</button>
+        </div>
+      </section>
+
+      <!-- ================= BARRAS DE CHOCOLATE ================= -->
+      <section id="chocolates">
+        <h2>🍫 Barras de Chocolate</h2>
+        <div class="produtos">
+          <div
+            class="produto-card"
+            data-nome="Barra de Chocolate Ao Leite"
+            data-preco="12.00"
+            data-img="./IMG/barra-chocolate-branco.jpg"
+          >
+            <img
+              src="./IMG/barra-chocolate-branco.jpg"
+              alt="Barra de Chocolate Ao Leite"
+            />
+            <div>
+              <h3>Chocolate Ao Leite</h3>
+              <p class="descricao-produto">
+                Clássica barra de chocolate ao leite, cremosa e saborosa.
+              </p>
+              <p><strong> R$12,00</strong></p>
+
+              <button class="add-carrinho">Adicionar ao Carrinho</button>
+            </div>
+          </div>
+
+          <div
+            class="produto-card"
+            data-nome="Barra de Chocolate Meio Amargo 40%"
+            data-preco="13.00"
+            data-img="./IMG/barra-chocolate.jpg"
+          >
+            <img
+              src="./IMG/barra-chocolate.jpg"
+              alt="Barra de Chocolate Meio Amargo"
+            />
+            <div>
+              <h3>Chocolate Meio Amargo</h3>
+              <p class="descricao-produto">
+                Chocolate intenso, perfeito para quem gosta de amargo 40%.
+              </p>
+              <p><strong> R$13,00</strong></p>
+  
+              <button class="add-carrinho">Adicionar ao Carrinho</button>
+            </div>
+          </div>
+
+          <div
+            class="produto-card"
+            data-nome="Barra de Chocolate Branco"
+            data-preco="12.00"
+            data-img="./IMG/barra-chocolate-branco.jpg"
+          >
+            <img
+              src="./IMG/barra-chocolate-branco.jpg"
+              alt="Barra de Chocolate Branco"
+            />
+            <div>
+              <h3>Chocolate Branco</h3>
+              <p class="descricao-produto">
+                Deliciosa barra de chocolate branco suave e doce.
+              </p>
+              <p><strong> R$12,00</strong></p>
+  
+              <button class="add-carrinho">Adicionar ao Carrinho</button>
+            </div>
+          </div>
+
+          <div
+            class="produto-card"
+            data-nome="Barra de Chocolate com Castanhas"
+            data-preco="14.00"
+            data-img="./IMG/barra-chocolate-amendoin.jpg"
+          >
+            <img
+              src="./IMG/barra-chocolate-amendoin.jpg"
+              alt="Barra de Chocolate com Castanhas"
+            />
+            <div>
+              <h3>Chocolate com Castanhas</h3>
+              <p class="descricao-produto">
+                Chocolate ao leite com crocantes pedaços de castanhas.
+              </p>
+              <p><strong> R$14,00</strong></p>
+
+              <button class="add-carrinho">Adicionar ao Carrinho</button>
+
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= BARRAS FITNESS ================= -->
+      <section id="fitness">
+        <h2>💪 Barras Fitness</h2>
+        <div class="produtos">
+          <div
+            class="produto-card"
+            data-nome="Barra Proteica Chocolate"
+            data-preco="8.50"
+            data-img="./IMG/barra-fitnis-chocolate.jpg"
+          >
+            <img
+              src="./IMG/barra-fitnis-chocolate.jpg"
+              alt="Barra Proteica Chocolate"
+            />
+            <div>
+              <h3>Proteica Chocolate</h3>
+              <p class="descricao-produto">
+                Barra proteica sabor chocolate, ideal para energia pós-treino.
+              </p>
+              <p><strong> R$8,50</strong></p>
+              <button class="add-carrinho">Adicionar ao Carrinho</button>
+
+            </div>
+          </div>
+
+          <div
+            class="produto-card"
+            data-nome="Barra Proteica Amendoim"
+            data-preco="8.50"
+            data-img="./IMG/barra-fitnis-amendoin.jpg"
+          >
+            <img
+              src="./IMG/barra-fitnis-amendoin.jpg"
+              alt="Barra Proteica Amendoim"
+            />
+            <div>
+              <h3>Proteica Amendoim</h3>
+              <p class="descricao-produto">
+                Barra de amendoim com proteína, saborosa e nutritiva.
+              </p>
+              <p><strong> R$8,50</strong></p>
+  
+              <button class="add-carrinho">Adicionar ao Carrinho</button>
+
+            </div>
+          </div>
+
+          <div
+            class="produto-card"
+            data-nome="Barra Proteica Cookies"
+            data-preco="9.00"
+            data-img="./IMG/barra-ftnis-cookies.jpg"
+          >
+            <img
+              src="./IMG/barra-ftnis-cookies.jpg"
+              alt="Barra Proteica Cookies"
+            />
+            <div>
+              <h3>Proteica Cookies</h3>
+              <p class="descricao-produto">
+                Deliciosa barra proteica com sabor de cookies crocantes.
+              </p>
+              <p><strong> R$9,00</strong></p>
+  
+              <button class="add-carrinho">Adicionar ao Carrinho</button>
+
+            </div>
+          </div>
+
+          <div
+            class="produto-card"
+            data-nome="Barra Proteica Cacau"
+            data-preco="9.00"
+            data-img="./IMG/barra-fitnis-cacau.jpg"
+          >
+            <img
+              src="./IMG/barra-fitnis-cacau.jpg"
+              alt="Barra Proteica Cacau"
+            />
+            <div>
+              <h3>Proteica Cacau</h3>
+              <p class="descricao-produto">
+                Barra proteica sabor cacau puro, saudável e deliciosa.
+              </p>
+              <p><strong> R$9,00</strong></p>
+
+              <button class="add-carrinho">Adicionar ao Carrinho</button>
+
+            </div>
+          </div>
+        </div> 
+      </section>
+   </main>
+      
     <!-- Footer -->
     <footer class="footer">
       <div class="footer-content">
@@ -121,7 +450,7 @@
           </div>
         </div>
         <div class="footer-bottom">
-          <p>Desenvolvido por Gabriel, <span>Versão 0.1</span></p>
+          <p>Desenvolvido por Gabriel, Versão 0.0</p>
         </div>
       </div>
     </footer>
