@@ -202,5 +202,17 @@ document.addEventListener('DOMContentLoaded', () => {
                          
   // --- Botão Voltar ---
   btnVoltar?.addEventListener("click", () => window.history.back());
+  
+  function buildUrl(path) {
+  return new URL(path, window.location.origin).href;
+}
+
+const btnPerfil = document.getElementById("btn-carrinho");
+
+btnPerfil?.addEventListener("click", e => {
+  e.preventDefault();
+  window.location.href = buildUrl("/PAGINAS/carrinho.html");
+});
+
 });
 

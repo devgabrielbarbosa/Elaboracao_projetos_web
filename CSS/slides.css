@@ -44,6 +44,20 @@
   padding: 10px;
   border-radius: 50%;
 }
+#prev {
+  position: absolute; /* se for sobre o slider */
+  top: 50%;           /* centralizado verticalmente */
+  left: 10px;         /* distância da esquerda */
+  transform: translateY(-50%);
+  font-size: 2rem;
+  background-color: rgba(0,0,0,0.5);
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  z-index: 10;        /* garante que fique acima das imagens */
+}
+
 
 #prev { left: 10px; }
 #next { right: 10px; }
@@ -130,6 +144,7 @@
   .slider {
     max-width: 100%;
     top: 40px;
+    width: 90%;
   }
   .slide img {
     height: 150px;

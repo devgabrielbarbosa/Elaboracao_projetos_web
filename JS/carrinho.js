@@ -259,10 +259,17 @@ document.addEventListener("DOMContentLoaded", () => {
       window.history.back();
     });
   }
- btnPerfil?.addEventListener("click", e => {
-    e.preventDefault();
-    window.location.href = buildUrl("../PAGINAS/profile.html");
-  });
+function buildUrl(path) {
+  return new URL(path, window.location.origin).href;
+}
+
+const btnPerfil = document.getElementById("btn-perfil");
+
+btnPerfil?.addEventListener("click", e => {
+  e.preventDefault();
+  window.location.href = buildUrl("./PAGINAS/profile.html");
+});
+
   // --- Inicialização ---
   renderCarrinho();
   // também garante estado inicial do botão confirmar caso o formulário exista

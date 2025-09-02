@@ -22,6 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let currentIndex = 0;
 
+if (dotsContainer) { // só roda se existir
   slides.forEach((_, index) => {
     const dot = document.createElement("span");
     dot.classList.add("dot");
@@ -29,6 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
     dot.addEventListener("click", () => showSlide(index));
     dotsContainer.appendChild(dot);
   });
+}
   const dots = document.querySelectorAll(".dot");
 
   function showSlide(index) {
@@ -37,12 +39,15 @@ document.addEventListener("DOMContentLoaded", () => {
     currentIndex = index;
 
     const slide = slides[index];
-    slideImg.src = slide.img;
-    slideImg.alt = slide.alt;
-    slideBtn.href = slide.link;
-    slideBtn.textContent = slide.text;
+    if (slideImg && slideBtn) {
+  slideImg.src = slide.img;
+  slideImg.alt = slide.alt;
+  slideBtn.href = slide.link;
+  slideBtn.textContent = slide.text;
 
-    dots.forEach((dot, i) => dot.classList.toggle("active", i === index));
+  dots.forEach((dot, i) => dot.classList.toggle("active", i === index));
+}
+
   }
 
   prevBtn?.addEventListener("click", () => showSlide(currentIndex - 1));
@@ -169,4 +174,19 @@ document.addEventListener("DOMContentLoaded", () => {
   input?.addEventListener("keyup", e => {
     if (e.key === "Enter" || input.value.trim() === "") pesquisar();
   });
+// notificações
+const btn = document.getElementById("btn-notifications");
+const sidebar = document.getElementById("sidebar");
+
+btn.addEventListener("click", () => {
+  sidebar.classList.toggle("active");
+});
+
+// Fechar ao clicar fora
+document.addEventListener("click", (e) => {
+  if (!sidebar.contains(e.target) && !btn.contains(e.target)) {
+    sidebar.classList.remove("active");
+  }
+});
+
 });

@@ -58,7 +58,7 @@
 .profile-ident p.muted {
   margin: 0;
   font-size: 0.9rem;
-  color: #fff;
+  color: #ffffff;
 }
 
 .top-actions {
@@ -76,7 +76,7 @@
 
 .btn-primary {
   background-color: #4b0608;
-  color: #fff;
+  color: #ffffff;
   border: none;
 }
 
@@ -86,8 +86,8 @@
 
 .btn-outline-red {
   border: 1px solid red;
-  color: red;
-  background: none;
+  color: rgb(255, 255, 255);
+  background: #4b0608;
 }
 
 .btn-outline-red:hover {

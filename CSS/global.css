@@ -23,7 +23,6 @@ header {
   align-items: center;
   background: #570a0d;
   padding: 50px;
-  justify-content: space-between;
   z-index: 1000;
   /* garante que o header fique acima de tudo */
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
