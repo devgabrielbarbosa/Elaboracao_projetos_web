@@ -15,19 +15,14 @@ $loja_id    = $_SESSION['loja_id'];
 $nome_cliente = $_SESSION['cliente_nome'] ?? 'Cliente';
 
 // ===============================
-// Caminho base das imagens
-// ===============================
-$uploadDir = '/delivery_lanches/uploads/';
-
-// ===============================
 // 2️⃣ Buscar dados do cliente
 // ===============================
 $stmt = $pdo->prepare("SELECT foto_perfil, telefone, nome FROM clientes WHERE id=:id AND loja_id=:loja_id");
 $stmt->execute([':id'=>$cliente_id, ':loja_id'=>$loja_id]);
 $cliente = $stmt->fetch(PDO::FETCH_ASSOC);
 
-$cliente_foto = !empty($cliente['foto_perfil']) && file_exists(__DIR__ . $uploadDir . $cliente['foto_perfil'])
-    ? $uploadDir . $cliente['foto_perfil']
+$cliente_foto = !empty($cliente['foto_perfil']) 
+    ? 'imagem_cliente.php?id='.$cliente_id  // servir imagem via PHP
     : 'img/default-avatar.png';
 
 $cliente_telefone = $cliente['telefone'] ?? '';
@@ -81,11 +76,17 @@ $stmt = $pdo->prepare("SELECT * FROM produtos WHERE disponivel=1 AND loja_id=:lo
 $stmt->execute([':loja_id'=>$loja_id]);
 $produtos = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-// Ajustar imagens dos produtos
+// Ajustar imagens dos produtos para BLOB
 foreach ($produtos as &$p) {
-    $p['imagem'] = !empty($p['imagem']) && file_exists(__DIR__ . $uploadDir . $p['imagem'])
-        ? $uploadDir . $p['imagem']
-        : 'img/product-placeholder.png';
+    $stmt_img = $pdo->prepare("SELECT url FROM fotos_produto WHERE produto_id=:id LIMIT 1");
+    $stmt_img->execute([':id' => $p['id']]);
+    $img = $stmt_img->fetch(PDO::FETCH_ASSOC);
+
+    if($img && $img['url']){
+        $p['imagem'] = 'imagem_produto.php?id=' . $p['id'];
+    } else {
+        $p['imagem'] = 'img/product-placeholder.png';
+    }
 }
 unset($p);
 
@@ -111,13 +112,14 @@ $stmt->execute([
 
 $promocoes_ativas = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-// Ajustar imagens das promoções
+// Ajustar imagens das promoções (mantendo via arquivo)
 foreach ($promocoes_ativas as &$promo) {
-    $promo['imagem'] = !empty($promo['imagem']) && file_exists(__DIR__ . $uploadDir . $promo['imagem'])
-        ? $uploadDir . $promo['imagem']
+    $promo['imagem'] = !empty($promo['imagem']) 
+        ? $promo['imagem'] 
         : 'img/banner-placeholder.png';
 }
 unset($promo);
+include 'navbar_cliente.php';
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -141,36 +143,7 @@ body { background-color: #f8f9fa; font-family: 'Segoe UI', Tahoma, Geneva, Verda
 </head>
 <body>
 
-<!-- NAVBAR -->
-<nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom shadow-sm">
-  <div class="container">
-    <a class="navbar-brand fw-bold text-dark" href="#">
-      <img src="img/logo-small.png" alt="logo" style="height:34px; margin-right:8px;">
-      <?= htmlspecialchars($loja_nome) ?>
-    </a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMain">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navMain">
-      <ul class="navbar-nav ms-auto align-items-center gap-2">
-        <li class="nav-item"><a class="nav-link d-flex align-items-center text-dark p-2" href="tel:<?= $empresa_telefone ?>"><i class="fas fa-phone fa-lg me-2"></i><span class="d-none d-md-inline"><?= substr($empresa_telefone,-9) ?></span></a></li>
-        <li class="nav-item"><a class="nav-link p-2" href="https://wa.me/<?= $empresa_whatsapp ?>" target="_blank"><i class="fab fa-whatsapp fa-lg text-success"></i></a></li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle d-flex align-items-center p-0" href="#" data-bs-toggle="dropdown">
-            <img src="<?= $cliente_foto ?>" class="profile-img" alt="perfil">
-            <span class="ms-2 d-none d-md-inline fw-medium"><?= htmlspecialchars($nome_cliente) ?></span>
-          </a>
-          <ul class="dropdown-menu dropdown-menu-end shadow-sm">
-            <li><a class="dropdown-item" href="perfil.php"><i class="fas fa-user me-2"></i>Meu Perfil</a></li>
-            <li><a class="dropdown-item" href="meus_pedidos.php"><i class="fas fa-list-check me-2"></i>Meus Pedidos</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item text-danger" href="logout.php"><i class="fas fa-right-from-bracket me-2"></i>Sair</a></li>
-          </ul>
-        </li>
-      </ul>
-    </div>
-  </div>
-</nav>
+
 
 <!-- CARROSSEL DE PROMOÇÕES -->
 <div class="container my-4">
@@ -202,8 +175,7 @@ body { background-color: #f8f9fa; font-family: 'Segoe UI', Tahoma, Geneva, Verda
     <?php foreach($produtos as $p): ?>
       <div class="col-12 col-sm-6 col-md-4">
         <div class="card h-100 shadow-sm card-product">
-       <img src="<?= htmlspecialchars($uploadDir . $p['imagem']) ?>" class="product-img" alt="<?= htmlspecialchars($p['nome']) ?>">
-
+          <img src="<?= htmlspecialchars($p['imagem']) ?>" class="product-img" alt="<?= htmlspecialchars($p['nome']) ?>">
           <div class="card-body d-flex flex-column">
             <h5 class="card-title mb-1"><?= htmlspecialchars($p['nome']) ?></h5>
             <p class="card-text text-muted small mb-2" style="flex:1"><?= htmlspecialchars($p['descricao']) ?></p>

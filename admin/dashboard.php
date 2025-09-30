@@ -132,6 +132,13 @@ if($admin_id){
         $admin = $tmp;
     }
 }
+
+$loja_id = $_GET['loja_id'] ?? 0;
+
+$stmt = $pdo->prepare("SELECT * FROM lojas WHERE id = ?");
+$stmt->execute([$loja_id]);
+$loja = $stmt->fetch();
+
 @include 'navbar.php';
 ?>
 
