@@ -1,0 +1,23 @@
+body {
+  background: linear-gradient(135deg, #ff4d4d, #ff9900);
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.card {
+  border-radius: 15px;
+}
+
+.btn-primary {
+  background-color: #ff4d4d;
+  border: none;
+}
+
+.btn-primary:hover {
+  background-color: #e63939;
+}
+.btn-primary:focus {
+  box-shadow: 0 0 0 0.2rem rgba(255, 77, 77, 0.5);
+}
