@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Produtos</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="../css/produtos.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+<div class="container my-5">
+<h3 class="mb-4">Gerenciar Produtos</h3>
+<div id="mensagem"></div>
+
+<!-- Formulário adicionar produto -->
+<div class="card mb-4 shadow-sm">
+    <div class="card-header bg-primary text-white">Adicionar Produto</div>
+    <div class="card-body">
+        <form id="form-adicionar-produto" enctype="multipart/form-data">
+            <input type="hidden" name="acao" value="adicionar">
+            <input type="text" name="nome" class="form-control mb-2" placeholder="Nome" required>
+            <textarea name="descricao" class="form-control mb-2" placeholder="Descrição"></textarea>
+            <input type="number" step="0.01" name="preco" class="form-control mb-2" placeholder="Preço" required>
+            <input type="file" name="imagem" class="form-control mb-2">
+            <button type="submit" class="btn btn-success w-100">Adicionar Produto</button>
+        </form>
+    </div>
+</div>
+
+<!-- Lista de produtos -->
+<div class="row g-4" id="produtos-lista"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../js/produtos.js"></script>
+<script src="../js/verificarSessao.js"></script>
+</body>
+</html>

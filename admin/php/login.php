@@ -1,6 +1,6 @@
 <?php
 session_start();
-require '../includes/conexao.php';
+require __DIR__ . '/../../includes/conexao.php'; // ajustando caminho
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = $_POST['email'];
@@ -15,17 +15,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['admin_nome'] = $admin['nome'];
         if(isset($admin['loja_id']) && $admin['loja_id'] > 0){
             $_SESSION['loja_id'] = (int)$admin['loja_id'];
-            header("Location: dashboard.php");
+            header("Location: ../paginas/dashboard.html"); // HTML separado do PHP
             exit;
         } else {
-            header("Location: login.html?erro=Loja+não+associada");
+            header("Location: ../login.html?erro=Loja+não+associada");
             exit;
         }
     } else {
-        header("Location: login.html?erro=E-mail+ou+senha+incorretos");
+        header("Location: ../login.html?erro=E-mail+ou+senha+incorretos");
         exit;
     }
 } else {
-    header("Location: cadastro_admin.html");
+    header("Location: ../login.html");
     exit;
 }

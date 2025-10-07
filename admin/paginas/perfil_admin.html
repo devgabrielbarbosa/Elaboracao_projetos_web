@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Perfil do Administrador</title>
+    <link rel="stylesheet" href="./cs/perfil.css">
+</head>
+<body>
+   <nav class="navbar navbar-expand-lg navbar-dark bg-danger mb-4">
+  <div class="container-fluid">
+    <img src="" id="fotoAdmin" class="profile-img me-3" alt="Foto de perfil" style="width:50px; height:50px; object-fit:cover; border-radius:50%;">
+    <a class="navbar-brand fw-bold" href="dashboard.php" id="nomeAdmin">Administrador</a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarLinks" aria-controls="navbarLinks" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarLinks">
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0 text-light">
+        <li class="nav-item"><a class="nav-link text-light" href="dashboard.html">Dashboard</a></li>
+        <li class="nav-item"><a class="nav-link text-light" href="pedidos.html">Pedidos</a></li>
+        <li class="nav-item"><a class="nav-link text-light" href="produtos.html">Produtos</a></li>
+        <li class="nav-item"><a class="nav-link text-light" href="promocoes.html">Promoções</a></li>
+        <li class="nav-item"><a class="nav-link text-light" href="taxa_entrega.html">Taxa de Entrega</a></li>
+        <li class="nav-item"><a class="nav-link text-light" href="forma_pagamento.html">Formas de Pagamento</a></li>
+        <li class="nav-item"><a class="nav-link text-light" href="./perfil_admin.html" id="perfilAdminLink">Perfil</a></li>
+        <li class="nav-item"><a class="nav-link text-light fw-bold" href="logout.php">Sair</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+ 
+<div class="container">
+    <h1>Perfil do Administrador</h1>
+    <form action="../php/perfil_admin.php" method="post" id="perfilForm" enctype="multipart/form-data">
+        <label>Nome:</label><input type="text" name="nome">
+        <label>Endereço:</label><input type="text" name="endereco">
+        <label>Bairro:</label><input type="text" name="bairro">
+        <label>Rua:</label><input type="text" name="rua">
+        <label>Logradouro:</label><input type="text" name="logradouro">
+        <label>CEP:</label><input type="text" name="cep">
+        <label>Cidade:</label><input type="text" name="cidade">
+        <label>Estado:</label><input type="text" name="estado">
+        <label>Telefone:</label><input type="text" name="telefone">
+        <label>Horários:</label><textarea name="horarios"></textarea>
+        <label>Status:</label>
+        <select name="status">
+            <option value="aberto">Aberto</option>
+            <option value="fechado">Fechado</option>
+        </select>
+        <label>Mensagem:</label><input type="text" name="mensagem">
+        <label>Logo:</label><input type="file" name="logo">
+        <img id="logoPreview" style="max-width:150px;margin-top:10px;" />
+        <button type="submit">Salvar</button>
+    </form>
+    <div id="resposta"></div>
+</div>
+<script src="../js/perfil.js"></script>
+<script src="../js/verificarSessao.js"></script>
+</body>
+</html>
