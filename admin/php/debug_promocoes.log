@@ -1,0 +1,349 @@
+[2025-10-08T17:29:17+02:00] URL: /delivery_lanches/admin/php/promocoes_api.php
+REMOTE_ADDR: ::1
+SESSION: Array
+(
+    [loja_id] => 27
+    [admin_id] => 12
+    [admin_nome] => 1808
+)
+
+POST: Array
+(
+    [codigo] => BLACK10%OFF
+    [descricao] => qwqwdqsdsa1
+    [desconto] => 10
+    [data_inicio] => 2025-10-08
+    [data_fim] => 2025-10-08
+)
+
+FILES: Array
+(
+    [imagem] => Array
+        (
+            [name] => bolinha-banner2.webp
+            [full_path] => bolinha-banner2.webp
+            [type] => image/webp
+            [tmp_name] => C:\xampp\tmp\phpAF9.tmp
+            [error] => 0
+            [size] => 68766
+        )
+
+)
+
+---------------------
+[2025-10-08T17:32:24+02:00] URL: /delivery_lanches/admin/php/promocoes_api.php
+REMOTE_ADDR: ::1
+SESSION: Array
+(
+    [loja_id] => 27
+    [admin_id] => 12
+    [admin_nome] => 1808
+)
+
+POST: Array
+(
+)
+
+FILES: Array
+(
+)
+
+---------------------
+[2025-10-08T17:32:56+02:00] URL: /delivery_lanches/admin/php/promocoes_api.php
+REMOTE_ADDR: ::1
+SESSION: Array
+(
+    [loja_id] => 27
+    [admin_id] => 12
+    [admin_nome] => 1808
+)
+
+POST: Array
+(
+    [codigo] => BLACK10%OFFdsd
+    [descricao] => dsfsdf
+    [desconto] => 10
+    [data_inicio] => 2025-10-07
+    [data_fim] => 2025-10-09
+    [acao] => adicionar
+)
+
+FILES: Array
+(
+    [imagem] => Array
+        (
+            [name] => bolinha-banner2.webp
+            [full_path] => bolinha-banner2.webp
+            [type] => image/webp
+            [tmp_name] => C:\xampp\tmp\php60AD.tmp
+            [error] => 0
+            [size] => 68766
+        )
+
+)
+
+---------------------
+[2025-10-08T17:32:58+02:00] URL: /delivery_lanches/admin/php/promocoes_api.php
+REMOTE_ADDR: ::1
+SESSION: Array
+(
+    [loja_id] => 27
+    [admin_id] => 12
+    [admin_nome] => 1808
+)
+
+POST: Array
+(
+)
+
+FILES: Array
+(
+)
+
+---------------------
+[2025-10-08T17:32:59+02:00] URL: /delivery_lanches/admin/php/promocoes_api.php
+REMOTE_ADDR: ::1
+SESSION: Array
+(
+    [loja_id] => 27
+    [admin_id] => 12
+    [admin_nome] => 1808
+)
+
+POST: Array
+(
+    [codigo] => BLACK10%OFFdsd
+    [descricao] => dsfsdf
+    [desconto] => 10
+    [data_inicio] => 2025-10-07
+    [data_fim] => 2025-10-09
+    [acao] => adicionar
+)
+
+FILES: Array
+(
+    [imagem] => Array
+        (
+            [name] => bolinha-banner2.webp
+            [full_path] => bolinha-banner2.webp
+            [type] => image/webp
+            [tmp_name] => C:\xampp\tmp\php6C75.tmp
+            [error] => 0
+            [size] => 68766
+        )
+
+)
+
+---------------------
+[2025-10-08T17:53:05+02:00] URL: /delivery_lanches/admin/php/promocoes_api.php
+REMOTE_ADDR: ::1
+SESSION: Array
+(
+    [loja_id] => 27
+    [admin_id] => 12
+    [admin_nome] => 1808
+)
+
+POST: Array
+(
+)
+
+FILES: Array
+(
+)
+
+---------------------
+[2025-10-08T17:58:22+02:00] URL: /delivery_lanches/admin/php/promocoes_api.php
+REMOTE_ADDR: ::1
+SESSION: Array
+(
+    [loja_id] => 27
+    [admin_id] => 12
+    [admin_nome] => 1808
+)
+
+POST: Array
+(
+)
+
+FILES: Array
+(
+)
+
+---------------------
+[2025-10-08T18:01:31+02:00] URL: /delivery_lanches/admin/php/promocoes_api.php
+REMOTE_ADDR: ::1
+SESSION: Array
+(
+    [loja_id] => 27
+    [admin_id] => 12
+    [admin_nome] => 1808
+)
+
+POST: Array
+(
+)
+
+FILES: Array
+(
+)
+
+---------------------
+[2025-10-08T18:04:19+02:00] URL: /delivery_lanches/admin/php/promocoes_api.php
+REMOTE_ADDR: ::1
+SESSION: Array
+(
+    [loja_id] => 27
+    [admin_id] => 12
+    [admin_nome] => 1808
+)
+
+POST: Array
+(
+)
+
+FILES: Array
+(
+)
+
+---------------------
+[2025-10-08T18:05:01+02:00] URL: /delivery_lanches/admin/php/promocoes_api.php
+REMOTE_ADDR: ::1
+SESSION: Array
+(
+    [loja_id] => 27
+    [admin_id] => 12
+    [admin_nome] => 1808
+)
+
+POST: Array
+(
+    [codigo] => 77807040
+    [descricao] => Aniversário 
+    [desconto] => 12
+    [data_inicio] => 2025-10-31
+    [data_fim] => 2025-10-21
+    [acao] => adicionar
+)
+
+FILES: Array
+(
+    [imagem] => Array
+        (
+            [name] => Pastel-de-feira-caseiro.jpg
+            [full_path] => Pastel-de-feira-caseiro.jpg
+            [type] => image/jpeg
+            [tmp_name] => C:\xampp\tmp\phpC298.tmp
+            [error] => 0
+            [size] => 100866
+        )
+
+)
+
+---------------------
+[2025-10-08T18:05:01+02:00] URL: /delivery_lanches/admin/php/promocoes_api.php
+REMOTE_ADDR: ::1
+SESSION: Array
+(
+    [loja_id] => 27
+    [admin_id] => 12
+    [admin_nome] => 1808
+)
+
+POST: Array
+(
+)
+
+FILES: Array
+(
+)
+
+---------------------
+[2025-10-08T18:05:38+02:00] URL: /delivery_lanches/admin/php/promocoes_api.php
+REMOTE_ADDR: ::1
+SESSION: Array
+(
+    [loja_id] => 27
+    [admin_id] => 12
+    [admin_nome] => 1808
+)
+
+POST: Array
+(
+)
+
+FILES: Array
+(
+)
+
+---------------------
+[2025-10-08T18:11:07+02:00] URL: /delivery_lanches/admin/php/promocoes_api.php
+REMOTE_ADDR: ::1
+SESSION: Array
+(
+    [loja_id] => 27
+    [admin_id] => 12
+    [admin_nome] => 1808
+)
+
+POST: Array
+(
+)
+
+FILES: Array
+(
+)
+
+---------------------
+[2025-10-08T18:11:37+02:00] URL: /delivery_lanches/admin/php/promocoes_api.php
+REMOTE_ADDR: ::1
+SESSION: Array
+(
+    [loja_id] => 27
+    [admin_id] => 12
+    [admin_nome] => 1808
+)
+
+POST: Array
+(
+    [codigo] => 15222
+    [descricao] => aasfasd
+    [desconto] => 15
+    [data_inicio] => 2025-10-08
+    [data_fim] => 2025-10-15
+    [acao] => adicionar
+)
+
+FILES: Array
+(
+    [imagem] => Array
+        (
+            [name] => logo-gabriel.jpg
+            [full_path] => logo-gabriel.jpg
+            [type] => image/jpeg
+            [tmp_name] => C:\xampp\tmp\phpCF2F.tmp
+            [error] => 0
+            [size] => 96014
+        )
+
+)
+
+---------------------
+[2025-10-08T18:11:37+02:00] URL: /delivery_lanches/admin/php/promocoes_api.php
+REMOTE_ADDR: ::1
+SESSION: Array
+(
+    [loja_id] => 27
+    [admin_id] => 12
+    [admin_nome] => 1808
+)
+
+POST: Array
+(
+)
+
+FILES: Array
+(
+)
+
+---------------------

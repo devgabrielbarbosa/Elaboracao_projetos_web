@@ -1,6 +1,6 @@
 <?php
 session_start();
-require '../includes/conexao.php';
+require __DIR__ . '/../../includes/conexao.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nome_loja    = $_POST['nome_loja'] ?? '';
