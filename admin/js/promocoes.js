@@ -1,13 +1,76 @@
-
+// promocoes.js — versão BLOB com excluir/ativar funcionando e mensagens amigáveis
 document.addEventListener('DOMContentLoaded', () => {
-  const container = document.getElementById('promocoesContainer');
-  const form = document.getElementById('formPromocao');
+  const formPromocao = document.getElementById('form-promocao');
+  const container = document.getElementById('promocoes-container');
+  const msgContainer = document.getElementById('mensagem-container');
 
-  // ======== Adicionar promoção ========
-  if (form) {
-    form.addEventListener('submit', async e => {
+  if (!container) return console.error('Elemento #promocoes-container NÃO encontrado.');
+  if (!formPromocao) console.warn('Elemento #form-promocao NÃO encontrado.');
+
+  // ===== Função para mostrar mensagens =====
+  function mostrarMensagem(texto, tipo = 'info') {
+    if (msgContainer) {
+      msgContainer.innerHTML = `<div class="alert alert-${tipo}">${texto}</div>`;
+    }
+  }
+
+  // ===== Função para carregar promoções =====
+  async function carregarPromocoes() {
+    container.innerHTML = '<p class="text-center text-muted">Carregando promoções...</p>';
+    try {
+      const res = await fetch('../php/promocoes_api.php', { credentials: 'same-origin' });
+      if (!res.ok) throw new Error('Resposta do servidor: ' + res.status);
+      const data = await res.json();
+
+      if (data.erro) return container.innerHTML = `<p class="text-center text-danger">${data.erro}</p>`;
+      if (!data.promocoes || data.promocoes.length === 0) return container.innerHTML = '<p class="text-center text-muted">Nenhuma promoção cadastrada.</p>';
+
+      container.innerHTML = '';
+      data.promocoes.forEach(p => {
+        const ativoClass = p.ativo == 1 ? 'bg-success' : 'bg-secondary';
+        const ativoText = p.ativo == 1 ? 'Ativa' : 'Inativa';
+        const imgSrc = p.imagem_blob 
+          ? `data:${p.imagem_tipo};base64,${p.imagem_blob}` 
+          : 'https://via.placeholder.com/350x180?text=Sem+Imagem';
+
+        const card = document.createElement('div');
+        card.className = 'col-md-4 mb-4';
+        card.innerHTML = `
+          <div class="card h-100 shadow-sm border-0 card-promocao">
+            <img src="${imgSrc}" class="banner-img" alt="${p.codigo}">
+            <div class="card-body d-flex flex-column">
+              <h5 class="card-title text-primary fw-bold">
+                ${p.codigo} <span class="badge ${ativoClass} ms-2">-${p.desconto}%</span>
+              </h5>
+              <p class="card-text text-muted">${p.descricao}</p>
+              <p class="mb-2"><small>${p.data_inicio} até ${p.data_fim}</small></p>
+              <div class="mt-auto d-flex justify-content-between align-items-center">
+                <a href="#" class="badge ${ativoClass} text-decoration-none p-2">${ativoText}</a>
+                <div>
+                  <button type="button" class="btn btn-sm btn-warning me-2 btn-toggle" data-id="${p.id}">
+                    ${p.ativo == 1 ? 'Desativar' : 'Ativar'}
+                  </button>
+                  <button type="button" class="btn btn-sm btn-danger btn-excluir" data-id="${p.id}">
+                    Excluir
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>`;
+        container.appendChild(card);
+      });
+
+    } catch (err) {
+      console.error('Erro ao carregar promoções:', err);
+      container.innerHTML = '<p class="text-center text-danger">Erro ao carregar promoções. Veja console.</p>';
+    }
+  }
+
+  // ===== Submit do formulário =====
+  if (formPromocao) {
+    formPromocao.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const formData = new FormData(form);
+      const formData = new FormData(formPromocao);
       formData.append('acao', 'adicionar');
 
       try {
@@ -16,102 +79,69 @@ document.addEventListener('DOMContentLoaded', () => {
           body: formData,
           credentials: 'same-origin'
         });
-        const data = await res.json();
 
-        if (data.erro) {
-          alert(data.erro);
-          return;
-        }
-        alert(data.mensagem || 'Promoção cadastrada!');
-        form.reset();
-        carregarPromocoes();
+        const text = await res.text();
+        let data;
+        try { data = JSON.parse(text); } 
+        catch { return mostrarMensagem('Resposta inválida do servidor.', 'danger'); }
+
+        if (data.erro) mostrarMensagem(data.erro, 'danger');
+        else if (data.mensagem) {
+          mostrarMensagem(data.mensagem, 'success');
+          formPromocao.reset();
+          carregarPromocoes();
+        } else mostrarMensagem('Resposta inesperada do servidor.', 'info');
+
       } catch (err) {
-        console.error('Erro ao enviar promoção:', err);
-        alert('Erro ao cadastrar promoção.');
+        console.error('Erro no fetch do cadastro:', err);
+        mostrarMensagem('Erro ao cadastrar promoção. Veja console.', 'danger');
       }
     });
   }
 
-  // ======== Carregar promoções ========
-  async function carregarPromocoes() {
-    container.innerHTML = '<p class="text-center text-muted">Carregando promoções...</p>';
-    try {
-      const res = await fetch('../php/promocoes_api.php', { credentials: 'same-origin' });
-      if (!res.ok) throw new Error('Resposta do servidor: ' + res.status);
-      const data = await res.json();
+  // ===== Delegation: toggle/excluir =====
+  container.addEventListener('click', async (e) => {
+    const toggleBtn = e.target.closest('.btn-toggle');
+    const excluirBtn = e.target.closest('.btn-excluir');
 
-      if (data.erro) {
-        container.innerHTML = `<p class="text-center text-danger">${data.erro}</p>`;
-        return;
-      }
-      if (!data.promocoes || data.promocoes.length === 0) {
-        container.innerHTML = '<p class="text-center text-muted">Nenhuma promoção cadastrada.</p>';
-        return;
-      }
-
-      container.innerHTML = '';
-      data.promocoes.forEach(p => {
-        const ativo = p.ativo == 1;
-        const ativoClass = ativo ? 'bg-success' : 'bg-secondary';
-        const ativoText = ativo ? 'Ativa' : 'Inativa';
-
-        const card = document.createElement('div');
-        card.className = 'col-md-4 mb-4';
-        card.innerHTML = `
-          <div class="card h-100 shadow-sm border-0 card-promocao">
-            <img src="${p.imagem}" class="banner-img" alt="${p.codigo}">
-            <div class="card-body d-flex flex-column">
-              <h5 class="card-title text-primary fw-bold">
-                ${p.codigo} <span class="badge ${ativoClass} ms-2">-${p.desconto}%</span>
-              </h5>
-              <p class="card-text text-muted">${p.descricao || ''}</p>
-              <p class="mb-2"><small>${p.data_inicio || ''} até ${p.data_fim || ''}</small></p>
-              <div class="mt-auto d-flex justify-content-between align-items-center">
-                <button class="btn btn-sm btn-outline-${ativo ? 'warning' : 'success'} btn-toggle">
-                  ${ativo ? 'Desativar' : 'Ativar'}
-                </button>
-                <button class="btn btn-sm btn-outline-danger btn-delete">Excluir</button>
-              </div>
-            </div>
-          </div>`;
-
-        // ======== Botão ativar/desativar ========
-        const btnToggle = card.querySelector('.btn-toggle');
-        btnToggle.addEventListener('click', async () => {
-          const acao = ativo ? 'desativar' : 'ativar';
-          try {
-            const r = await fetch(`../php/promocoes_api.php?acao=${acao}&id=${p.id}`);
-            const resp = await r.json();
-            alert(resp.mensagem || resp.erro || 'OK');
-            carregarPromocoes();
-          } catch (e) {
-            alert('Erro ao atualizar status da promoção.');
-          }
+    if (toggleBtn) {
+      e.preventDefault();
+      const id = toggleBtn.dataset.id;
+      try {
+        const res = await fetch('../php/promocoes_api.php', {
+          method: 'POST',
+          body: new URLSearchParams({ acao: 'toggle', id }),
+          credentials: 'same-origin'
         });
-
-        // ======== Botão excluir ========
-        const btnDelete = card.querySelector('.btn-delete');
-        btnDelete.addEventListener('click', async () => {
-          if (!confirm(`Deseja realmente excluir a promoção "${p.codigo}"?`)) return;
-          try {
-            const r = await fetch(`../php/promocoes_api.php?acao=deletar&id=${p.id}`);
-            const resp = await r.json();
-            alert(resp.mensagem || resp.erro || 'OK');
-            carregarPromocoes();
-          } catch (e) {
-            alert('Erro ao excluir promoção.');
-          }
-        });
-
-        container.appendChild(card);
-      });
-    } catch (err) {
-      console.error('Erro ao carregar promoções:', err);
-      container.innerHTML = '<p class="text-center text-danger">Erro ao carregar promoções. Veja console.</p>';
+        const data = await res.json();
+        data.erro ? mostrarMensagem(data.erro, 'danger') : mostrarMensagem(data.mensagem, 'success');
+        carregarPromocoes();
+      } catch (err) {
+        console.error(err);
+        mostrarMensagem('Erro ao atualizar status.', 'danger');
+      }
     }
-  }
 
-  // inicializar ao abrir a página
-  if (container) carregarPromocoes();
+    if (excluirBtn) {
+      e.preventDefault();
+      const id = excluirBtn.dataset.id;
+      if (!confirm('Deseja realmente excluir esta promoção?')) return;
+      try {
+        const res = await fetch('../php/promocoes_api.php', {
+          method: 'POST',
+          body: new URLSearchParams({ acao: 'excluir', id }),
+          credentials: 'same-origin'
+        });
+        const data = await res.json();
+        data.erro ? mostrarMensagem(data.erro, 'danger') : mostrarMensagem(data.mensagem, 'success');
+        carregarPromocoes();
+      } catch (err) {
+        console.error(err);
+        mostrarMensagem('Erro ao excluir promoção.', 'danger');
+      }
+    }
+  });
+
+  // Carregar promoções ao abrir
+  carregarPromocoes();
 });
-

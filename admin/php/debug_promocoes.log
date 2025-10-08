@@ -347,3 +347,1155 @@ FILES: Array
 )
 
 ---------------------
+[2025-10-08T18:59:57+02:00] URL: /projeto_web/admin/php/promocoes_api.php
+REMOTE_ADDR: ::1
+SESSION: Array
+(
+    [admin_id] => 12
+    [admin_nome] => 1808
+    [loja_id] => 27
+)
+
+POST: Array
+(
+    [codigo] => Black10%
+    [descricao] => 54
+    [desconto] => 33
+    [data_inicio] => 2025-10-08
+    [data_fim] => 2025-10-15
+)
+
+FILES: Array
+(
+    [imagem] => Array
+        (
+            [name] => logo de hamburgueria da região (1).png
+            [full_path] => logo de hamburgueria da região (1).png
+            [type] => image/png
+            [tmp_name] => C:\xampp\tmp\phpB9D5.tmp
+            [error] => 0
+            [size] => 1401891
+        )
+
+)
+
+---------------------
+[2025-10-08T19:01:16+02:00] URL: /projeto_web/admin/php/promocoes_api.php
+REMOTE_ADDR: ::1
+SESSION: Array
+(
+    [admin_id] => 12
+    [admin_nome] => 1808
+    [loja_id] => 27
+)
+
+POST: Array
+(
+    [codigo] => Black10%
+    [descricao] => wdAS
+    [desconto] => 10
+    [data_inicio] => 2025-10-08
+    [data_fim] => 2025-10-08
+)
+
+FILES: Array
+(
+    [imagem] => Array
+        (
+            [name] => logo de hamburgueria da região (1).png
+            [full_path] => logo de hamburgueria da região (1).png
+            [type] => image/png
+            [tmp_name] => C:\xampp\tmp\phpECC8.tmp
+            [error] => 0
+            [size] => 1401891
+        )
+
+)
+
+---------------------
+[2025-10-08T19:02:59+02:00] URL: /projeto_web/admin/php/promocoes_api.php
+REMOTE_ADDR: ::1
+SESSION: Array
+(
+    [admin_id] => 12
+    [admin_nome] => 1808
+    [loja_id] => 27
+)
+
+POST: Array
+(
+    [codigo] => Black10%
+    [descricao] => wdAS
+    [desconto] => 10
+    [data_inicio] => 2025-10-08
+    [data_fim] => 2025-10-08
+)
+
+FILES: Array
+(
+    [imagem] => Array
+        (
+            [name] => logo de hamburgueria da região (1).png
+            [full_path] => logo de hamburgueria da região (1).png
+            [type] => image/png
+            [tmp_name] => C:\xampp\tmp\php7F9E.tmp
+            [error] => 0
+            [size] => 1401891
+        )
+
+)
+
+---------------------
+[2025-10-08T19:08:27+02:00] URL: /projeto_web/admin/php/promocoes_api.php
+REMOTE_ADDR: ::1
+SESSION: Array
+(
+    [admin_id] => 12
+    [admin_nome] => 1808
+    [loja_id] => 27
+)
+
+POST: Array
+(
+    [codigo] => Black10%
+    [descricao] => wdAS
+    [desconto] => 10
+    [data_inicio] => 2025-10-08
+    [data_fim] => 2025-10-08
+)
+
+FILES: Array
+(
+    [imagem] => Array
+        (
+            [name] => logo de hamburgueria da região (1).png
+            [full_path] => logo de hamburgueria da região (1).png
+            [type] => image/png
+            [tmp_name] => C:\xampp\tmp\php81D9.tmp
+            [error] => 0
+            [size] => 1401891
+        )
+
+)
+
+---------------------
+[2025-10-08T19:08:30+02:00] URL: /projeto_web/admin/php/promocoes_api.php
+REMOTE_ADDR: ::1
+SESSION: Array
+(
+    [admin_id] => 12
+    [admin_nome] => 1808
+    [loja_id] => 27
+)
+
+POST: Array
+(
+    [codigo] => Black10%
+    [descricao] => wdAS
+    [desconto] => 10
+    [data_inicio] => 2025-10-08
+    [data_fim] => 2025-10-08
+)
+
+FILES: Array
+(
+    [imagem] => Array
+        (
+            [name] => logo de hamburgueria da região (1).png
+            [full_path] => logo de hamburgueria da região (1).png
+            [type] => image/png
+            [tmp_name] => C:\xampp\tmp\php8DF0.tmp
+            [error] => 0
+            [size] => 1401891
+        )
+
+)
+
+---------------------
+[2025-10-08T19:11:13+02:00] URL: /projeto_web/admin/php/promocoes_api.php
+REMOTE_ADDR: ::1
+SESSION: Array
+(
+    [admin_id] => 12
+    [admin_nome] => 1808
+    [loja_id] => 27
+)
+
+POST: Array
+(
+    [codigo] => Black10%
+    [descricao] => q3rwwe
+    [desconto] => 150
+    [data_inicio] => 2025-10-08
+    [data_fim] => 2025-10-10
+)
+
+FILES: Array
+(
+    [imagem] => Array
+        (
+            [name] => logo de hamburgueria da região (1).png
+            [full_path] => logo de hamburgueria da região (1).png
+            [type] => image/png
+            [tmp_name] => C:\xampp\tmp\php970.tmp
+            [error] => 0
+            [size] => 1401891
+        )
+
+)
+
+---------------------
+[2025-10-08T19:11:18+02:00] URL: /projeto_web/admin/php/promocoes_api.php
+REMOTE_ADDR: ::1
+SESSION: Array
+(
+    [admin_id] => 12
+    [admin_nome] => 1808
+    [loja_id] => 27
+)
+
+POST: Array
+(
+    [codigo] => Black10%
+    [descricao] => q3rwwe
+    [desconto] => 150
+    [data_inicio] => 2025-10-08
+    [data_fim] => 2025-10-10
+)
+
+FILES: Array
+(
+    [imagem] => Array
+        (
+            [name] => logo de hamburgueria da região (1).png
+            [full_path] => logo de hamburgueria da região (1).png
+            [type] => image/png
+            [tmp_name] => C:\xampp\tmp\php1E90.tmp
+            [error] => 0
+            [size] => 1401891
+        )
+
+)
+
+---------------------
+[2025-10-08T19:12:17+02:00] URL: /projeto_web/admin/php/promocoes_api.php
+REMOTE_ADDR: ::1
+SESSION: Array
+(
+    [admin_id] => 12
+    [admin_nome] => 1808
+    [loja_id] => 27
+)
+
+POST: Array
+(
+    [codigo] => Black10%
+    [descricao] => q3rwwe
+    [desconto] => 150
+    [data_inicio] => 2025-10-08
+    [data_fim] => 2025-10-10
+)
+
+FILES: Array
+(
+    [imagem] => Array
+        (
+            [name] => logo de hamburgueria da região (1).png
+            [full_path] => logo de hamburgueria da região (1).png
+            [type] => image/png
+            [tmp_name] => C:\xampp\tmp\php2B7.tmp
+            [error] => 0
+            [size] => 1401891
+        )
+
+)
+
+---------------------
+[2025-10-08T19:16:05+02:00] URL: /projeto_web/admin/php/promocoes_api.php
+REMOTE_ADDR: ::1
+SESSION: Array
+(
+    [admin_id] => 12
+    [admin_nome] => 1808
+    [loja_id] => 27
+)
+
+POST: Array
+(
+    [codigo] => Black10%
+    [descricao] => erq
+    [desconto] => 15
+    [data_inicio] => 2025-10-08
+    [data_fim] => 2025-10-09
+)
+
+FILES: Array
+(
+    [imagem] => Array
+        (
+            [name] => logo de hamburgueria da região (1).png
+            [full_path] => logo de hamburgueria da região (1).png
+            [type] => image/png
+            [tmp_name] => C:\xampp\tmp\php7E71.tmp
+            [error] => 0
+            [size] => 1401891
+        )
+
+)
+
+---------------------
+[2025-10-08T19:20:51+02:00] URL: /projeto_web/admin/php/promocoes_api.php
+REMOTE_ADDR: ::1
+SESSION: Array
+(
+    [admin_id] => 12
+    [admin_nome] => 1808
+    [loja_id] => 27
+)
+
+POST: Array
+(
+    [codigo] => Black10%
+    [descricao] => 4t34
+    [desconto] => 14
+    [data_inicio] => 2025-10-09
+    [data_fim] => 2025-10-08
+)
+
+FILES: Array
+(
+    [imagem] => Array
+        (
+            [name] => logo de hamburgueria da região (1).png
+            [full_path] => logo de hamburgueria da região (1).png
+            [type] => image/png
+            [tmp_name] => C:\xampp\tmp\phpDC10.tmp
+            [error] => 0
+            [size] => 1401891
+        )
+
+)
+
+---------------------
+[2025-10-08T19:21:21+02:00] URL: /projeto_web/admin/php/promocoes_api.php
+REMOTE_ADDR: ::1
+SESSION: Array
+(
+    [admin_id] => 12
+    [admin_nome] => 1808
+    [loja_id] => 27
+)
+
+POST: Array
+(
+    [codigo] => Black10%
+    [descricao] => 4t34
+    [desconto] => 14
+    [data_inicio] => 2025-10-09
+    [data_fim] => 2025-10-08
+)
+
+FILES: Array
+(
+    [imagem] => Array
+        (
+            [name] => logo de hamburgueria da região (1).png
+            [full_path] => logo de hamburgueria da região (1).png
+            [type] => image/png
+            [tmp_name] => C:\xampp\tmp\php50D3.tmp
+            [error] => 0
+            [size] => 1401891
+        )
+
+)
+
+---------------------
+[2025-10-08T19:21:23+02:00] URL: /projeto_web/admin/php/promocoes_api.php
+REMOTE_ADDR: ::1
+SESSION: Array
+(
+    [admin_id] => 12
+    [admin_nome] => 1808
+    [loja_id] => 27
+)
+
+POST: Array
+(
+    [codigo] => Black10%
+    [descricao] => 4t34
+    [desconto] => 14
+    [data_inicio] => 2025-10-09
+    [data_fim] => 2025-10-08
+)
+
+FILES: Array
+(
+    [imagem] => Array
+        (
+            [name] => logo de hamburgueria da região (1).png
+            [full_path] => logo de hamburgueria da região (1).png
+            [type] => image/png
+            [tmp_name] => C:\xampp\tmp\php59FC.tmp
+            [error] => 0
+            [size] => 1401891
+        )
+
+)
+
+---------------------
+[2025-10-08T19:21:26+02:00] URL: /projeto_web/admin/php/promocoes_api.php
+REMOTE_ADDR: ::1
+SESSION: Array
+(
+    [admin_id] => 12
+    [admin_nome] => 1808
+    [loja_id] => 27
+)
+
+POST: Array
+(
+    [codigo] => Black10%
+    [descricao] => 4t34
+    [desconto] => 14
+    [data_inicio] => 2025-10-09
+    [data_fim] => 2025-10-08
+)
+
+FILES: Array
+(
+    [imagem] => Array
+        (
+            [name] => logo de hamburgueria da região (1).png
+            [full_path] => logo de hamburgueria da região (1).png
+            [type] => image/png
+            [tmp_name] => C:\xampp\tmp\php62E6.tmp
+            [error] => 0
+            [size] => 1401891
+        )
+
+)
+
+---------------------
+[2025-10-08T19:21:29+02:00] URL: /projeto_web/admin/php/promocoes_api.php
+REMOTE_ADDR: ::1
+SESSION: Array
+(
+    [admin_id] => 12
+    [admin_nome] => 1808
+    [loja_id] => 27
+)
+
+POST: Array
+(
+    [codigo] => Black10%
+    [descricao] => 4t34
+    [desconto] => 14
+    [data_inicio] => 2025-10-09
+    [data_fim] => 2025-10-08
+)
+
+FILES: Array
+(
+    [imagem] => Array
+        (
+            [name] => logo de hamburgueria da região (1).png
+            [full_path] => logo de hamburgueria da região (1).png
+            [type] => image/png
+            [tmp_name] => C:\xampp\tmp\php6EDE.tmp
+            [error] => 0
+            [size] => 1401891
+        )
+
+)
+
+---------------------
+[2025-10-08T19:22:44+02:00] URL: /projeto_web/admin/php/promocoes_api.php
+REMOTE_ADDR: ::1
+SESSION: Array
+(
+    [admin_id] => 12
+    [admin_nome] => 1808
+    [loja_id] => 27
+)
+
+POST: Array
+(
+    [codigo] => Black10%
+    [descricao] => 4t34
+    [desconto] => 14
+    [data_inicio] => 2025-10-09
+    [data_fim] => 2025-10-08
+)
+
+FILES: Array
+(
+    [imagem] => Array
+        (
+            [name] => logo de hamburgueria da região (1).png
+            [full_path] => logo de hamburgueria da região (1).png
+            [type] => image/png
+            [tmp_name] => C:\xampp\tmp\php95EA.tmp
+            [error] => 0
+            [size] => 1401891
+        )
+
+)
+
+---------------------
+[2025-10-08T19:22:47+02:00] URL: /projeto_web/admin/php/promocoes_api.php
+REMOTE_ADDR: ::1
+SESSION: Array
+(
+    [admin_id] => 12
+    [admin_nome] => 1808
+    [loja_id] => 27
+)
+
+POST: Array
+(
+    [codigo] => Black10%
+    [descricao] => 4t34
+    [desconto] => 14
+    [data_inicio] => 2025-10-09
+    [data_fim] => 2025-10-08
+)
+
+FILES: Array
+(
+    [imagem] => Array
+        (
+            [name] => logo de hamburgueria da região (1).png
+            [full_path] => logo de hamburgueria da região (1).png
+            [type] => image/png
+            [tmp_name] => C:\xampp\tmp\php9FBF.tmp
+            [error] => 0
+            [size] => 1401891
+        )
+
+)
+
+---------------------
+[2025-10-08T19:23:30+02:00] URL: /projeto_web/admin/php/promocoes_api.php
+REMOTE_ADDR: ::1
+SESSION: Array
+(
+    [admin_id] => 12
+    [admin_nome] => 1808
+    [loja_id] => 27
+)
+
+POST: Array
+(
+    [codigo] => Black10%
+    [descricao] => 4t34
+    [desconto] => 14
+    [data_inicio] => 2025-10-09
+    [data_fim] => 2025-10-08
+)
+
+FILES: Array
+(
+    [imagem] => Array
+        (
+            [name] => logo de hamburgueria da região (1).png
+            [full_path] => logo de hamburgueria da região (1).png
+            [type] => image/png
+            [tmp_name] => C:\xampp\tmp\php47E6.tmp
+            [error] => 0
+            [size] => 1401891
+        )
+
+)
+
+---------------------
+[2025-10-08T19:23:48+02:00] URL: /projeto_web/admin/php/promocoes_api.php
+REMOTE_ADDR: ::1
+SESSION: Array
+(
+    [admin_id] => 12
+    [admin_nome] => 1808
+    [loja_id] => 27
+)
+
+POST: Array
+(
+    [codigo] => Black10%
+    [descricao] => awfq
+    [desconto] => 10
+    [data_inicio] => 2025-10-08
+    [data_fim] => 2025-10-09
+    [acao] => adicionar
+)
+
+FILES: Array
+(
+    [imagem] => Array
+        (
+            [name] => logo de hamburgueria da região (1).png
+            [full_path] => logo de hamburgueria da região (1).png
+            [type] => image/png
+            [tmp_name] => C:\xampp\tmp\php8D1E.tmp
+            [error] => 0
+            [size] => 1401891
+        )
+
+)
+
+---------------------
+[ERROR] Insert: SQLSTATE[08S01]: Communication link failure: 1153 Got a packet bigger than 'max_allowed_packet' bytes
+[2025-10-08T19:25:30+02:00] URL: /projeto_web/admin/php/promocoes_api.php
+REMOTE_ADDR: ::1
+SESSION: Array
+(
+    [admin_id] => 12
+    [admin_nome] => 1808
+    [loja_id] => 27
+)
+
+POST: Array
+(
+    [codigo] => Black10%
+    [descricao] => awfq
+    [desconto] => 10
+    [data_inicio] => 2025-10-08
+    [data_fim] => 2025-10-09
+    [acao] => adicionar
+)
+
+FILES: Array
+(
+    [imagem] => Array
+        (
+            [name] => logo de hamburgueria da região (1).png
+            [full_path] => logo de hamburgueria da região (1).png
+            [type] => image/png
+            [tmp_name] => C:\xampp\tmp\php1D06.tmp
+            [error] => 0
+            [size] => 1401891
+        )
+
+)
+
+---------------------
+[ERROR] Insert: SQLSTATE[08S01]: Communication link failure: 1153 Got a packet bigger than 'max_allowed_packet' bytes
+[2025-10-08T19:26:09+02:00] URL: /projeto_web/admin/php/promocoes_api.php
+REMOTE_ADDR: ::1
+SESSION: Array
+(
+    [admin_id] => 12
+    [admin_nome] => 1808
+    [loja_id] => 27
+)
+
+POST: Array
+(
+    [codigo] => Black10%
+    [descricao] => awfq
+    [desconto] => 10
+    [data_inicio] => 2025-10-08
+    [data_fim] => 2025-10-09
+    [acao] => adicionar
+)
+
+FILES: Array
+(
+    [imagem] => Array
+        (
+            [name] => logo de hamburgueria da região (1).png
+            [full_path] => logo de hamburgueria da região (1).png
+            [type] => image/png
+            [tmp_name] => C:\xampp\tmp\phpB724.tmp
+            [error] => 0
+            [size] => 1401891
+        )
+
+)
+
+---------------------
+[ERROR] Insert: SQLSTATE[08S01]: Communication link failure: 1153 Got a packet bigger than 'max_allowed_packet' bytes
+[2025-10-08T19:26:27+02:00] URL: /projeto_web/admin/php/promocoes_api.php
+REMOTE_ADDR: ::1
+SESSION: Array
+(
+    [admin_id] => 12
+    [admin_nome] => 1808
+    [loja_id] => 27
+)
+
+POST: Array
+(
+    [codigo] => Black10%
+    [descricao] => tewr
+    [desconto] => 17
+    [data_inicio] => 2025-09-30
+    [data_fim] => 2025-10-09
+    [acao] => adicionar
+)
+
+FILES: Array
+(
+    [imagem] => Array
+        (
+            [name] => logo de hamburgueria da região (1).png
+            [full_path] => logo de hamburgueria da região (1).png
+            [type] => image/png
+            [tmp_name] => C:\xampp\tmp\phpFBCF.tmp
+            [error] => 0
+            [size] => 1401891
+        )
+
+)
+
+---------------------
+[ERROR] Insert: SQLSTATE[08S01]: Communication link failure: 1153 Got a packet bigger than 'max_allowed_packet' bytes
+[2025-10-08T19:26:29+02:00] URL: /projeto_web/admin/php/promocoes_api.php
+REMOTE_ADDR: ::1
+SESSION: Array
+(
+    [admin_id] => 12
+    [admin_nome] => 1808
+    [loja_id] => 27
+)
+
+POST: Array
+(
+    [codigo] => Black10%
+    [descricao] => tewr
+    [desconto] => 17
+    [data_inicio] => 2025-09-30
+    [data_fim] => 2025-10-09
+    [acao] => adicionar
+)
+
+FILES: Array
+(
+    [imagem] => Array
+        (
+            [name] => logo de hamburgueria da região (1).png
+            [full_path] => logo de hamburgueria da região (1).png
+            [type] => image/png
+            [tmp_name] => C:\xampp\tmp\php43D.tmp
+            [error] => 0
+            [size] => 1401891
+        )
+
+)
+
+---------------------
+[ERROR] Insert: SQLSTATE[08S01]: Communication link failure: 1153 Got a packet bigger than 'max_allowed_packet' bytes
+[2025-10-08T19:27:05+02:00] URL: /projeto_web/admin/php/promocoes_api.php
+REMOTE_ADDR: ::1
+SESSION: Array
+(
+    [admin_id] => 12
+    [admin_nome] => 1808
+    [loja_id] => 27
+)
+
+POST: Array
+(
+    [codigo] => Black10%
+    [descricao] => tewr
+    [desconto] => 17
+    [data_inicio] => 2025-09-30
+    [data_fim] => 2025-10-09
+    [acao] => adicionar
+)
+
+FILES: Array
+(
+    [imagem] => Array
+        (
+            [name] => logo de hamburgueria da região (1).png
+            [full_path] => logo de hamburgueria da região (1).png
+            [type] => image/png
+            [tmp_name] => C:\xampp\tmp\php8F28.tmp
+            [error] => 0
+            [size] => 1401891
+        )
+
+)
+
+---------------------
+[ERROR] Insert: SQLSTATE[08S01]: Communication link failure: 1153 Got a packet bigger than 'max_allowed_packet' bytes
+[2025-10-08T19:27:15+02:00] URL: /projeto_web/admin/php/promocoes_api.php
+REMOTE_ADDR: ::1
+SESSION: Array
+(
+    [admin_id] => 12
+    [admin_nome] => 1808
+    [loja_id] => 27
+)
+
+POST: Array
+(
+    [codigo] => Black10%
+    [descricao] => tewr
+    [desconto] => 17
+    [data_inicio] => 2025-09-30
+    [data_fim] => 2025-10-09
+    [acao] => adicionar
+)
+
+FILES: Array
+(
+    [imagem] => Array
+        (
+            [name] => logo de hamburgueria da região (1).png
+            [full_path] => logo de hamburgueria da região (1).png
+            [type] => image/png
+            [tmp_name] => C:\xampp\tmp\phpB61A.tmp
+            [error] => 0
+            [size] => 1401891
+        )
+
+)
+
+---------------------
+[ERROR] Insert: SQLSTATE[08S01]: Communication link failure: 1153 Got a packet bigger than 'max_allowed_packet' bytes
+[2025-10-08T19:30:51+02:00] URL: /projeto_web/admin/php/promocoes_api.php
+REMOTE_ADDR: ::1
+SESSION: Array
+(
+    [admin_id] => 12
+    [admin_nome] => 1808
+    [loja_id] => 27
+)
+
+POST: Array
+(
+    [codigo] => Black10%
+    [descricao] => qwertwqer
+    [desconto] => 18
+    [data_inicio] => 2025-10-08
+    [data_fim] => 2025-10-09
+    [acao] => adicionar
+)
+
+FILES: Array
+(
+    [imagem] => Array
+        (
+            [name] => logo de hamburgueria da região (1).png
+            [full_path] => logo de hamburgueria da região (1).png
+            [type] => image/png
+            [tmp_name] => C:\xampp\tmp\php15E.tmp
+            [error] => 0
+            [size] => 1401891
+        )
+
+)
+
+---------------------
+[ERROR] Insert: SQLSTATE[08S01]: Communication link failure: 1153 Got a packet bigger than 'max_allowed_packet' bytes
+[2025-10-08T19:34:49+02:00] URL: /projeto_web/admin/php/promocoes_api.php
+REMOTE_ADDR: ::1
+SESSION: Array
+(
+    [admin_id] => 12
+    [admin_nome] => 1808
+    [loja_id] => 27
+)
+
+POST: Array
+(
+    [codigo] => Black10%
+    [descricao] => qwqw
+    [desconto] => 19
+    [data_inicio] => 2025-10-10
+    [data_fim] => 2025-10-09
+    [acao] => adicionar
+)
+
+FILES: Array
+(
+    [imagem] => Array
+        (
+            [name] => logo de hamburgueria da região (1).png
+            [full_path] => logo de hamburgueria da região (1).png
+            [type] => image/png
+            [tmp_name] => C:\xampp\tmp\phpA419.tmp
+            [error] => 0
+            [size] => 1401891
+        )
+
+)
+
+---------------------
+[ERROR] Insert: SQLSTATE[08S01]: Communication link failure: 1153 Got a packet bigger than 'max_allowed_packet' bytes
+[2025-10-08T19:35:10+02:00] URL: /projeto_web/admin/php/promocoes_api.php
+REMOTE_ADDR: ::1
+SESSION: Array
+(
+    [admin_id] => 12
+    [admin_nome] => 1808
+    [loja_id] => 27
+)
+
+POST: Array
+(
+    [codigo] => Black10%
+    [descricao] => qwqw
+    [desconto] => 19
+    [data_inicio] => 2025-10-10
+    [data_fim] => 2025-10-09
+    [acao] => adicionar
+)
+
+FILES: Array
+(
+    [imagem] => Array
+        (
+            [name] => logo de hamburgueria da região (1).png
+            [full_path] => logo de hamburgueria da região (1).png
+            [type] => image/png
+            [tmp_name] => C:\xampp\tmp\phpF5C4.tmp
+            [error] => 0
+            [size] => 1401891
+        )
+
+)
+
+---------------------
+[ERROR] Insert: SQLSTATE[08S01]: Communication link failure: 1153 Got a packet bigger than 'max_allowed_packet' bytes
+[2025-10-08T19:35:12+02:00] URL: /projeto_web/admin/php/promocoes_api.php
+REMOTE_ADDR: ::1
+SESSION: Array
+(
+    [admin_id] => 12
+    [admin_nome] => 1808
+    [loja_id] => 27
+)
+
+POST: Array
+(
+    [codigo] => Black10%
+    [descricao] => qwqw
+    [desconto] => 19
+    [data_inicio] => 2025-10-10
+    [data_fim] => 2025-10-09
+    [acao] => adicionar
+)
+
+FILES: Array
+(
+    [imagem] => Array
+        (
+            [name] => logo de hamburgueria da região (1).png
+            [full_path] => logo de hamburgueria da região (1).png
+            [type] => image/png
+            [tmp_name] => C:\xampp\tmp\phpFE02.tmp
+            [error] => 0
+            [size] => 1401891
+        )
+
+)
+
+---------------------
+[ERROR] Insert: SQLSTATE[08S01]: Communication link failure: 1153 Got a packet bigger than 'max_allowed_packet' bytes
+[2025-10-08T19:36:37+02:00] URL: /projeto_web/admin/php/promocoes_api.php
+REMOTE_ADDR: ::1
+SESSION: Array
+(
+    [admin_id] => 12
+    [admin_nome] => 1808
+    [loja_id] => 27
+)
+
+POST: Array
+(
+    [codigo] => Black10%
+    [descricao] => tryhyw
+    [desconto] => 10
+    [data_inicio] => 2025-10-08
+    [data_fim] => 2025-10-17
+    [acao] => adicionar
+)
+
+FILES: Array
+(
+    [imagem] => Array
+        (
+            [name] => logo de hamburgueria da região (1).png
+            [full_path] => logo de hamburgueria da região (1).png
+            [type] => image/png
+            [tmp_name] => C:\xampp\tmp\php499E.tmp
+            [error] => 0
+            [size] => 1401891
+        )
+
+)
+
+---------------------
+[ERROR] Insert: SQLSTATE[08S01]: Communication link failure: 1153 Got a packet bigger than 'max_allowed_packet' bytes
+[2025-10-08T19:36:58+02:00] URL: /projeto_web/admin/php/promocoes_api.php
+REMOTE_ADDR: ::1
+SESSION: Array
+(
+    [admin_id] => 12
+    [admin_nome] => 1808
+    [loja_id] => 27
+)
+
+POST: Array
+(
+    [codigo] => Black10%
+    [descricao] => tryhyw
+    [desconto] => 10
+    [data_inicio] => 2025-10-08
+    [data_fim] => 2025-10-17
+    [acao] => adicionar
+)
+
+FILES: Array
+(
+    [imagem] => Array
+        (
+            [name] => logo de hamburgueria da região (1).png
+            [full_path] => logo de hamburgueria da região (1).png
+            [type] => image/png
+            [tmp_name] => C:\xampp\tmp\php9C62.tmp
+            [error] => 0
+            [size] => 1401891
+        )
+
+)
+
+---------------------
+[ERROR] Insert: SQLSTATE[08S01]: Communication link failure: 1153 Got a packet bigger than 'max_allowed_packet' bytes
+[2025-10-08T19:43:02+02:00] URL: /projeto_web/admin/php/promocoes_api.php
+REMOTE_ADDR: ::1
+SESSION: Array
+(
+    [admin_id] => 12
+    [admin_nome] => 1808
+    [loja_id] => 27
+)
+
+POST: Array
+(
+    [codigo] => Black10%
+    [descricao] => ewfraf
+    [desconto] => 16
+    [data_inicio] => 2025-10-08
+    [data_fim] => 2025-10-09
+    [acao] => adicionar
+)
+
+FILES: Array
+(
+    [imagem] => Array
+        (
+            [name] => logo de hamburgueria da região (1).png
+            [full_path] => logo de hamburgueria da região (1).png
+            [type] => image/png
+            [tmp_name] => C:\xampp\tmp\php2B4D.tmp
+            [error] => 0
+            [size] => 1401891
+        )
+
+)
+
+---------------------
+[ERROR] Insert: SQLSTATE[08S01]: Communication link failure: 1153 Got a packet bigger than 'max_allowed_packet' bytes
+[2025-10-08T19:45:27+02:00] URL: /projeto_web/admin/php/promocoes_api.php
+REMOTE_ADDR: ::1
+SESSION: Array
+(
+    [admin_id] => 12
+    [admin_nome] => 1808
+    [loja_id] => 27
+)
+
+POST: Array
+(
+    [codigo] => Black10%
+    [descricao] => 33
+    [desconto] => 17
+    [data_inicio] => 2025-10-08
+    [data_fim] => 2025-10-09
+    [acao] => adicionar
+)
+
+FILES: Array
+(
+    [imagem] => Array
+        (
+            [name] => Copilot_20250923_114431.png
+            [full_path] => Copilot_20250923_114431.png
+            [type] => image/png
+            [tmp_name] => C:\xampp\tmp\php5F93.tmp
+            [error] => 0
+            [size] => 3514331
+        )
+
+)
+
+---------------------
+[ERROR] Insert: SQLSTATE[HY000]: General error: 2006 MySQL server has gone away
+[2025-10-08T19:51:43+02:00] URL: /projeto_web/admin/php/promocoes_api.php
+REMOTE_ADDR: ::1
+SESSION: Array
+(
+    [admin_id] => 12
+    [admin_nome] => 1808
+    [loja_id] => 27
+)
+
+POST: Array
+(
+    [codigo] => Black10%
+    [descricao] => 33
+    [desconto] => 17
+    [data_inicio] => 2025-10-08
+    [data_fim] => 2025-10-09
+    [acao] => adicionar
+)
+
+FILES: Array
+(
+    [imagem] => Array
+        (
+            [name] => Copilot_20250923_114431.png
+            [full_path] => Copilot_20250923_114431.png
+            [type] => image/png
+            [tmp_name] => C:\xampp\tmp\php1CF0.tmp
+            [error] => 0
+            [size] => 3514331
+        )
+
+)
+
+---------------------
+[ERROR] Insert: SQLSTATE[HY000]: General error: 2006 MySQL server has gone away
+[2025-10-08T19:53:05+02:00] URL: /projeto_web/admin/php/promocoes_api.php
+[2025-10-08T19:53:10+02:00] URL: /projeto_web/admin/php/promocoes_api.php
+[2025-10-08T19:53:10+02:00] URL: /projeto_web/admin/php/promocoes_api.php
+[2025-10-08T19:53:27+02:00] URL: /projeto_web/admin/php/promocoes_api.php
+[2025-10-08T19:53:41+02:00] URL: /projeto_web/admin/php/promocoes_api.php
+[2025-10-08T19:55:35+02:00] URL: /projeto_web/admin/php/promocoes_api.php
+[2025-10-08T19:55:36+02:00] URL: /projeto_web/admin/php/promocoes_api.php
+[2025-10-08T19:55:36+02:00] URL: /projeto_web/admin/php/promocoes_api.php
+[2025-10-08T19:55:36+02:00] URL: /projeto_web/admin/php/promocoes_api.php
+[2025-10-08T19:55:52+02:00] URL: /projeto_web/admin/php/promocoes_api.php
+[2025-10-08T19:59:14+02:00] URL: /projeto_web/admin/php/promocoes_api.php
+[2025-10-08T19:59:15+02:00] URL: /projeto_web/admin/php/promocoes_api.php
+[2025-10-08T19:59:15+02:00] URL: /projeto_web/admin/php/promocoes_api.php
+[2025-10-08T19:59:15+02:00] URL: /projeto_web/admin/php/promocoes_api.php
+[2025-10-08T19:59:16+02:00] URL: /projeto_web/admin/php/promocoes_api.php
+[2025-10-08T19:59:16+02:00] URL: /projeto_web/admin/php/promocoes_api.php
+[2025-10-08T19:59:37+02:00] URL: /projeto_web/admin/php/promocoes_api.php
+[2025-10-08T20:01:09+02:00] URL: /projeto_web/admin/php/promocoes_api.php
+[2025-10-08T20:01:10+02:00] URL: /projeto_web/admin/php/promocoes_api.php
+[2025-10-08T20:01:10+02:00] URL: /projeto_web/admin/php/promocoes_api.php
+[2025-10-08T20:01:11+02:00] URL: /projeto_web/admin/php/promocoes_api.php
+[2025-10-08T20:01:11+02:00] URL: /projeto_web/admin/php/promocoes_api.php
+[2025-10-08T20:01:11+02:00] URL: /projeto_web/admin/php/promocoes_api.php
+[2025-10-08T20:01:12+02:00] URL: /projeto_web/admin/php/promocoes_api.php
+[2025-10-08T20:01:12+02:00] URL: /projeto_web/admin/php/promocoes_api.php
+[2025-10-08T20:01:12+02:00] URL: /projeto_web/admin/php/promocoes_api.php
+[2025-10-08T20:01:34+02:00] URL: /projeto_web/admin/php/promocoes_api.php
+[2025-10-08T20:01:35+02:00] URL: /projeto_web/admin/php/promocoes_api.php
+[2025-10-08T20:01:48+02:00] URL: /projeto_web/admin/php/promocoes_api.php
+[2025-10-08T20:05:26+02:00] URL: /projeto_web/admin/php/promocoes_api.php
+[2025-10-08T20:05:38+02:00] URL: /projeto_web/admin/php/promocoes_api.php
