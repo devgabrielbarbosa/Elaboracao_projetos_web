@@ -1,16 +1,15 @@
 <?php
-require '../includes/conexao.php';
-if(!isset($_GET['id'])) exit;
+require __DIR__ . '/../../includes/conexao.php';
 
-$id = (int)$_GET['id'];
-$stmt = $pdo->prepare("SELECT url FROM fotos_produto WHERE produto_id=:id LIMIT 1");
-$stmt->execute([':id'=>$id]);
-$img = $stmt->fetch(PDO::FETCH_ASSOC);
+$id = (int)($_GET['id'] ?? 0);
+$stmt = $pdo->prepare("SELECT foto_id FROM produtos WHERE id = :id");
+$stmt->execute([':id' => $id]);
+$produto = $stmt->fetch(PDO::FETCH_ASSOC);
 
-if($img && $img['url']){
-    header("Content-Type: image/jpeg"); // ajuste se precisar PNG
-    echo $img['url'];
-} else {
-    readfile('../img/product-placeholder.png'); // placeholder
+if ($produto && $produto['foto_id']) {
+    header("Content-Type: image/jpeg"); // ou alterar dinamicamente conforme tipo real
+    echo $produto['foto_id'];
+    exit;
 }
-?>
+
+header("HTTP/1.0 404 Not Found");

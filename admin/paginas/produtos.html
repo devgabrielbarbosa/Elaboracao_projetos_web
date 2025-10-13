@@ -5,57 +5,351 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Produtos</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
-<link href="../css/produtos.css" rel="stylesheet">
+<link href="../cs/produtos.css" rel="stylesheet">
 </head>
 <body class="bg-light">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-danger mb-4">
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-danger mb-4">
   <div class="container-fluid">
     <img src="" id="fotoAdmin" class="profile-img me-3" alt="Foto de perfil" style="width:50px; height:50px; object-fit:cover; border-radius:50%;">
     <a class="navbar-brand fw-bold" href="dashboard.php" id="nomeAdmin">Administrador</a>
-
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarLinks" aria-controls="navbarLinks" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
     <div class="collapse navbar-collapse" id="navbarLinks">
       <ul class="navbar-nav ms-auto mb-2 mb-lg-0 text-light">
-        <li class="nav-item"><a class="nav-link text-light" href="dashboard.html">Dashboard</a></li>
+        <li class="nav-item"><a class="nav-link text-light " href="dashboard.html">Dashboard</a></li>
         <li class="nav-item"><a class="nav-link text-light" href="pedidos.html">Pedidos</a></li>
-        <li class="nav-item"><a class="nav-link text-light" href="produtos.html">Produtos</a></li>
-        <li class="nav-item"><a class="nav-link text-light" href="./promocoes.html">Promoções</a></li>
+        <li class="nav-item"><a class="nav-link text-light fw-bold" href="produtos.html">Produtos</a></li>
+        <li class="nav-item"><a class="nav-link text-light" href="promocoes.html">Promoções</a></li>
         <li class="nav-item"><a class="nav-link text-light" href="taxa_entrega.html">Taxa de Entrega</a></li>
         <li class="nav-item"><a class="nav-link text-light" href="forma_pagamento.html">Formas de Pagamento</a></li>
-        <li class="nav-item"><a class="nav-link text-light" href="./perfil_admin.html" id="perfilAdminLink">Perfil</a></li>
+        <li class="nav-item"><a class="nav-link text-light" href="perfil_admin.html">Perfil</a></li>
         <li class="nav-item"><a class="nav-link text-light fw-bold" href="../php/logout.php">Sair</a></li>
       </ul>
     </div>
   </div>
 </nav>
 
-<div class="container my-5">
-<h3 class="mb-4">Gerenciar Produtos</h3>
-<div id="mensagem"></div>
+  <div class="container py-4">
+    <h3 class="mb-4 text-center fw-bold">Gerenciar Produtos</h3>
 
-<!-- Formulário adicionar produto -->
-<div class="card mb-4 shadow-sm">
-    <div class="card-header bg-primary text-white">Adicionar Produto</div>
-    <div class="card-body">
-        <form id="form-adicionar-produto" enctype="multipart/form-data">
-            <input type="hidden" name="acao" value="adicionar">
-            <input type="text" name="nome" class="form-control mb-2" placeholder="Nome" required>
-            <textarea name="descricao" class="form-control mb-2" placeholder="Descrição"></textarea>
-            <input type="number" step="0.01" name="preco" class="form-control mb-2" placeholder="Preço" required>
-            <input type="file" name="imagem" class="form-control mb-2">
-            <button type="submit" class="btn btn-success w-100">Adicionar Produto</button>
+    <div id="mensagem"></div>
+
+    <!-- FORMULÁRIO DE PRODUTO -->
+    <div class="card shadow-sm mb-4">
+      <div class="card-header bg-primary text-white fw-semibold">Novo Produto</div>
+      <div class="card-body">
+        <form id="formProduto" enctype="multipart/form-data">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label">Nome do Produto</label>
+              <input type="text" class="form-control" name="nome" required>
+            </div>
+            <div class="col-md-3">
+              <label class="form-label">Preço (R$)</label>
+              <input type="number" step="0.01" class="form-control" name="preco" required>
+            </div>
+            <div class="col-md-3 d-flex align-items-end">
+              <button type="button" class="btn btn-outline-success w-100" data-bs-toggle="modal" data-bs-target="#modalCategoria">
+                + Nova Categoria
+              </button>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Categoria</label>
+              <select class="form-select" id="selectCategorias" name="categoria_id" required>
+              <option value="">Selecione a categoria</option>
+            </select>
+
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Imagem</label>
+              <input type="file" id="inputImagem" name="imagem" accept="image/*" class="form-control">
+              <img id="previewImagem" alt="Pré-visualização">
+            </div>
+            <div class="col-12">
+              <label class="form-label">Descrição</label>
+              <textarea class="form-control" name="descricao" rows="3"></textarea>
+            </div>
+          </div>
+          <div class="text-end mt-3">
+            <button class="btn btn-primary px-4" type="submit">Cadastrar Produto</button>
+          </div>
         </form>
+      </div>
     </div>
-</div>
 
-<!-- Lista de produtos -->
-<div class="row g-4" id="produtos-lista"></div>
+    <!-- LISTAGEM DE PRODUTOS -->
+    <div class="row" id="containerProdutos"></div>
+  </div>
 
+  <!-- MODAL DE CATEGORIAS -->
+  <div class="modal fade" id="modalCategoria" tabindex="-1" aria-labelledby="modalCategoriaLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header bg-primary text-white">
+          <h5 class="modal-title" id="modalCategoriaLabel">Gerenciar Categorias</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <form id="formCategoria">
+            <div class="input-group mb-3">
+              <input type="text" name="nome" class="form-control" placeholder="Nova categoria" required>
+              <button class="btn btn-success" type="submit">Adicionar</button>
+            </div>
+          </form>
+          <ul class="list-group" id="listaCategorias"></ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const formProduto = document.getElementById('formProduto');
+  const formCategoria = document.getElementById('formCategoria');
+  const containerProdutos = document.getElementById('containerProdutos');
+  const listaCategorias = document.getElementById('listaCategorias');
+  const selectCategorias = document.getElementById('selectCategorias');
+  const mensagem = document.getElementById('mensagem');
+  const inputImagem = document.getElementById('inputImagem');
+  const previewImagem = document.getElementById('previewImagem');
+
+  if (!formProduto || !formCategoria || !containerProdutos) {
+    console.error('Elementos HTML não encontrados.');
+    return;
+  }
+
+  // ========= Mensagem Bootstrap =========
+  function exibirMensagem(tipo, texto) {
+    mensagem.innerHTML = `
+      <div class="alert alert-${tipo} alert-dismissible fade show shadow-sm" role="alert">
+        ${texto}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+      </div>`;
+    setTimeout(() => mensagem.innerHTML = '', 5000);
+  }
+
+  // ========= Preview da Imagem =========
+  inputImagem.addEventListener('change', () => {
+    const file = inputImagem.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = e => {
+        previewImagem.src = e.target.result;
+        previewImagem.style.display = 'block';
+      };
+      reader.readAsDataURL(file);
+    } else {
+      previewImagem.src = '';
+      previewImagem.style.display = 'none';
+    }
+  });
+
+  // ========= CATEGORIAS =========
+  async function carregarCategorias() {
+    try {
+      const res = await fetch('../php/categorias_lojas.php?acao=listar');
+      const data = await res.json();
+
+      if (data.erro) return exibirMensagem('danger', data.erro);
+
+      selectCategorias.innerHTML = '<option value="">Selecione a categoria</option>';
+      listaCategorias.innerHTML = '';
+
+      data.categorias.forEach(cat => {
+        // Select
+        if (cat.ativo == 1) {
+          const opt = document.createElement('option');
+          opt.value = cat.id;
+          opt.textContent = cat.nome;
+          selectCategorias.appendChild(opt);
+        }
+
+        // Lista no modal
+        const li = document.createElement('li');
+        li.className = 'list-group-item d-flex justify-content-between align-items-center';
+        li.innerHTML = `
+          ${cat.nome}
+          <div>
+            <span class="badge ${cat.ativo == 1 ? 'bg-success' : 'bg-secondary'} me-2">
+              ${cat.ativo == 1 ? 'Ativa' : 'Inativa'}
+            </span>
+            <button class="btn btn-sm btn-outline-danger btnExcluir" data-id="${cat.id}">
+              Excluir
+            </button>
+          </div>`;
+        listaCategorias.appendChild(li);
+      });
+
+      // Botões de exclusão
+      listaCategorias.querySelectorAll('.btnExcluir').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          if (!confirm('Deseja realmente excluir esta categoria?')) return;
+          const id = btn.dataset.id;
+
+          try {
+            const res = await fetch(`../php/categorias_lojas.php?acao=deletar&id=${id}`);
+            const data = await res.json();
+            if (data.sucesso) exibirMensagem('success', data.sucesso);
+            else exibirMensagem('danger', data.erro || 'Erro ao deletar categoria.');
+            carregarCategorias();
+          } catch (e) {
+            console.error(e);
+            exibirMensagem('danger', 'Erro ao deletar categoria.');
+          }
+        });
+      });
+
+    } catch (e) {
+      console.error(e);
+      exibirMensagem('danger', 'Erro ao carregar categorias.');
+    }
+  }
+
+  // ========= Adicionar Categoria =========
+  formCategoria.addEventListener('submit', async e => {
+    e.preventDefault();
+    const formData = new FormData(formCategoria);
+    formData.append('acao', 'adicionar');
+
+    try {
+      const res = await fetch('../php/categorias_lojas.php', { method: 'POST', body: formData });
+      const data = await res.json();
+      if (data.sucesso) exibirMensagem('success', data.sucesso);
+      else exibirMensagem('danger', data.erro || 'Erro ao adicionar categoria.');
+      formCategoria.reset();
+      carregarCategorias();
+    } catch (e) {
+      console.error(e);
+      exibirMensagem('danger', 'Erro ao adicionar categoria.');
+    }
+  });
+
+  // ========= PRODUTOS =========
+  async function carregarProdutos() {
+    containerProdutos.innerHTML = '<p class="text-center text-muted">Carregando produtos...</p>';
+    try {
+      const res = await fetch('../php/produtos_lojas.php?acao=listar');
+      const data = await res.json();
+
+      if (data.erro) {
+        containerProdutos.innerHTML = `<p class="text-danger text-center">${data.erro}</p>`;
+        return;
+      }
+
+      if (!data.produtos?.length) {
+        containerProdutos.innerHTML = '<p class="text-center text-muted">Nenhum produto cadastrado.</p>';
+        return;
+      }
+
+      containerProdutos.innerHTML = '';
+
+      data.produtos.forEach(p => {
+        const ativoClass = p.ativo == 1 ? 'bg-success' : 'bg-secondary';
+        const ativoText = p.ativo == 1 ? 'Ativo' : 'Pausado';
+        const imgSrc = p.imagem || 'https://via.placeholder.com/200x150?text=Sem+Imagem';
+
+        const col = document.createElement('div');
+        col.className = 'col-md-4 mb-4';
+        col.innerHTML = `
+          <div class="card card-produto shadow-sm h-100">
+            <img src="${imgSrc}" class="card-img-top" alt="${p.nome}">
+            <div class="card-body d-flex flex-column justify-content-between">
+              <div>
+                <h5 class="card-title fw-semibold">${p.nome}</h5>
+                <p class="text-muted small mb-1">${p.descricao || ''}</p>
+                <p class="fw-bold text-danger mb-1">R$ ${parseFloat(p.preco || 0).toFixed(2).replace('.', ',')}</p>
+                <p class="small text-secondary mb-2">Categoria: ${p.categoria_nome || 'Sem categoria'}</p>
+                <span class="badge ${ativoClass}">${ativoText}</span>
+              </div>
+              <div class="d-flex justify-content-between mt-3">
+                <button class="btn btn-sm ${p.ativo == 1 ? 'btn-warning' : 'btn-success'}"
+                  onclick="alterarStatus(${p.id}, '${p.ativo == 1 ? 'pausar' : 'ativar'}')">
+                  ${p.ativo == 1 ? 'Pausar' : 'Ativar'}
+                </button>
+                <a href="produtos_editar.html?id=${p.id}" class="btn btn-sm btn-primary">Editar</a>
+                <button class="btn btn-sm btn-danger" onclick="deletarProduto(${p.id})">Excluir</button>
+              </div>
+            </div>
+          </div>`;
+        containerProdutos.appendChild(col);
+      });
+
+    } catch (e) {
+      console.error(e);
+      containerProdutos.innerHTML = '<p class="text-center text-danger">Erro ao carregar produtos.</p>';
+    }
+  }
+
+  // ========= Adicionar Produto =========
+  formProduto.addEventListener('submit', async e => {
+    e.preventDefault();
+
+    const formData = new FormData(formProduto);
+    formData.append('acao', 'adicionar');
+
+    // Garante que categoria vazia seja null
+    if (!formData.get('categoria_id')) formData.set('categoria_id', '');
+
+    try {
+      const res = await fetch('../php/produtos_lojas.php', { method: 'POST', body: formData });
+      const data = await res.json();
+
+      if (data.sucesso) exibirMensagem('success', data.sucesso);
+      else exibirMensagem('danger', data.erro || 'Erro ao adicionar produto.');
+
+      formProduto.reset();
+      previewImagem.src = '';
+      previewImagem.style.display = 'none';
+      carregarProdutos();
+    } catch (e) {
+      console.error(e);
+      exibirMensagem('danger', 'Erro ao adicionar produto.');
+    }
+  });
+
+  // ========= Alterar Status =========
+  window.alterarStatus = async (id, acao) => {
+    try {
+      const res = await fetch(`../php/produtos_lojas.php?acao=${acao}&id=${id}`);
+      const data = await res.json();
+      if (data.sucesso) exibirMensagem('success', data.sucesso);
+      else exibirMensagem('danger', data.erro || 'Erro ao alterar status.');
+      carregarProdutos();
+    } catch (e) {
+      console.error(e);
+      exibirMensagem('danger', 'Erro ao alterar status.');
+    }
+  };
+
+  // ========= Deletar Produto =========
+  window.deletarProduto = async id => {
+    if (!confirm('Deseja realmente excluir este produto?')) return;
+    try {
+      const res = await fetch(`../php/produtos_lojas.php?acao=deletar&id=${id}`);
+      const data = await res.json();
+      if (data.sucesso) exibirMensagem('success', data.sucesso);
+      else exibirMensagem('danger', data.erro || 'Erro ao excluir produto.');
+      carregarProdutos();
+    } catch (e) {
+      console.error(e);
+      exibirMensagem('danger', 'Erro ao excluir produto.');
+    }
+  };
+
+  // ========= Inicialização =========
+  carregarCategorias();
+  carregarProdutos();
+});
+</script>
+
+<!-- Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 <script src="../js/produtos.js"></script>
 <script src="../js/verificarSessao.js"></script>
+
 </body>
 </html>
