@@ -2,36 +2,46 @@
 session_start();
 require '../includes/conexao.php';
 
-if (!isset($_SESSION['admin_id']) || !isset($_POST['id'], $_POST['acao'])) exit;
-
-$admin_id = $_SESSION['admin_id'];
-$id = (int)$_POST['id'];
-$acao = $_POST['acao'];
-
-// Verificar se o pedido pertence ao admin
-$stmt = $pdo->prepare("SELECT * FROM pedidos WHERE id=:id AND admin_id=:admin_id");
-$stmt->execute([':id'=>$id, ':admin_id'=>$admin_id]);
-$pedido = $stmt->fetch();
-if(!$pedido) exit;
-
-switch($acao){
-    case 'aceitar':
-        $novo_status = 'aceito';
-        break;
-    case 'cancelar':
-        $novo_status = 'cancelado';
-        break;
-    case 'enviar':
-        $novo_status = 'em_entrega';
-        break;
-    case 'finalizar':
-        $novo_status = 'entregue';
-        break;
-    default:
-        exit;
+if (!isset($_SESSION['admin_id'], $_POST['id'], $_POST['acao'])) {
+    http_response_code(400);
+    exit('Parâmetros inválidos.');
 }
 
-$stmt = $pdo->prepare("UPDATE pedidos SET status=:status WHERE id=:id AND admin_id=:admin_id");
-$stmt->execute([':status'=>$novo_status, ':id'=>$id, ':admin_id'=>$admin_id]);
+$admin_id = (int)$_SESSION['admin_id'];
+$id       = (int)$_POST['id'];
+$acao     = $_POST['acao'];
 
-echo "ok";
+// Verifica se o pedido pertence ao admin
+$stmt = $pdo->prepare("SELECT id FROM pedidos WHERE id = :id AND admin_id = :admin_id LIMIT 1");
+$stmt->execute([':id' => $id, ':admin_id' => $admin_id]);
+$pedido = $stmt->fetch(PDO::FETCH_ASSOC);
+
+if (!$pedido) {
+    http_response_code(403);
+    exit('Pedido não encontrado ou não autorizado.');
+}
+
+// Define o novo status
+$map_status = [
+    'aceitar'   => 'aceito',
+    'cancelar'  => 'cancelado',
+    'enviar'    => 'em_entrega',
+    'finalizar' => 'entregue'
+];
+
+if (!array_key_exists($acao, $map_status)) {
+    http_response_code(400);
+    exit('Ação inválida.');
+}
+
+$novo_status = $map_status[$acao];
+
+// Atualiza o status no banco
+$stmt = $pdo->prepare("UPDATE pedidos SET status = :status WHERE id = :id AND admin_id = :admin_id");
+$stmt->execute([
+    ':status'    => $novo_status,
+    ':id'        => $id,
+    ':admin_id'  => $admin_id
+]);
+
+echo json_encode(['sucesso' => true, 'status' => $novo_status]);

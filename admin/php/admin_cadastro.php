@@ -11,36 +11,40 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $erro = "Preencha todos os campos!";
         header("Location: cadastro_admin.html?erro=" . urlencode($erro));
         exit;
-    } else {
-        $senha_hash = $senha_admin; // se quiser pode hash com password_hash()
+    }
 
-        try {
-            // 1️⃣ Criar loja
-            $stmt = $pdo->prepare("INSERT INTO lojas (nome) VALUES (:nome)");
-            $stmt->execute([':nome' => $nome_loja]);
-            $loja_id = $pdo->lastInsertId();
+    // Hash seguro da senha
+    $senha_hash = password_hash($senha_admin, PASSWORD_DEFAULT);
 
-            // 2️⃣ Criar admin
-            $stmt = $pdo->prepare("
-                INSERT INTO administradores (nome, email, senha, nivel, loja_id)
-                VALUES (:nome, :email, :senha, 'admin', :loja_id)
-            ");
-            $stmt->execute([
-                ':nome'    => $nome_loja,
-                ':email'   => $email_admin,
-                ':senha'   => $senha_hash,
-                ':loja_id' => $loja_id
-            ]);
+    try {
+        // 1️⃣ Criar loja
+        $stmt = $pdo->prepare("
+            INSERT INTO lojas (nome, status, data_criacao)
+            VALUES (:nome, 'fechado', NOW())
+        ");
+        $stmt->execute([':nome' => $nome_loja]);
+        $loja_id = $pdo->lastInsertId();
 
-            $sucesso = "Loja e admin criados com sucesso! Faça login.";
-            header("Location: login.html?sucesso=" . urlencode($sucesso));
-            exit;
+        // 2️⃣ Criar administrador da loja
+        $stmt = $pdo->prepare("
+            INSERT INTO administradores (nome, email, senha, nivel, loja_id, data_criacao)
+            VALUES (:nome, :email, :senha, 'admin', :loja_id, NOW())
+        ");
+        $stmt->execute([
+            ':nome'    => $nome_loja,
+            ':email'   => $email_admin,
+            ':senha'   => $senha_hash,
+            ':loja_id' => $loja_id
+        ]);
 
-        } catch (PDOException $e) {
-            $erro = "Erro ao criar loja/admin: " . $e->getMessage();
-            header("Location: cadastro_admin.html?erro=" . urlencode($erro));
-            exit;
-        }
+        $sucesso = "Loja e administrador criados com sucesso! Faça login.";
+        header("Location: login.html?sucesso=" . urlencode($sucesso));
+        exit;
+
+    } catch (PDOException $e) {
+        $erro = "Erro ao criar loja/admin: " . $e->getMessage();
+        header("Location: cadastro_admin.html?erro=" . urlencode($erro));
+        exit;
     }
 } else {
     header("Location: login.html");

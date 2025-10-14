@@ -29,9 +29,10 @@ document.addEventListener('DOMContentLoaded', () => {
       data.promocoes.forEach(p => {
         const ativoClass = p.ativo == 1 ? 'bg-success' : 'bg-secondary';
         const ativoText = p.ativo == 1 ? 'Ativa' : 'Inativa';
-        const imgSrc = p.imagem_blob 
-          ? `data:${p.imagem_tipo};base64,${p.imagem_blob}` 
-          : 'https://via.placeholder.com/350x180?text=Sem+Imagem';
+       const imgSrc = p.imagem_blob 
+  ? `data:${p.imagem_tipo};base64,${p.imagem_blob}`
+  : 'https://via.placeholder.com/350x180?text=Sem+Imagem';
+
 
         const card = document.createElement('div');
         card.className = 'col-md-4 mb-4';

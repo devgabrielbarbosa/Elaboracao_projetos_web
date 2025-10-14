@@ -34,8 +34,23 @@ $totalFaturamento   = fetchColumnSafe($pdo, "SELECT IFNULL(SUM(total + taxa_entr
 $pedidosEntregues   = (int)fetchColumnSafe($pdo, "SELECT COUNT(*) FROM pedidos WHERE status='entregue' AND loja_id=:loja_id", [':loja_id'=>$loja_id]);
 $pedidosAndamento   = (int)fetchColumnSafe($pdo, "SELECT COUNT(*) FROM pedidos WHERE status IN ('pendente','aceito','em_entrega') AND loja_id=:loja_id", [':loja_id'=>$loja_id]);
 $pedidosCancelados  = (int)fetchColumnSafe($pdo, "SELECT COUNT(*) FROM pedidos WHERE status='cancelado' AND loja_id=:loja_id", [':loja_id'=>$loja_id]);
-$totalClientes      = (int)fetchColumnSafe($pdo, "SELECT COUNT(*) FROM clientes WHERE loja_id=:loja_id", [':loja_id'=>$loja_id]);
-$totalProdutos      = (int)fetchColumnSafe($pdo, "SELECT COUNT(*) FROM produtos WHERE loja_id=:loja_id", [':loja_id'=>$loja_id]);
+
+// Total de clientes da loja
+$totalClientes = (int)fetchColumnSafe(
+    $pdo, 
+    "SELECT COUNT(*) FROM clientes WHERE loja_id=:loja_id", 
+    [':loja_id'=>$loja_id]
+);
+
+// Total de produtos ativos da loja
+$totalProdutos = (int)fetchColumnSafe(
+    $pdo,
+    "SELECT COUNT(*) 
+     FROM produtos_lojas pl
+     JOIN produtos p ON pl.produto_id = p.id
+     WHERE pl.loja_id=:loja_id AND pl.ativo_loja=1",
+    [':loja_id'=>$loja_id]
+);
 
 // Últimos pedidos
 $stmt = $pdo->prepare("SELECT id, total, taxa_entrega, status, metodo_pagamento, data_criacao FROM pedidos WHERE loja_id=:loja_id ORDER BY data_criacao DESC LIMIT 6");
@@ -91,9 +106,10 @@ $data = [
     'linkCardapio'     => $linkCardapio
 ];
 
-// Passa os dados como JSON para JS via query string ou arquivo intermediário
+// Passa os dados como JSON para JS via arquivo intermediário
 file_put_contents('dashboard_data.json', json_encode($data));
 
 // Redireciona para o HTML puro
 header("Location: dashboard.html");
 exit;
+?>

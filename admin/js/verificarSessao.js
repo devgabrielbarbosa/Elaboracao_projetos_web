@@ -1,20 +1,27 @@
-async function verificarSessao() {
+async function carregarAdmin() {
     try {
-        const res = await fetch('../php/verificar_sessao.php', { credentials: 'include' });
+        const res = await fetch('../php/admin_info.php', { credentials: 'include' });
         const data = await res.json();
 
-        if (!data.logado) {
-            window.location.href = '../login.html?erro=Faça+login+novamente';
+        if(data.erro){
+            window.location.href = '../login.html'; // redireciona se não logado
             return;
         }
 
-        const nome = document.getElementById('nomeAdmin');
-        if (nome) nome.textContent = data.admin_nome || 'Administrador';
+        const nomeEl = document.getElementById('nomeAdmin');
+        const fotoEl = document.getElementById('fotoAdmin');
 
-    } catch (e) {
-        console.error('Erro ao verificar sessão:', e);
-        window.location.href = '../login.html?erro=Erro+na+verificação+da+sessão';
+        if(nomeEl) nomeEl.textContent = data.nome;
+        if(fotoEl){
+            if(data.foto){
+                fotoEl.src = data.foto; // data:image/jpeg;base64,...
+            } else {
+                fotoEl.src = '../uploads/placeholder.png';
+            }
+        }
+    } catch(e){
+        console.error('Erro ao carregar admin:', e);
     }
 }
 
-window.addEventListener('DOMContentLoaded', verificarSessao);
+window.addEventListener('DOMContentLoaded', carregarAdmin);

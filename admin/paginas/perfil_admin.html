@@ -1,61 +1,132 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <title>Perfil do Administrador</title>
-    <link rel="stylesheet" href="./cs/perfil.css">
+  <meta charset="UTF-8">
+  <title>Perfil do Administrador</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body { background-color: #f8f9fa; }
+    .container { max-width: 700px; margin-top: 50px; background: #fff; padding: 30px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+    label { font-weight: 500; margin-top: 10px; }
+    button[type="submit"] { margin-top: 20px; }
+    img#logoPreview { display: block; margin-top: 10px; border-radius: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.15); }
+    .navbar-brand { font-weight: bold; }
+  </style>
 </head>
 <body>
-   <nav class="navbar navbar-expand-lg navbar-dark bg-danger mb-4">
-  <div class="container-fluid">
-    <img src="" id="fotoAdmin" class="profile-img me-3" alt="Foto de perfil" style="width:50px; height:50px; object-fit:cover; border-radius:50%;">
-    <a class="navbar-brand fw-bold" href="dashboard.php" id="nomeAdmin">Administrador</a>
 
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarLinks" aria-controls="navbarLinks" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-danger mb-4">
+    <div class="container-fluid">
+      <img src="" id="fotoAdmin" class="me-3" alt="Foto de perfil" style="width:50px; height:50px; object-fit:cover; border-radius:50%;">
+      <a class="navbar-brand" href="dashboard.html" id="nomeAdmin">Administrador</a>
 
-    <div class="collapse navbar-collapse" id="navbarLinks">
-      <ul class="navbar-nav ms-auto mb-2 mb-lg-0 text-light">
-        <li class="nav-item"><a class="nav-link text-light" href="dashboard.html">Dashboard</a></li>
-        <li class="nav-item"><a class="nav-link text-light" href="pedidos.html">Pedidos</a></li>
-        <li class="nav-item"><a class="nav-link text-light" href="produtos.html">Produtos</a></li>
-        <li class="nav-item"><a class="nav-link text-light" href="promocoes.html">Promoções</a></li>
-        <li class="nav-item"><a class="nav-link text-light" href="taxa_entrega.html">Taxa de Entrega</a></li>
-        <li class="nav-item"><a class="nav-link text-light" href="forma_pagamento.html">Formas de Pagamento</a></li>
-        <li class="nav-item"><a class="nav-link text-light fw-bold" href="./perfil_admin.html" id="perfilAdminLink">Perfil</a></li>
-        <li class="nav-item"><a class="nav-link text-light fw-bold" href="logout.php">Sair</a></li>
-      </ul>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarLinks" aria-controls="navbarLinks" aria-expanded="false" aria-label="Menu">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarLinks">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0 text-light">
+          <li class="nav-item"><a class="nav-link text-light" href="dashboard.html">Dashboard</a></li>
+          <li class="nav-item"><a class="nav-link text-light" href="pedidos.html">Pedidos</a></li>
+          <li class="nav-item"><a class="nav-link text-light" href="produtos.html">Produtos</a></li>
+          <li class="nav-item"><a class="nav-link text-light" href="promocoes.html">Promoções</a></li>
+          <li class="nav-item"><a class="nav-link text-light" href="taxa_entrega.html">Taxa de Entrega</a></li>
+          <li class="nav-item"><a class="nav-link text-light" href="forma_pagamento.html">Formas de Pagamento</a></li>
+          <li class="nav-item"><a class="nav-link fw-bold text-light" href="perfil_admin.html">Perfil</a></li>
+          <li class="nav-item"><a class="nav-link text-light" href="../php/logout.php">Sair</a></li>
+        </ul>
+      </div>
     </div>
-  </div>
-</nav>
- 
-<div class="container">
-    <h1>Perfil do Administrador</h1>
-    <form action="../php/perfil_admin.php" method="post" id="perfilForm" enctype="multipart/form-data">
-        <label>Nome:</label><input type="text" name="nome">
-        <label>Endereço:</label><input type="text" name="endereco">
-        <label>Bairro:</label><input type="text" name="bairro">
-        <label>Rua:</label><input type="text" name="rua">
-        <label>Logradouro:</label><input type="text" name="logradouro">
-        <label>CEP:</label><input type="text" name="cep">
-        <label>Cidade:</label><input type="text" name="cidade">
-        <label>Estado:</label><input type="text" name="estado">
-        <label>Telefone:</label><input type="text" name="telefone">
-        <label>Horários:</label><textarea name="horarios"></textarea>
-        <label>Status:</label>
-        <select name="status">
-            <option value="aberto">Aberto</option>
-            <option value="fechado">Fechado</option>
+  </nav>
+
+  <!-- Formulário de Perfil -->
+  <div class="container">
+    <h3 class="text-center mb-4">Perfil do Administrador</h3>
+    <form id="perfilForm" action="../php/perfil_admin.php" method="POST" enctype="multipart/form-data">
+      
+      <div class="mb-3">
+        <label for="nome">Nome</label>
+        <input type="text" class="form-control" name="nome" id="nome" required>
+      </div>
+
+      <div class="mb-3">
+        <label for="endereco">Endereço</label>
+        <input type="text" class="form-control" name="endereco" id="endereco">
+      </div>
+
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="bairro">Bairro</label>
+          <input type="text" class="form-control" name="bairro" id="bairro">
+        </div>
+        <div class="col-md-6 mb-3">
+          <label for="rua">Rua</label>
+          <input type="text" class="form-control" name="rua" id="rua">
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="logradouro">Logradouro</label>
+          <input type="text" class="form-control" name="logradouro" id="logradouro">
+        </div>
+        <div class="col-md-6 mb-3">
+          <label for="cep">CEP</label>
+          <input type="text" class="form-control" name="cep" id="cep">
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="cidade">Cidade</label>
+          <input type="text" class="form-control" name="cidade" id="cidade">
+        </div>
+        <div class="col-md-6 mb-3">
+          <label for="estado">Estado</label>
+          <input type="text" class="form-control" name="estado" id="estado">
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="telefone">Telefone</label>
+        <input type="text" class="form-control" name="telefone" id="telefone">
+      </div>
+
+      <div class="mb-3">
+        <label for="horarios">Horários</label>
+        <textarea class="form-control" name="horarios" id="horarios" rows="2"></textarea>
+      </div>
+
+      <div class="mb-3">
+        <label for="status">Status</label>
+        <select class="form-select" name="status" id="status">
+          <option value="aberto">Aberto</option>
+          <option value="fechado">Fechado</option>
         </select>
-        <label>Mensagem:</label><input type="text" name="mensagem">
-        <label>Logo:</label><input type="file" name="logo">
-        <img id="logoPreview" style="max-width:150px;margin-top:10px;" />
-        <button type="submit">Salvar</button>
+      </div>
+
+      <div class="mb-3">
+        <label for="mensagem">Mensagem</label>
+        <input type="text" class="form-control" name="mensagem" id="mensagem">
+      </div>
+
+      <div class="mb-3">
+        <label for="logo">Logo</label>
+        <input type="file" class="form-control" name="logo" id="logo" accept="image/*">
+        <img id="logoPreview" alt="Prévia do logo" style="max-width:150px;">
+      </div>
+
+      <div id="resposta" class="mt-3"></div>
+
+      <button type="submit" class="btn btn-success w-100">Salvar Alterações</button>
     </form>
-    <div id="resposta"></div>
-</div>
-<script src="../js/perfil.js"></script>
-<script src="../js/verificarSessao.js"></script>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../js/perfil.js"></script>
+  <script src="../js/verificarSessao.js"></script>
 </body>
 </html>

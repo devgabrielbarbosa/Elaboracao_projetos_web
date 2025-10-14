@@ -3,7 +3,7 @@ header('Content-Type: application/json; charset=utf-8');
 require __DIR__ . '/../../includes/conexao.php';
 session_start();
 
-// Sessão
+// Verifica sessão
 if (!isset($_SESSION['admin_id'], $_SESSION['loja_id'])) {
     http_response_code(401);
     echo json_encode(['erro' => 'Sessão expirada. Faça login novamente.']);
@@ -33,7 +33,6 @@ try {
 
         $produtos = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        // Converte LONGBLOB em data URI (detecta mime)
         foreach ($produtos as &$p) {
             if (!empty($p['imagem'])) {
                 $finfo = @getimagesizefromstring($p['imagem']);
@@ -53,16 +52,14 @@ try {
     if ($acao === 'adicionar' && $_SERVER['REQUEST_METHOD'] === 'POST') {
         $nome         = trim($_POST['nome'] ?? '');
         $descricao    = trim($_POST['descricao'] ?? '');
-        $preco_raw    = $_POST['preco'] ?? '';
-        $preco        = is_numeric($preco_raw) ? (float)$preco_raw : null;
-        $categoria_id = $_POST['categoria_id'] ?? null;
+        $preco        = is_numeric($_POST['preco'] ?? '') ? (float)$_POST['preco'] : null;
+        $categoria_id = !empty($_POST['categoria_id']) ? (int)$_POST['categoria_id'] : null;
 
         if ($nome === '' || $preco === null) {
             echo json_encode(['erro' => 'Nome e preço são obrigatórios e devem ser válidos.']);
             exit;
         }
 
-        // Inserir produto (imagem salva após insert)
         $stmt = $pdo->prepare("
             INSERT INTO produtos (nome, descricao, preco, categoria_id, loja_id, admin_id, ativo, data_criacao)
             VALUES (:nome, :descricao, :preco, :categoria_id, :loja_id, :admin_id, 1, NOW())
@@ -71,25 +68,25 @@ try {
             ':nome'        => $nome,
             ':descricao'   => $descricao,
             ':preco'       => $preco,
-            ':categoria_id'=> $categoria_id ?: null,
+            ':categoria_id'=> $categoria_id,
             ':loja_id'     => $loja_id,
             ':admin_id'    => $admin_id
         ]);
 
         $produtoId = $pdo->lastInsertId();
 
-        // Se enviou imagem, valida e salva no LONGBLOB
-        if (isset($_FILES['imagem']) && $_FILES['imagem']['error'] !== UPLOAD_ERR_NO_FILE) {
-            if ($_FILES['imagem']['error'] !== UPLOAD_ERR_OK) {
-                echo json_encode(['erro' => 'Erro no upload da imagem. Código: ' . $_FILES['imagem']['error']]);
-                exit;
-            }
+        // Upload de imagem
+           
+        $imagem_blob = null;
+        $imagem_tipo = null;
 
-            // Limite de 4MB (ajusta conforme necessário)
-            $maxBytes = 4 * 1024 * 1024;
-            if ($_FILES['imagem']['size'] > $maxBytes) {
-                // opcional: remover produto recém-criado se não quiser produto sem imagem
-                echo json_encode(['erro' => 'A imagem é muito grande. Limite: 4MB.']);
+        if(isset($_FILES['imagem']) && $_FILES['imagem']['error'] === 0){
+            $allowed_types = ['image/jpeg','image/png','image/gif'];
+            if(in_array($_FILES['imagem']['type'], $allowed_types)){
+                $imagem_blob = file_get_contents($_FILES['imagem']['tmp_name']);
+                $imagem_tipo = $_FILES['imagem']['type'];
+            } else {
+                echo json_encode(['erro'=>'Arquivo inválido']);
                 exit;
             }
 
@@ -101,7 +98,6 @@ try {
                 exit;
             }
 
-            // Salva LONGBLOB
             $stmt2 = $pdo->prepare("UPDATE produtos SET imagem = :imagem WHERE id = :id AND loja_id = :loja_id");
             $stmt2->bindParam(':imagem', $imageData, PDO::PARAM_LOB);
             $stmt2->bindParam(':id', $produtoId, PDO::PARAM_INT);
@@ -113,12 +109,6 @@ try {
         exit;
     }
 
-    $categoria_id = !empty($_POST['categoria_id']) ? intval($_POST['categoria_id']) : null;
-
-if ($categoria_id === null) {
-    echo json_encode(['erro' => 'Selecione uma categoria válida.']);
-    exit;
-}
     // ---------- ATIVAR / PAUSAR ----------
     if (($acao === 'pausar' || $acao === 'ativar') && isset($_REQUEST['id'])) {
         $id = (int)$_REQUEST['id'];
@@ -130,18 +120,17 @@ if ($categoria_id === null) {
     }
 
     // ---------- DELETAR ----------
-   if ($acao === 'deletar' && isset($_REQUEST['id'])) {
-    $id = (int)$_REQUEST['id'];
+    if ($acao === 'deletar' && isset($_REQUEST['id'])) {
+        $id = (int)$_REQUEST['id'];
+        $stmt = $pdo->prepare("DELETE FROM produtos WHERE id = :id AND loja_id = :loja_id");
+        $stmt->execute([':id'=>$id, ':loja_id'=>$loja_id]);
+        echo json_encode(['sucesso' => 'Produto deletado com sucesso.']);
+        exit;
+    }
 
-    $stmt = $pdo->prepare("DELETE FROM produtos WHERE id = :id AND loja_id = :loja_id");
-    $stmt->execute([':id'=>$id, ':loja_id'=>$loja_id]);
-
-    echo json_encode(['sucesso' => 'Produto deletado com sucesso.']);
-    exit;
-}
     echo json_encode(['erro' => 'Ação inválida.']);
+
 } catch (PDOException $e) {
     http_response_code(500);
     echo json_encode(['erro' => 'Erro no banco de dados: ' . $e->getMessage()]);
-    exit;
 }

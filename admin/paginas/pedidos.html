@@ -3,55 +3,87 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Pedidos</title>
+  <title>Painel de Pedidos</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
-    .pedido-card { border-radius: 15px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); transition: transform 0.2s; }
+    body { background-color: #f8f9fa; }
+    .pedido-card { 
+      border-radius: 15px; 
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1); 
+      transition: transform 0.2s; 
+    }
     .pedido-card:hover { transform: scale(1.01); }
-    .pedido-header { font-weight: bold; font-size: 1.1rem; }
-    .badge-status { font-size: 0.9rem; }
+    .pedido-header { 
+      font-weight: 600; 
+      font-size: 1.1rem; 
+    }
+    .badge-status { font-size: 0.85rem; }
+    .detalhes-container { display: none; padding-top: 10px; }
   </style>
 </head>
-<body class="bg-light">
+<body>
+
+  <div id="navbar-container"></div>
 
   <div class="container my-5">
-    <h3 class="mb-4">📦 Pedidos Recentes</h3>
-    <div id="pedidos-list" class="row g-4">
-      <div class="alert alert-info">Carregando pedidos...</div>
+    <h3 class="mb-4 text-center">📦 Pedidos Recentes</h3>
+    <div id="pedidos-list" class="row g-4 text-center">
+      <div class="col-12">
+        <div class="alert alert-info">Carregando pedidos...</div>
+      </div>
     </div>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../js/verificarSessao.js"></script>
 
   <script>
-    // Carrega os pedidos via PHP
     $(document).ready(function() {
-      $.get('../php/pedidos.php', function(res) {
-        $('#pedidos-list').html(res);
+      carregarPedidos();
+
+      // Função para carregar os pedidos
+      function carregarPedidos() {
+        $.get('../php/pedidos.php', function(res) {
+          $('#pedidos-list').html(res);
+        }).fail(function() {
+          $('#pedidos-list').html('<div class="alert alert-danger">Erro ao carregar pedidos.</div>');
+        });
+      }
+
+      // Ação: aceitar / cancelar / finalizar pedido
+      $(document).on('click', '.acao-pedido', function() {
+        const id = $(this).data('id');
+        const acao = $(this).data('acao');
+
+        $.post('../php/pedidoacoesajax.php', { id, acao }, function(res) {
+          if (res.trim() === 'sucesso') {
+            carregarPedidos();
+          } else {
+            alert('Falha ao atualizar pedido.');
+          }
+        }).fail(function() {
+          alert('Erro ao processar ação.');
+        });
       });
-    });
 
-    // Ações (aceitar, cancelar, etc.)
-    $(document).on('click', '.acao-pedido', function() {
-      let id = $(this).data('id');
-      let acao = $(this).data('acao');
+      // Exibir detalhes do pedido
+      $(document).on('click', '.ver-detalhes', function() {
+        const id = $(this).data('id');
+        const container = $(this).closest('.card').find('.detalhes-container');
 
-      $.post('../php/pedidoacoesajax.php', { id, acao }, function() {
-        location.reload();
-      });
-    });
+        if (container.is(':visible')) {
+          container.slideUp();
+          return;
+        }
 
-    // Ver detalhes
-    $(document).on('click', '.ver-detalhes', function() {
-      let id = $(this).data('id');
-      let container = $(this).closest('.card').find('.detalhes-container');
-
-      $.get('../php/pedidodetalhesajax.php', { id }, function(res) {
-        container.html(res);
+        $.get('../php/pedidodetalhesajax.php', { id }, function(res) {
+          container.html(res).slideDown();
+        }).fail(function() {
+          container.html('<div class="text-danger">Erro ao carregar detalhes.</div>').slideDown();
+        });
       });
     });
   </script>
-<script src="../js/verificarSessao.js"></script>
 </body>
 </html>
