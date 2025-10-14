@@ -130,17 +130,15 @@ if ($categoria_id === null) {
     }
 
     // ---------- DELETAR ----------
-    if ($acao === 'deletar' && isset($_REQUEST['id'])) {
-        $id = (int)$_REQUEST['id'];
+   if ($acao === 'deletar' && isset($_REQUEST['id'])) {
+    $id = (int)$_REQUEST['id'];
 
-        // se houver FK, a query pode falhar; aqui assumimos cascatas ou checagem prévia
-        $stmt = $pdo->prepare("DELETE FROM produtos WHERE id = :id AND loja_id = :loja_id");
-        $stmt->execute([':id'=>$id, ':loja_id'=>$loja_id]);
+    $stmt = $pdo->prepare("DELETE FROM produtos WHERE id = :id AND loja_id = :loja_id");
+    $stmt->execute([':id'=>$id, ':loja_id'=>$loja_id]);
 
-        echo json_encode(['sucesso' => 'Produto deletado com sucesso.']);
-        exit;
-    }
-
+    echo json_encode(['sucesso' => 'Produto deletado com sucesso.']);
+    exit;
+}
     echo json_encode(['erro' => 'Ação inválida.']);
 } catch (PDOException $e) {
     http_response_code(500);
