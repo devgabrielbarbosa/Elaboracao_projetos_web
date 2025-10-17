@@ -78,4 +78,4 @@ if ($stmt->execute()) {
 } else {
     echo "Erro ao atualizar perfil.";
 }
-?>
+

@@ -1,38 +1,57 @@
 <?php
 session_start();
-require __DIR__ . '/../../includes/conexao.php'; // ajustando caminho
+require __DIR__ . '/../../includes/conexao.php';
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $email = $_POST['email'] ?? '';
-    $senha = $_POST['senha'] ?? '';
+header('Content-Type: application/json; charset=utf-8');
+error_reporting(E_ALL & ~E_WARNING & ~E_NOTICE);
 
-    if (empty($email) || empty($senha)) {
-        header("Location: ../login.html?erro=" . urlencode("Preencha todos os campos"));
-        exit;
-    }
-
-    $stmt = $pdo->prepare("SELECT * FROM administradores WHERE email = :email LIMIT 1");
-    $stmt->execute([':email' => $email]);
-    $admin = $stmt->fetch(PDO::FETCH_ASSOC);
-
-    if ($admin && password_verify($senha, $admin['senha'])) {
-        $_SESSION['admin_id']   = $admin['id'];
-        $_SESSION['admin_nome'] = $admin['nome'];
-
-        if (isset($admin['loja_id']) && $admin['loja_id'] > 0) {
-            $_SESSION['loja_id'] = (int)$admin['loja_id'];
-            header("Location: ../paginas/dashboard.html"); // HTML separado
-            exit;
-        } else {
-            header("Location: ../login.html?erro=" . urlencode("Loja não associada"));
-            exit;
-        }
-    } else {
-        header("Location: ../login.html?erro=" . urlencode("E-mail ou senha incorretos"));
-        exit;
-    }
-} else {
-    header("Location: ../login.html");
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    echo json_encode(['erro' => 'Método inválido.']);
     exit;
 }
-?>
+
+$email = trim($_POST['email'] ?? '');
+$senha = trim($_POST['senha'] ?? '');
+
+if ($email === '' || $senha === '') {
+    echo json_encode(['erro' => 'Preencha todos os campos.']);
+    exit;
+}
+
+// Buscar o administrador pelo e-mail
+$stmt = $pdo->prepare("SELECT id, nome, email, senha, loja_id, foto FROM administradores WHERE email = :email LIMIT 1");
+$stmt->execute([':email' => $email]);
+$admin = $stmt->fetch(PDO::FETCH_ASSOC);
+
+if (!$admin) {
+    echo json_encode(['erro' => 'E-mail não encontrado.']);
+    exit;
+}
+
+// Verifica senha
+if (!password_verify($senha, $admin['senha'])) {
+    echo json_encode(['erro' => 'Senha incorreta.']);
+    exit;
+}
+
+// Verifica se o admin está vinculado a uma loja
+if (empty($admin['loja_id']) || (int)$admin['loja_id'] <= 0) {
+    echo json_encode(['erro' => 'Administrador sem loja associada.']);
+    exit;
+}
+
+// Cria sessão
+$_SESSION['admin_id']   = (int)$admin['id'];
+$_SESSION['admin_nome'] = $admin['nome'];
+$_SESSION['loja_id']    = (int)$admin['loja_id'];
+$_SESSION['admin_foto'] = $admin['foto'] ?? 'https://via.placeholder.com/200x150?text=Sem+Imagem';
+
+// Retorna JSON de sucesso
+echo json_encode([
+    'sucesso' => true,
+    'mensagem' => 'Login realizado com sucesso.',
+    'nome' => $admin['nome'],
+    'foto' => $_SESSION['admin_foto'],
+    'loja_id' => (int)$admin['loja_id']
+]);
+exit;

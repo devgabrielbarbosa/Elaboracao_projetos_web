@@ -3,11 +3,15 @@ header('Content-Type: application/json; charset=utf-8');
 require __DIR__ . '/../../includes/conexao.php';
 session_start();
 
+function resposta($data) {
+    echo json_encode($data, JSON_UNESCAPED_UNICODE);
+    exit;
+}
+
 // Sessão
 if (!isset($_SESSION['admin_id'], $_SESSION['loja_id'])) {
     http_response_code(401);
-    echo json_encode(['erro' => 'Sessão expirada. Faça login novamente.']);
-    exit;
+    resposta(['erro' => 'Sessão expirada. Faça login novamente.']);
 }
 
 $admin_id = (int) $_SESSION['admin_id'];
@@ -18,78 +22,50 @@ try {
     // ---------- LISTAR ----------
     if (!$acao || $acao === 'listar') {
         $stmt = $pdo->prepare("
-            SELECT id, nome, ativo 
-            FROM categorias_produtos_lojas 
+            SELECT id, nome_categoria AS nome, 1 AS ativo
+            FROM categorias_produtos_lojas
             WHERE loja_id = :loja_id 
-            ORDER BY nome ASC
+            ORDER BY nome_categoria ASC
         ");
         $stmt->execute([':loja_id' => $loja_id]);
         $categorias = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        echo json_encode(['sucesso'=>true,'categorias' => $categorias]);
-        exit;
+        resposta(['categorias' => $categorias]);
     }
 
     // ---------- ADICIONAR ----------
     if ($acao === 'adicionar' && $_SERVER['REQUEST_METHOD'] === 'POST') {
         $nome = trim($_POST['nome'] ?? '');
-        if ($nome === '') {
-            echo json_encode(['sucesso'=>false,'erro' => 'Nome da categoria obrigatório.']);
-            exit;
-        }
+        if ($nome === '') resposta(['erro' => 'Nome da categoria obrigatório.']);
 
-        // Evitar duplicidade no mesmo loja
-        $chk = $pdo->prepare("
-            SELECT COUNT(*) 
-            FROM categorias_produtos_lojas 
-            WHERE nome = :nome AND loja_id = :loja_id
-        ");
+        // Evitar duplicidade
+        $chk = $pdo->prepare("SELECT COUNT(*) FROM categorias_produtos_lojas WHERE nome_categoria = :nome AND loja_id = :loja_id");
         $chk->execute([':nome'=>$nome, ':loja_id'=>$loja_id]);
-        if ($chk->fetchColumn() > 0) {
-            echo json_encode(['sucesso'=>false,'erro' => 'Já existe categoria com esse nome nesta loja.']);
-            exit;
-        }
+        if ($chk->fetchColumn() > 0) resposta(['erro' => 'Já existe categoria com esse nome nesta loja.']);
 
-        $stmt = $pdo->prepare("
-            INSERT INTO categorias_produtos_lojas (nome, loja_id, ativo) 
-            VALUES (:nome, :loja_id, 1)
-        ");
+        $stmt = $pdo->prepare("INSERT INTO categorias_produtos_lojas (nome_categoria, loja_id) VALUES (:nome, :loja_id)");
         $stmt->execute([':nome'=>$nome, ':loja_id'=>$loja_id]);
-        echo json_encode(['sucesso'=>true,'mensagem' => 'Categoria adicionada com sucesso.', 'id' => $pdo->lastInsertId()]);
-        exit;
+
+        resposta(['sucesso' => 'Categoria adicionada com sucesso.', 'id' => $pdo->lastInsertId()]);
     }
 
     // ---------- DELETAR ----------
     if ($acao === 'deletar' && isset($_REQUEST['id'])) {
         $id = (int) $_REQUEST['id'];
-        if ($id <= 0) {
-            echo json_encode(['sucesso'=>false,'erro' => 'ID inválido.']);
-            exit;
-        }
+        if ($id <= 0) resposta(['erro' => 'ID inválido.']);
 
-        // Verificar produtos vinculados a esta categoria na mesma loja
-        $chk = $pdo->prepare("
-            SELECT COUNT(*) 
-            FROM produtos 
-            WHERE categoria_id = :id AND loja_id = :loja_id
-        ");
+        $chk = $pdo->prepare("SELECT COUNT(*) FROM produtos WHERE categoria_id = :id AND loja_id = :loja_id");
         $chk->execute([':id'=>$id, ':loja_id'=>$loja_id]);
-        if ($chk->fetchColumn() > 0) {
-            echo json_encode(['sucesso'=>false,'erro' => 'Não é possível excluir: existem produtos vinculados a esta categoria.']);
-            exit;
-        }
+        if ($chk->fetchColumn() > 0) resposta(['erro' => 'Não é possível excluir: existem produtos vinculados a esta categoria.']);
 
-        $stmt = $pdo->prepare("
-            DELETE FROM categorias_produtos_lojas 
-            WHERE id = :id AND loja_id = :loja_id
-        ");
+        $stmt = $pdo->prepare("DELETE FROM categorias_produtos_lojas WHERE id = :id AND loja_id = :loja_id");
         $stmt->execute([':id'=>$id, ':loja_id'=>$loja_id]);
-        echo json_encode(['sucesso'=>true,'mensagem' => 'Categoria excluída com sucesso.']);
-        exit;
+
+        resposta(['sucesso' => 'Categoria excluída com sucesso.']);
     }
 
-    echo json_encode(['sucesso'=>false,'erro' => 'Ação inválida.']);
+    resposta(['erro' => 'Ação inválida.']);
+
 } catch (PDOException $e) {
     http_response_code(500);
-    echo json_encode(['sucesso'=>false,'erro' => 'Erro no banco: ' . $e->getMessage()]);
-    exit;
+    resposta(['erro' => 'Erro no banco: '.$e->getMessage()]);
 }

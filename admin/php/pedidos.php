@@ -1,6 +1,6 @@
 <?php
 session_start();
-require '../includes/conexao.php';
+require '../../includes/conexao.php';
 
 if (!isset($_SESSION['admin_id'])) {
     echo '<div class="alert alert-danger">Sessão expirada. Faça login novamente.</div>';

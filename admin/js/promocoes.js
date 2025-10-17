@@ -1,148 +1,198 @@
-// promocoes.js — versão BLOB com excluir/ativar funcionando e mensagens amigáveis
 document.addEventListener('DOMContentLoaded', () => {
   const formPromocao = document.getElementById('form-promocao');
-  const container = document.getElementById('promocoes-container');
-  const msgContainer = document.getElementById('mensagem-container');
+  const mensagemContainer = document.getElementById('mensagem-container');
+  const listaProdutos = document.getElementById('lista-produtos');
+  const containerPromocoes = document.getElementById('promocoes-container');
 
-  if (!container) return console.error('Elemento #promocoes-container NÃO encontrado.');
-  if (!formPromocao) console.warn('Elemento #form-promocao NÃO encontrado.');
+  let produtosSelecionados = [];
 
-  // ===== Função para mostrar mensagens =====
-  function mostrarMensagem(texto, tipo = 'info') {
-    if (msgContainer) {
-      msgContainer.innerHTML = `<div class="alert alert-${tipo}">${texto}</div>`;
-    }
+  // ===== Função para exibir mensagem =====
+  function exibirMensagem(tipo, texto) {
+    mensagemContainer.innerHTML = `
+      <div class="alert alert-${tipo} alert-dismissible fade show" role="alert">
+        ${texto}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+      </div>`;
+    setTimeout(() => mensagemContainer.innerHTML = '', 5000);
   }
 
-  // ===== Função para carregar promoções =====
-  async function carregarPromocoes() {
-    container.innerHTML = '<p class="text-center text-muted">Carregando promoções...</p>';
+  // ===== Carregar promoções e produtos =====
+  async function carregarDados() {
+    listaProdutos.innerHTML = '<p class="text-center text-muted">Carregando produtos...</p>';
+    containerPromocoes.innerHTML = '<p class="text-center text-muted">Carregando promoções...</p>';
+
     try {
-      const res = await fetch('../php/promocoes_api.php', { credentials: 'same-origin' });
-      if (!res.ok) throw new Error('Resposta do servidor: ' + res.status);
+      const res = await fetch('../php/promocoes_api.php', { credentials: 'include' });
       const data = await res.json();
 
-      if (data.erro) return container.innerHTML = `<p class="text-center text-danger">${data.erro}</p>`;
-      if (!data.promocoes || data.promocoes.length === 0) return container.innerHTML = '<p class="text-center text-muted">Nenhuma promoção cadastrada.</p>';
+      if (data.erro) {
+        exibirMensagem('danger', data.erro);
+        return;
+      }
 
-      container.innerHTML = '';
-      data.promocoes.forEach(p => {
-        const ativoClass = p.ativo == 1 ? 'bg-success' : 'bg-secondary';
-        const ativoText = p.ativo == 1 ? 'Ativa' : 'Inativa';
-       const imgSrc = p.imagem_blob 
-  ? `data:${p.imagem_tipo};base64,${p.imagem_blob}`
-  : 'https://via.placeholder.com/350x180?text=Sem+Imagem';
+      // ===== Listar produtos da loja =====
+      if (data.produtos?.length) {
+        listaProdutos.innerHTML = '';
+        data.produtos.forEach(prod => {
+          const div = document.createElement('div');
+          div.className = 'd-flex justify-content-between align-items-center mb-2';
+          div.innerHTML = `
+            <span>${prod.nome} - R$ ${parseFloat(prod.preco).toFixed(2)}</span>
+            <button class="btn btn-sm btn-outline-success">+</button>
+          `;
+          const btn = div.querySelector('button');
+          btn.addEventListener('click', () => adicionarProduto(prod));
+          listaProdutos.appendChild(div);
+        });
+      } else {
+        listaProdutos.innerHTML = '<p class="text-center text-muted">Nenhum produto cadastrado.</p>';
+      }
 
+      // ===== Listar promoções =====
+      if (data.promocoes?.length) {
+        containerPromocoes.innerHTML = '';
+        data.promocoes.forEach(p => {
+          const ativoClass = p.ativo == 1 ? 'bg-success' : 'bg-secondary';
+          const ativoText = p.ativo == 1 ? 'Ativa' : 'Inativa';
+          const imgSrc = p.imagem || 'https://via.placeholder.com/200x150?text=Sem+Imagem';
 
-        const card = document.createElement('div');
-        card.className = 'col-md-4 mb-4';
-        card.innerHTML = `
-          <div class="card h-100 shadow-sm border-0 card-promocao">
-            <img src="${imgSrc}" class="banner-img" alt="${p.codigo}">
-            <div class="card-body d-flex flex-column">
-              <h5 class="card-title text-primary fw-bold">
-                ${p.codigo} <span class="badge ${ativoClass} ms-2">-${p.desconto}%</span>
-              </h5>
-              <p class="card-text text-muted">${p.descricao}</p>
-              <p class="mb-2"><small>${p.data_inicio} até ${p.data_fim}</small></p>
-              <div class="mt-auto d-flex justify-content-between align-items-center">
-                <a href="#" class="badge ${ativoClass} text-decoration-none p-2">${ativoText}</a>
+          const div = document.createElement('div');
+          div.className = 'col-md-4 mb-4';
+          div.innerHTML = `
+            <div class="card shadow-sm h-100">
+              <img src="${imgSrc}" class="card-img-top" alt="${p.codigo}" style="height:180px; object-fit:cover;">
+              <div class="card-body d-flex flex-column justify-content-between">
                 <div>
-                  <button type="button" class="btn btn-sm btn-warning me-2 btn-toggle" data-id="${p.id}">
+                  <h5 class="card-title fw-semibold">${p.codigo}</h5>
+                  <p class="text-muted small mb-1">${p.descricao || ''}</p>
+                  <p class="fw-bold text-danger mb-1">Desconto: ${parseFloat(p.desconto).toFixed(2)}%</p>
+                  <span class="badge ${ativoClass}">${ativoText}</span>
+                </div>
+                <div class="d-flex justify-content-between mt-3">
+                  <button class="btn btn-sm ${p.ativo == 1 ? 'btn-warning' : 'btn-success'}" 
+                    onclick="togglePromocao(${p.id})">
                     ${p.ativo == 1 ? 'Desativar' : 'Ativar'}
                   </button>
-                  <button type="button" class="btn btn-sm btn-danger btn-excluir" data-id="${p.id}">
-                    Excluir
-                  </button>
+                  <button class="btn btn-sm btn-danger" onclick="deletarPromocao(${p.id})">Excluir</button>
                 </div>
               </div>
-            </div>
-          </div>`;
-        container.appendChild(card);
-      });
+            </div>`;
+          containerPromocoes.appendChild(div);
+        });
+      } else {
+        containerPromocoes.innerHTML = '<p class="text-center text-muted">Nenhuma promoção cadastrada.</p>';
+      }
 
     } catch (err) {
-      console.error('Erro ao carregar promoções:', err);
-      container.innerHTML = '<p class="text-center text-danger">Erro ao carregar promoções. Veja console.</p>';
+      console.error(err);
+      exibirMensagem('danger', 'Erro ao carregar dados.');
     }
   }
 
-  // ===== Submit do formulário =====
-  if (formPromocao) {
-    formPromocao.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const formData = new FormData(formPromocao);
-      formData.append('acao', 'adicionar');
+  // ===== Adicionar produto à seleção =====
+  function adicionarProduto(prod) {
+    if (produtosSelecionados.find(p => p.id === prod.id)) return;
+    produtosSelecionados.push({ id: prod.id, preco_original: prod.preco });
+    renderProdutosSelecionados();
+  }
 
-      try {
-        const res = await fetch('../php/promocoes_api.php', {
-          method: 'POST',
-          body: formData,
-          credentials: 'same-origin'
-        });
+  // ===== Renderizar produtos selecionados =====
+  function renderProdutosSelecionados() {
+    let html = '';
+    if (produtosSelecionados.length) {
+      html += '<h6 class="mt-3">Produtos Selecionados:</h6>';
+      html += '<ul class="list-group mb-3">';
+      produtosSelecionados.forEach((p, idx) => {
+        html += `<li class="list-group-item d-flex justify-content-between align-items-center">
+          ${p.id} - R$ ${parseFloat(p.preco_original).toFixed(2)}
+          <button type="button" class="btn btn-sm btn-danger">x</button>
+        </li>`;
+      });
+      html += '</ul>';
+    }
+    document.getElementById('produtos-selecionados')?.remove();
+    const div = document.createElement('div');
+    div.id = 'produtos-selecionados';
+    div.innerHTML = html;
+    formPromocao.insertBefore(div, formPromocao.querySelector('button[type="submit"]'));
 
-        const text = await res.text();
-        let data;
-        try { data = JSON.parse(text); } 
-        catch { return mostrarMensagem('Resposta inválida do servidor.', 'danger'); }
-
-        if (data.erro) mostrarMensagem(data.erro, 'danger');
-        else if (data.mensagem) {
-          mostrarMensagem(data.mensagem, 'success');
-          formPromocao.reset();
-          carregarPromocoes();
-        } else mostrarMensagem('Resposta inesperada do servidor.', 'info');
-
-      } catch (err) {
-        console.error('Erro no fetch do cadastro:', err);
-        mostrarMensagem('Erro ao cadastrar promoção. Veja console.', 'danger');
-      }
+    // Botões de remover
+    div.querySelectorAll('button').forEach((btn, idx) => {
+      btn.addEventListener('click', () => {
+        produtosSelecionados.splice(idx, 1);
+        renderProdutosSelecionados();
+      });
     });
   }
 
-  // ===== Delegation: toggle/excluir =====
-  container.addEventListener('click', async (e) => {
-    const toggleBtn = e.target.closest('.btn-toggle');
-    const excluirBtn = e.target.closest('.btn-excluir');
-
-    if (toggleBtn) {
-      e.preventDefault();
-      const id = toggleBtn.dataset.id;
-      try {
-        const res = await fetch('../php/promocoes_api.php', {
-          method: 'POST',
-          body: new URLSearchParams({ acao: 'toggle', id }),
-          credentials: 'same-origin'
-        });
-        const data = await res.json();
-        data.erro ? mostrarMensagem(data.erro, 'danger') : mostrarMensagem(data.mensagem, 'success');
-        carregarPromocoes();
-      } catch (err) {
-        console.error(err);
-        mostrarMensagem('Erro ao atualizar status.', 'danger');
-      }
+  // ===== Enviar formulário =====
+  formPromocao.addEventListener('submit', async e => {
+    e.preventDefault();
+    if (!produtosSelecionados.length) {
+      exibirMensagem('danger', 'Selecione pelo menos um produto.');
+      return;
     }
 
-    if (excluirBtn) {
-      e.preventDefault();
-      const id = excluirBtn.dataset.id;
-      if (!confirm('Deseja realmente excluir esta promoção?')) return;
-      try {
-        const res = await fetch('../php/promocoes_api.php', {
-          method: 'POST',
-          body: new URLSearchParams({ acao: 'excluir', id }),
-          credentials: 'same-origin'
-        });
-        const data = await res.json();
-        data.erro ? mostrarMensagem(data.erro, 'danger') : mostrarMensagem(data.mensagem, 'success');
-        carregarPromocoes();
-      } catch (err) {
-        console.error(err);
-        mostrarMensagem('Erro ao excluir promoção.', 'danger');
+    const formData = new FormData(formPromocao);
+    formData.append('acao', 'adicionar');
+    formData.append('produtos', JSON.stringify(produtosSelecionados));
+
+    try {
+      const res = await fetch('../php/promocoes_api.php', { method: 'POST', body: formData, credentials: 'include' });
+      const data = await res.json();
+
+      if (data.erro) exibirMensagem('danger', data.erro);
+      else {
+        exibirMensagem('success', data.mensagem || 'Promoção cadastrada com sucesso.');
+        formPromocao.reset();
+        produtosSelecionados = [];
+        renderProdutosSelecionados();
+        carregarDados();
       }
+
+    } catch (err) {
+      console.error(err);
+      exibirMensagem('danger', 'Erro ao cadastrar promoção.');
     }
   });
 
-  // Carregar promoções ao abrir
-  carregarPromocoes();
+  // ===== Toggle promoção =====
+  window.togglePromocao = async (id) => {
+    const formData = new FormData();
+    formData.append('acao', 'toggle');
+    formData.append('id', id);
+
+    try {
+      const res = await fetch('../php/promocoes_api.php', { method: 'POST', body: formData, credentials: 'include' });
+      const data = await res.json();
+      if (data.erro) exibirMensagem('danger', data.erro);
+      else exibirMensagem('success', data.mensagem || 'Status atualizado.');
+      carregarDados();
+    } catch (err) {
+      console.error(err);
+      exibirMensagem('danger', 'Erro ao atualizar status.');
+    }
+  };
+
+  // ===== Deletar promoção =====
+  window.deletarPromocao = async (id) => {
+    if (!confirm('Deseja realmente excluir esta promoção?')) return;
+    const formData = new FormData();
+    formData.append('acao', 'excluir');
+    formData.append('id', id);
+
+    try {
+      const res = await fetch('../php/promocoes_api.php', { method: 'POST', body: formData, credentials: 'include' });
+      const data = await res.json();
+      if (data.erro) exibirMensagem('danger', data.erro);
+      else exibirMensagem('success', data.mensagem || 'Promoção excluída com sucesso.');
+      carregarDados();
+    } catch (err) {
+      console.error(err);
+      exibirMensagem('danger', 'Erro ao excluir promoção.');
+    }
+  };
+
+  // ===== Inicialização =====
+  carregarDados();
 });

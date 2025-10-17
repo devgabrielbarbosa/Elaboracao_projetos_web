@@ -1,34 +1,61 @@
 
-.card-produto {
-  transition: all 0.3s ease;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-}
+  body {
+    background-color: #f8f9fa;
+    font-family: 'Segoe UI', sans-serif;
+  }
 
-.card-produto:hover {
-  transform: scale(1.02);
-  box-shadow: 0 0 10px rgba(0,0,0,0.15);
-}
+  /* Navbar */
+  .navbar {
+    box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+  }
+  .profile-img {
+    border-radius: 50%;
+    object-fit: cover;
+    width: 50px;
+    height: 50px;
+    border: 2px solid #fff;
+  }
+  .nav-link.active {
+    font-weight: bold;
+    color: #fff !important;
+    background-color: #c82333;
+    border-radius: 5px;
+  }
 
-.produto-img {
-  width: 100%;
-  height: 220px;
-  object-fit: cover;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
-}
+  /* Cards */
+  .card {
+    border-radius: 10px;
+  }
+  .card-header {
+    border-radius: 10px 10px 0 0;
+  }
 
-.badge-ativo {
-  font-size: 0.8rem;
-  padding: 6px 10px;
-  border-radius: 6px;
-}
+  /* Inputs e preview */
+  #previewImagem {
+    display: block;
+    margin-top: 10px;
+    max-width: 150px;
+    max-height: 150px;
+    border-radius: 8px;
+    object-fit: cover;
+    border: 1px solid #dee2e6;
+  }
 
- .produto-img { width:100%; height:180px; object-fit:cover; }
-  .profile-img { width:50px; height:50px; object-fit:cover; border-radius:50%; }
+  /* Botões */
+  .btn-primary {
+    background-color: #c82333;
+    border-color: #c82333;
+  }
+  .btn-primary:hover {
+    background-color: #a71d2a;
+    border-color: #a71d2a;
+  }
 
-    body { background: #f7f7f9; }
-    .card-produto img { height: 180px; object-fit: cover; border-radius: .5rem .5rem 0 0; }
-    .card-produto { transition: transform .2s ease; }
-    .card-produto:hover { transform: translateY(-4px); }
-    #previewImagem { max-width: 120px; border-radius: .5rem; margin-top: 10px; display: none; }
+  /* Lista de produtos */
+  #containerProdutos .card {
+    transition: transform 0.2s;
+  }
+  #containerProdutos .card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+  }

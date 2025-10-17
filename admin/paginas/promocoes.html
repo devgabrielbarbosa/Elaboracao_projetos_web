@@ -6,96 +6,91 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="../cs/promocoes.css">
-  <style>
-    body { background-color: #f8f9fa; }
-    .container { max-width: 900px; }
-    .card-promo { border-radius: 15px; overflow: hidden; box-shadow: 0 3px 6px rgba(0,0,0,0.1); transition: transform 0.2s; }
-    .card-promo:hover { transform: scale(1.02); }
-    .promo-img { height: 180px; object-fit: cover; width: 100%; }
-  </style>
+
 </head>
 <body>
 
-  <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-danger mb-4">
-    <div class="container-fluid">
-      <img src="" id="fotoAdmin" class="profile-img me-3" alt="Foto de perfil" style="width:50px; height:50px; object-fit:cover; border-radius:50%;">
-      <a class="navbar-brand fw-bold" href="dashboard.html" id="nomeAdmin">Administrador</a>
-
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarLinks" aria-controls="navbarLinks" aria-expanded="false" aria-label="Menu">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-
-      <div class="collapse navbar-collapse" id="navbarLinks">
-        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-          <li class="nav-item"><a class="nav-link text-light" href="dashboard.html">Dashboard</a></li>
-          <li class="nav-item"><a class="nav-link text-light" href="pedidos.html">Pedidos</a></li>
-          <li class="nav-item"><a class="nav-link text-light" href="produtos.html">Produtos</a></li>
-          <li class="nav-item"><a class="nav-link active fw-bold text-light" href="promocoes.html">Promoções</a></li>
-          <li class="nav-item"><a class="nav-link text-light" href="taxa_entrega.html">Taxa de Entrega</a></li>
-          <li class="nav-item"><a class="nav-link text-light" href="forma_pagamento.html">Formas de Pagamento</a></li>
-          <li class="nav-item"><a class="nav-link text-light" href="perfil_admin.html">Perfil</a></li>
-          <li class="nav-item"><a class="nav-link text-light fw-bold" href="../php/logout.php">Sair</a></li>
-        </ul>
-      </div>
-    </div>
-  </nav>
-
-  <!-- Conteúdo -->
-  <div class="container my-4">
-    <h2 class="mb-4 text-danger">Cadastrar Nova Promoção</h2>
-
-    <div id="mensagem-container"></div>
-
-    <!-- Formulário -->
-    <form id="form-promocao" enctype="multipart/form-data" class="border p-4 bg-white rounded shadow-sm">
-      <div class="row">
-        <div class="col-md-6 mb-3">
-          <label for="codigo" class="form-label">Código</label>
-          <input type="text" class="form-control" id="codigo" name="codigo" required>
-        </div>
-
-        <div class="col-md-6 mb-3">
-          <label for="desconto" class="form-label">Desconto (%)</label>
-          <input type="number" class="form-control" id="desconto" name="desconto" step="0.01" required>
-        </div>
-      </div>
-
-      <div class="mb-3">
-        <label for="descricao" class="form-label">Descrição</label>
-        <textarea class="form-control" id="descricao" name="descricao" rows="3" required></textarea>
-      </div>
-
-      <div class="row">
-        <div class="col-md-6 mb-3">
-          <label for="data_inicio" class="form-label">Data Início</label>
-          <input type="date" class="form-control" id="data_inicio" name="data_inicio" required>
-        </div>
-        <div class="col-md-6 mb-3">
-          <label for="data_fim" class="form-label">Data Fim</label>
-          <input type="date" class="form-control" id="data_fim" name="data_fim" required>
-        </div>
-      </div>
-
-      <div class="mb-3">
-        <label for="imagem" class="form-label">Imagem da Promoção</label>
-        <input type="file" class="form-control" id="imagem" name="imagem" accept="image/*" required>
-      </div>
-
-      <button type="submit" class="btn btn-danger w-100">Cadastrar Promoção</button>
-    </form>
-
-    <hr class="my-5">
-
-    <h2 class="mb-4 text-danger">Promoções da Loja</h2>
-    <div id="promocoes-container" class="row g-4">
-      <div class="text-center text-muted">Nenhuma promoção carregada.</div>
+ <!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-danger mb-4">
+  <div class="container-fluid">
+    <img src="" id="fotoAdmin" class="profile-img me-3" alt="Foto de perfil" style="width:50px; height:50px; object-fit:cover; border-radius:50%;">
+    <a class="navbar-brand fw-bold" href="dashboard.html" id="nomeAdmin">Administrador</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarLinks" aria-controls="navbarLinks" aria-expanded="false" aria-label="Menu">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarLinks">
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        <li class="nav-item"><a class="nav-link text-light" href="dashboard.html">Dashboard</a></li>
+        <li class="nav-item"><a class="nav-link text-light" href="pedidos.html">Pedidos</a></li>
+        <li class="nav-item"><a class="nav-link text-light" href="produtos.html">Produtos</a></li>
+        <li class="nav-item"><a class="nav-link active fw-bold text-light" href="promocoes.html">Promoções</a></li>
+        <li class="nav-item"><a class="nav-link text-light" href="taxa_entrega.html">Taxa de Entrega</a></li>
+        <li class="nav-item"><a class="nav-link text-light" href="forma_pagamento.html">Formas de Pagamento</a></li>
+        <li class="nav-item"><a class="nav-link text-light" href="perfil_admin.html">Perfil</a></li>
+        <li class="nav-item"><a id="btnLogout" class="nav-link text-light fw-bold">Sair</a></li>
+      </ul>
     </div>
   </div>
+</nav>
 
-  <!-- Scripts -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="../js/promocoes.js"></script>
-  <script src="../js/verificarSessao.js"></script>
+<div class="container my-4">
+  <h2 class="mb-4 text-danger">Cadastrar Nova Promoção</h2>
+  <div id="mensagem-container"></div>
+
+  <form id="form-promocao" enctype="multipart/form-data" class="border p-4 bg-white rounded shadow-sm">
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <label for="codigo" class="form-label">Código</label>
+        <input type="text" class="form-control" id="codigo" name="codigo" required>
+      </div>
+      <div class="col-md-6 mb-3">
+        <label for="desconto" class="form-label">Desconto (%)</label>
+        <input type="number" class="form-control" id="desconto" name="desconto" step="0.01" required>
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label for="descricao" class="form-label">Descrição</label>
+      <textarea class="form-control" id="descricao" name="descricao" rows="3" required></textarea>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <label for="data_inicio" class="form-label">Data Início</label>
+        <input type="date" class="form-control" id="data_inicio" name="data_inicio" required>
+      </div>
+      <div class="col-md-6 mb-3">
+        <label for="data_fim" class="form-label">Data Fim</label>
+        <input type="date" class="form-control" id="data_fim" name="data_fim" required>
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label for="imagem" class="form-label">Imagem da Promoção</label>
+      <input type="file" class="form-control" id="imagem" name="imagem" accept="image/*" required>
+      <img id="previewImagem" alt="Pré-visualização da imagem">
+    </div>
+
+    <!-- Lista de Produtos -->
+    <h5 class="mt-4">Produtos da Loja</h5>
+    <div id="lista-produtos" class="mb-3">
+      <p class="text-center text-muted">Carregando produtos...</p>
+    </div>
+
+    <button type="submit" class="btn btn-danger w-100">Cadastrar Promoção</button>
+  </form>
+
+  <hr class="my-5">
+
+  <h2 class="mb-4 text-danger">Promoções da Loja</h2>
+  <div id="promocoes-container" class="row g-4">
+    <div class="text-center text-muted">Nenhuma promoção carregada.</div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../js/promocoes.js"></script>
+<script src="../js/verificarSessao.js"></script>
+<script src="../js/logout.js"></script>
 </body>
 </html>

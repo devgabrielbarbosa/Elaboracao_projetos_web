@@ -3,7 +3,6 @@ header('Content-Type: application/json; charset=utf-8');
 require __DIR__ . '/../../includes/conexao.php';
 session_start();
 
-// Verifica sessão
 if (!isset($_SESSION['admin_id'], $_SESSION['loja_id'])) {
     http_response_code(401);
     echo json_encode(['erro' => 'Sessão expirada. Faça login novamente.']);
@@ -15,11 +14,10 @@ $loja_id  = (int) $_SESSION['loja_id'];
 $acao     = $_REQUEST['acao'] ?? null;
 
 try {
-    // ---------- LISTAR PRODUTOS ----------
     if (!$acao || $acao === 'listar') {
         $stmt = $pdo->prepare("
             SELECT p.id, p.nome, p.descricao, p.preco, p.ativo, p.categoria_id,
-                   c.nome AS categoria_nome, p.imagem
+                   c.nome_categoria AS categoria_nome, p.imagem
             FROM produtos p
             LEFT JOIN categorias_produtos_lojas c 
                 ON p.categoria_id = c.id AND c.loja_id = :loja_id_categoria
@@ -35,9 +33,7 @@ try {
 
         foreach ($produtos as &$p) {
             if (!empty($p['imagem'])) {
-                $finfo = @getimagesizefromstring($p['imagem']);
-                $mime = $finfo['mime'] ?? 'image/jpeg';
-                $p['imagem'] = 'data:' . $mime . ';base64,' . base64_encode($p['imagem']);
+                $p['imagem'] = 'data:image/png;base64,' . base64_encode($p['imagem']);
             } else {
                 $p['imagem'] = null;
             }
@@ -48,7 +44,6 @@ try {
         exit;
     }
 
-    // ---------- ADICIONAR PRODUTO ----------
     if ($acao === 'adicionar' && $_SERVER['REQUEST_METHOD'] === 'POST') {
         $nome         = trim($_POST['nome'] ?? '');
         $descricao    = trim($_POST['descricao'] ?? '');
@@ -56,7 +51,7 @@ try {
         $categoria_id = !empty($_POST['categoria_id']) ? (int)$_POST['categoria_id'] : null;
 
         if ($nome === '' || $preco === null) {
-            echo json_encode(['erro' => 'Nome e preço são obrigatórios e devem ser válidos.']);
+            echo json_encode(['erro' => 'Nome e preço obrigatórios.']);
             exit;
         }
 
@@ -75,26 +70,11 @@ try {
 
         $produtoId = $pdo->lastInsertId();
 
-        // Upload de imagem
-           
-        $imagem_blob = null;
-        $imagem_tipo = null;
-
-        if(isset($_FILES['imagem']) && $_FILES['imagem']['error'] === 0){
-            $allowed_types = ['image/jpeg','image/png','image/gif'];
-            if(in_array($_FILES['imagem']['type'], $allowed_types)){
-                $imagem_blob = file_get_contents($_FILES['imagem']['tmp_name']);
-                $imagem_tipo = $_FILES['imagem']['type'];
-            } else {
-                echo json_encode(['erro'=>'Arquivo inválido']);
-                exit;
-            }
-
+        if (isset($_FILES['imagem']) && $_FILES['imagem']['error'] === 0) {
             $tmp = $_FILES['imagem']['tmp_name'];
             $imageData = @file_get_contents($tmp);
-            $imgInfo = @getimagesize($tmp);
-            if ($imageData === false || $imgInfo === false) {
-                echo json_encode(['erro' => 'Arquivo enviado não é uma imagem válida.']);
+            if ($imageData === false) {
+                echo json_encode(['erro' => 'Arquivo inválido.']);
                 exit;
             }
 
@@ -105,11 +85,10 @@ try {
             $stmt2->execute();
         }
 
-        echo json_encode(['sucesso' => 'Produto adicionado com sucesso.', 'id' => $produtoId]);
+        echo json_encode(['sucesso' => 'Produto adicionado.', 'id' => $produtoId]);
         exit;
     }
 
-    // ---------- ATIVAR / PAUSAR ----------
     if (($acao === 'pausar' || $acao === 'ativar') && isset($_REQUEST['id'])) {
         $id = (int)$_REQUEST['id'];
         $ativo = ($acao === 'ativar') ? 1 : 0;
@@ -119,12 +98,11 @@ try {
         exit;
     }
 
-    // ---------- DELETAR ----------
     if ($acao === 'deletar' && isset($_REQUEST['id'])) {
         $id = (int)$_REQUEST['id'];
         $stmt = $pdo->prepare("DELETE FROM produtos WHERE id = :id AND loja_id = :loja_id");
         $stmt->execute([':id'=>$id, ':loja_id'=>$loja_id]);
-        echo json_encode(['sucesso' => 'Produto deletado com sucesso.']);
+        echo json_encode(['sucesso' => 'Produto deletado.']);
         exit;
     }
 
@@ -132,5 +110,5 @@ try {
 
 } catch (PDOException $e) {
     http_response_code(500);
-    echo json_encode(['erro' => 'Erro no banco de dados: ' . $e->getMessage()]);
+    echo json_encode(['erro' => 'Erro no banco: ' . $e->getMessage()]);
 }

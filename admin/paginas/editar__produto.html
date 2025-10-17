@@ -27,7 +27,30 @@
 </head>
 
 <body class="bg-light">
+ <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-danger mb-4">
+    <div class="container-fluid">
+      <img src="" id="fotoAdmin" class="profile-img me-3" alt="Foto de perfil" style="width:50px; height:50px; object-fit:cover; border-radius:50%;">
+      <a class="navbar-brand fw-bold" href="dashboard.html" id="nomeAdmin">Administrador</a>
 
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarLinks" aria-controls="navbarLinks" aria-expanded="false" aria-label="Menu">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarLinks">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+          <li class="nav-item"><a class="nav-link text-light" href="dashboard.html">Dashboard</a></li>
+          <li class="nav-item"><a class="nav-link text-light" href="pedidos.html">Pedidos</a></li>
+          <li class="nav-item"><a class="nav-link text-light" href="produtos.html">Produtos</a></li>
+          <li class="nav-item"><a class="nav-link active fw-bold text-light" href="promocoes.html">Promoções</a></li>
+          <li class="nav-item"><a class="nav-link text-light" href="taxa_entrega.html">Taxa de Entrega</a></li>
+          <li class="nav-item"><a class="nav-link text-light" href="forma_pagamento.html">Formas de Pagamento</a></li>
+          <li class="nav-item"><a class="nav-link text-light" href="perfil_admin.html">Perfil</a></li>
+         <li class="nav-item"><a   id="btnLogout" class="nav-link text-light fw-bold">Sair</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
   <!-- Navbar carregada dinamicamente -->
   <div id="navbar-container"></div>
 
@@ -72,6 +95,6 @@
   <script src="../js/verificarSessao.js"></script>
   <script src="../js/navbar.js"></script>
   <script src="../js/editar_produto.js"></script>
-
+  <script src="../js/logout.js"></script>
 </body>
 </html>
