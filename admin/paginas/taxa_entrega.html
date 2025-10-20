@@ -1,66 +1,203 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<title>Gerenciar Faixas de Entrega</title>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8">
+  <title>Gerenciar Faixas de Entrega</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body { background-color: #f8f9fa; }
+    .card-header { background-color: #dc3545; color: #fff; }
+    .status-ativo { color: green; font-weight: bold; }
+    .status-inativo { color: gray; font-weight: bold; }
+    .profile-img { width:50px; height:50px; object-fit:cover; border-radius:50%; }
+  </style>
 </head>
 <body>
- <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-danger mb-4">
-    <div class="container-fluid">
-      <img src="" id="fotoAdmin" class="profile-img me-3" alt="Foto de perfil" style="width:50px; height:50px; object-fit:cover; border-radius:50%;">
-      <a class="navbar-brand fw-bold" href="dashboard.html" id="nomeAdmin">Administrador</a>
 
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarLinks" aria-controls="navbarLinks" aria-expanded="false" aria-label="Menu">
-        <span class="navbar-toggler-icon"></span>
-      </button>
+<nav class="navbar navbar-expand-lg navbar-dark bg-danger mb-4">
+  <div class="container-fluid">
+    <img src="" id="fotoAdmin" class="profile-img me-3" alt="Foto de perfil">
+    <a class="navbar-brand fw-bold" href="dashboard.php" id="nomeAdmin">Administrador</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarLinks" aria-controls="navbarLinks" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
-      <div class="collapse navbar-collapse" id="navbarLinks">
-        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-          <li class="nav-item"><a class="nav-link text-light" href="dashboard.html">Dashboard</a></li>
-          <li class="nav-item"><a class="nav-link text-light" href="pedidos.html">Pedidos</a></li>
-          <li class="nav-item"><a class="nav-link text-light" href="produtos.html">Produtos</a></li>
-          <li class="nav-item"><a class="nav-link active fw-bold text-light" href="promocoes.html">Promoções</a></li>
-          <li class="nav-item"><a class="nav-link text-light" href="taxa_entrega.html">Taxa de Entrega</a></li>
-          <li class="nav-item"><a class="nav-link text-light" href="forma_pagamento.html">Formas de Pagamento</a></li>
-          <li class="nav-item"><a class="nav-link text-light" href="perfil_admin.html">Perfil</a></li>
-          <li class="nav-item"><a   id="btnLogout" class="nav-link text-light fw-bold">Sair</a></li>
-        </ul>
-      </div>
+    <div class="collapse navbar-collapse" id="navbarLinks">
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0 text-light">
+        <li class="nav-item"><a class="nav-link text-light" href="dashboard.html">Dashboard</a></li>
+        <li class="nav-item"><a class="nav-link text-light" href="pedidos.html">Pedidos</a></li>
+        <li class="nav-item"><a class="nav-link text-light" href="produtos.html">Produtos</a></li>
+        <li class="nav-item"><a class="nav-link text-light" href="promocoes.html">Promoções</a></li>
+        <li class="nav-item"><a class="nav-link active fw-bold text-light" href="taxa_entrega.html">Taxa de Entrega</a></li>
+        <li class="nav-item"><a class="nav-link text-light" href="forma_pagamento.html">Formas de Pagamento</a></li>
+        <li class="nav-item"><a class="nav-link text-light" href="perfil_admin.html">Perfil</a></li>
+        <li class="nav-item"><a id="btnLogout" class="nav-link fw-bold">Sair</a></li>
+      </ul>
     </div>
-  </nav>
-<h2>Faixas de Entrega</h2>
+  </div>
+</nav>
 
-<div id="mensagem"></div>
+<div class="container my-4">
+  <!-- Mensagem -->
+  <div id="mensagem-container"></div>
 
-<form id="form-faixa" class="mb-4">
-    <input type="hidden" id="faixa-id">
-    <div class="mb-2">
-        <label>Nome da Faixa</label>
-        <input type="text" id="nome_faixa" class="form-control" required>
+  <!-- Formulário -->
+  <div class="card mb-5 shadow-sm">
+    <div class="card-header">Cadastrar / Editar Faixa de Entrega</div>
+    <div class="card-body">
+      <form id="form-faixa">
+        <input type="hidden" id="id" name="id">
+
+        <div class="mb-3">
+          <label for="nome_faixa" class="form-label">Nome da Faixa</label>
+          <input type="text" class="form-control" id="nome_faixa" name="nome_faixa" required>
+        </div>
+
+        <div class="mb-3">
+          <label for="valor" class="form-label">Valor (R$)</label>
+          <input type="number" step="0.01" class="form-control" id="valor" name="valor" required>
+        </div>
+
+        <div class="mb-3">
+          <label for="setor" class="form-label">Setor</label>
+          <input type="text" class="form-control" id="setor" name="setor" placeholder="Ex: Centro, Zona Sul">
+        </div>
+
+        <div class="form-check mb-3">
+          <input type="checkbox" class="form-check-input" id="ativo" name="ativo" checked>
+          <label class="form-check-label" for="ativo">Ativo</label>
+        </div>
+
+        <button type="submit" class="btn btn-danger w-100">Salvar Faixa</button>
+      </form>
     </div>
-    <div class="mb-2">
-        <label>Valor (R$)</label>
-        <input type="number" id="valor" class="form-control" step="0.01" required>
-    </div>
-    <button type="submit" class="btn btn-primary">Salvar</button>
-    <button type="button" id="cancelar" class="btn btn-secondary">Cancelar</button>
-</form>
+  </div>
 
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>Faixa</th>
-            <th>Valor</th>
-            <th>Ações</th>
-        </tr>
-    </thead>
-    <tbody id="lista-faixas"></tbody>
-</table>
+  <!-- Lista -->
+  <h2 class="mb-3 text-danger">Faixas de Entrega Cadastradas</h2>
+  <div id="faixas-container"></div>
+</div>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const form = document.getElementById('form-faixa');
+  const container = document.getElementById('faixas-container');
+  const mensagem = document.getElementById('mensagem-container');
+  const idField = document.getElementById('id');
+  const nomeField = document.getElementById('nome_faixa');
+  const valorField = document.getElementById('valor');
+  const setorField = document.getElementById('setor');
+  const ativoField = document.getElementById('ativo');
+
+  function exibirMensagem(tipo, texto) {
+    mensagem.innerHTML = `
+      <div class="alert alert-${tipo} alert-dismissible fade show" role="alert">
+        ${texto}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+      </div>`;
+    setTimeout(() => mensagem.innerHTML = '', 4000);
+  }
+
+  async function carregarFaixas() {
+    try {
+      const res = await fetch('../php/taxa_entrega.php?acao=listar', { credentials: 'include' });
+      if (!res.ok) throw new Error('Erro ao buscar faixas');
+      const data = await res.json();
+
+      container.innerHTML = '';
+      if (!data.faixas || data.faixas.length === 0) {
+        container.innerHTML = '<div class="text-center text-muted">Nenhuma faixa cadastrada.</div>';
+        return;
+      }
+
+      data.faixas.forEach(f => {
+        const item = document.createElement('div');
+        item.className = `card mb-2 shadow-sm ${f.ativo == 0 ? 'bg-light' : ''}`;
+        item.innerHTML = `
+          <div class="card-body d-flex justify-content-between align-items-center">
+            <div>
+              <strong>${f.nome_faixa}</strong><br>
+              <small>Valor: R$ ${parseFloat(f.valor).toFixed(2)}</small><br>
+              <small>Setor: ${f.setor || '-'}</small><br>
+              <small>Status: <span class="${f.ativo == 1 ? 'status-ativo' : 'status-inativo'}">${f.ativo == 1 ? 'Ativo' : 'Inativo'}</span></small>
+            </div>
+            <div>
+              <button class="btn btn-sm btn-warning me-2"
+                data-id="${f.id}" data-nome="${f.nome_faixa}" data-valor="${f.valor}"
+                data-setor="${f.setor}" data-ativo="${f.ativo}">Editar</button>
+              <button class="btn btn-sm btn-danger" data-id="${f.id}">Excluir</button>
+            </div>
+          </div>`;
+        container.appendChild(item);
+      });
+    } catch (err) {
+      console.error(err);
+      container.innerHTML = '<div class="text-danger text-center">Erro ao carregar faixas.</div>';
+    }
+  }
+
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    const formData = new FormData(form);
+    formData.append('acao', 'salvar');
+
+    try {
+      const res = await fetch('../php/taxa_entrega.php', { method: 'POST', body: formData, credentials: 'include' });
+      const data = await res.json();
+      if (data.erro) exibirMensagem('danger', data.erro);
+      else {
+        exibirMensagem('success', data.mensagem);
+        form.reset();
+        idField.value = '';
+        carregarFaixas();
+      }
+    } catch (err) {
+      console.error(err);
+      exibirMensagem('danger', 'Erro ao salvar faixa.');
+    }
+  });
+
+  container.addEventListener('click', e => {
+    const btn = e.target;
+
+    if (btn.classList.contains('btn-warning')) {
+      idField.value = btn.dataset.id;
+      nomeField.value = btn.dataset.nome;
+      valorField.value = btn.dataset.valor;
+      setorField.value = btn.dataset.setor;
+      ativoField.checked = btn.dataset.ativo == 1;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    if (btn.classList.contains('btn-danger')) {
+      if (!confirm('Deseja realmente excluir esta faixa?')) return;
+
+      const formData = new FormData();
+      formData.append('acao', 'excluir');
+      formData.append('id', btn.dataset.id);
+
+      fetch('../php/taxa_entrega.php', { method: 'POST', body: formData, credentials: 'include' })
+        .then(res => res.json())
+        .then(data => {
+          if (data.erro) exibirMensagem('danger', data.erro);
+          else {
+            exibirMensagem('success', data.mensagem);
+            carregarFaixas();
+          }
+        }).catch(err => {
+          console.error(err);
+          exibirMensagem('danger', 'Erro ao excluir faixa.');
+        });
+    }
+  });
+
+  carregarFaixas();
+});
+</script>
 <script src="../js/taxa_entrega.js"></script>
-  <script src="../js/logout.js"></script>
+<script src="../js/logout.js"></script>
 </body>
 </html>

@@ -140,8 +140,8 @@ document.addEventListener('DOMContentLoaded', () => {
       const col = document.createElement('div');
       col.className = 'col-md-4 mb-4';
       col.innerHTML = `
-        <div class="card card-produto shadow-sm h-100">
-          <img src="${imgSrc}" class="card-img-top" alt="${p.nome}">
+        <div class="card card-produto card shadow-sm h-100">
+          <img  src="${imgSrc}" class="card-img-top" alt="${p.nome}" style="height:180px; object-fit:cover;">
           <div class="card-body d-flex flex-column justify-content-between">
             <div>
               <h5 class="card-title fw-semibold">${p.nome}</h5>

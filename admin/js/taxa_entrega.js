@@ -1,74 +1,126 @@
-const urlPHP = '../php/taxa_entrega.php';
-const tbody = document.getElementById('lista-faixas');
-const form = document.getElementById('form-faixa');
-const mensagemDiv = document.getElementById('mensagem');
+document.addEventListener('DOMContentLoaded', () => {
+  const form = document.getElementById('form-faixa');
+  const container = document.getElementById('faixas-container');
+  const mensagem = document.getElementById('mensagem-container');
+  const idField = document.getElementById('id');
+  const nomeField = document.getElementById('nome_faixa');
+  const valorField = document.getElementById('valor');
+  const setorField = document.getElementById('setor');
+  const ativoField = document.getElementById('ativo');
 
-function mostrarMensagem(msg, tipo='success') {
-    mensagemDiv.innerHTML = `<div class="alert alert-${tipo}">${msg}</div>`;
-    setTimeout(()=>mensagemDiv.innerHTML='',3000);
-}
+  // Função para exibir mensagens
+  function exibirMensagem(tipo, texto) {
+    mensagem.innerHTML = `
+      <div class="alert alert-${tipo} alert-dismissible fade show" role="alert">
+        ${texto}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+      </div>`;
+    setTimeout(() => mensagem.innerHTML = '', 4000);
+  }
 
-function carregarFaixas() {
-    fetch(urlPHP+'listar.php')
-    .then(res=>res.json())
-    .then(data=>{
-        tbody.innerHTML='';
-        data.forEach(f=>{
-            const tr = document.createElement('tr');
-            tr.innerHTML = `
-                <td>${f.nome_faixa}</td>
-                <td>${parseFloat(f.valor).toFixed(2)}</td>
-                <td>
-                    <button class="btn btn-sm btn-warning btn-editar" data-id="${f.id}" data-nome="${f.nome_faixa}" data-valor="${f.valor}">Editar</button>
-                    <button class="btn btn-sm btn-danger btn-excluir" data-id="${f.id}">Excluir</button>
-                </td>
-            `;
-            tbody.appendChild(tr);
-        });
-    });
-}
+  // Carregar faixas de entrega
+  async function carregarFaixas() {
+    try {
+      const res = await fetch('../php/taxa_entrega.php?acao=listar', { credentials: 'include' });
+      if (!res.ok) throw new Error('Erro ao buscar faixas');
+      const data = await res.json();
 
-form.addEventListener('submit', e=>{
+      container.innerHTML = '';
+      if (!data.faixas || data.faixas.length === 0) {
+        container.innerHTML = '<div class="text-muted text-center">Nenhuma faixa cadastrada.</div>';
+        return;
+      }
+
+      data.faixas.forEach(f => {
+        const item = document.createElement('div');
+        item.className = 'list-group-item d-flex justify-content-between align-items-center';
+        item.innerHTML = `
+          <div>
+            <strong>${f.nome_faixa}</strong><br>
+            <small>Valor: R$ ${parseFloat(f.valor).toFixed(2)}</small><br>
+            <small>Setor: ${f.setor || '-'}</small><br>
+            <small>Status: ${f.ativo == 1 ? 'Ativo' : 'Inativo'}</small>
+          </div>
+          <div>
+            <button class="btn btn-sm btn-warning me-2"
+              data-id="${f.id}"
+              data-nome="${f.nome_faixa}"
+              data-valor="${f.valor}"
+              data-setor="${f.setor}"
+              data-ativo="${f.ativo}">Editar</button>
+            <button class="btn btn-sm btn-danger" data-id="${f.id}">Excluir</button>
+          </div>
+        `;
+        container.appendChild(item);
+      });
+    } catch (err) {
+      console.error(err);
+      container.innerHTML = '<div class="text-danger text-center">Erro ao carregar faixas.</div>';
+    }
+  }
+
+  // Cadastrar ou editar faixa
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const id = document.getElementById('faixa-id').value;
-    const nome = document.getElementById('nome_faixa').value;
-    const valor = document.getElementById('valor').value;
+    const formData = new FormData(form);
+    formData.append('acao', 'salvar');
 
-    const formData = new FormData();
-    formData.append('nome_faixa', nome);
-    formData.append('valor', valor);
-    if(id){
-        formData.append('id', id);
-        fetch(urlPHP+'editar.php',{method:'POST', body:formData})
-            .then(res=>res.text())
-            .then(msg=>{ mostrarMensagem(msg); form.reset(); document.getElementById('faixa-id').value=''; carregarFaixas(); });
-    }else{
-        fetch(urlPHP+'adicionar.php',{method:'POST', body:formData})
-            .then(res=>res.text())
-            .then(msg=>{ mostrarMensagem(msg); form.reset(); carregarFaixas(); });
+    try {
+      const res = await fetch('../php/taxa_entrega.php', { method: 'POST', body: formData, credentials: 'include' });
+      if (!res.ok) throw new Error('Erro ao salvar faixa');
+      const data = await res.json();
+
+      if (data.erro) exibirMensagem('danger', data.erro);
+      else {
+        exibirMensagem('success', data.mensagem);
+        form.reset();
+        idField.value = '';
+        carregarFaixas();
+      }
+    } catch (err) {
+      console.error(err);
+      exibirMensagem('danger', 'Erro ao salvar faixa.');
     }
-});
+  });
 
-tbody.addEventListener('click', e=>{
-    if(e.target.classList.contains('btn-editar')){
-        const btn = e.target;
-        document.getElementById('faixa-id').value = btn.dataset.id;
-        document.getElementById('nome_faixa').value = btn.dataset.nome;
-        document.getElementById('valor').value = btn.dataset.valor;
+  // Delegação de eventos para editar/excluir
+  container.addEventListener('click', (e) => {
+    const btn = e.target;
+
+    // Editar
+    if (btn.classList.contains('btn-warning')) {
+      idField.value = btn.dataset.id;
+      nomeField.value = btn.dataset.nome;
+      valorField.value = btn.dataset.valor;
+      setorField.value = btn.dataset.setor;
+      ativoField.checked = btn.dataset.ativo == 1;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
-    if(e.target.classList.contains('btn-excluir')){
-        if(!confirm('Deseja excluir esta faixa?')) return;
-        const formData = new FormData();
-        formData.append('id', e.target.dataset.id);
-        fetch(urlPHP+'excluir.php',{method:'POST', body:formData})
-            .then(res=>res.text())
-            .then(msg=>{ mostrarMensagem(msg,'danger'); carregarFaixas(); });
+
+    // Excluir
+    if (btn.classList.contains('btn-danger')) {
+      if (!confirm('Deseja realmente excluir esta faixa?')) return;
+
+      const formData = new FormData();
+      formData.append('acao', 'excluir');
+      formData.append('id', btn.dataset.id);
+
+      fetch('../php/taxa_entrega.php', { method: 'POST', body: formData, credentials: 'include' })
+        .then(res => res.json())
+        .then(data => {
+          if (data.erro) exibirMensagem('danger', data.erro);
+          else {
+            exibirMensagem('success', data.mensagem);
+            carregarFaixas();
+          }
+        })
+        .catch(err => {
+          console.error(err);
+          exibirMensagem('danger', 'Erro ao excluir faixa.');
+        });
     }
-});
+  });
 
-document.getElementById('cancelar').addEventListener('click', ()=>{
-    form.reset();
-    document.getElementById('faixa-id').value='';
+  // Inicializa carregamento
+  carregarFaixas();
 });
-
-carregarFaixas();

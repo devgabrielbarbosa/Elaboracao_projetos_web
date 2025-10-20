@@ -5,9 +5,7 @@
   }
 
   /* Navbar */
-  .navbar {
-    box-shadow: 0 3px 6px rgba(0,0,0,0.1);
-  }
+ 
   .profile-img {
     border-radius: 50%;
     object-fit: cover;
@@ -15,12 +13,7 @@
     height: 50px;
     border: 2px solid #fff;
   }
-  .nav-link.active {
-    font-weight: bold;
-    color: #fff !important;
-    background-color: #c82333;
-    border-radius: 5px;
-  }
+ 
 
   /* Cards */
   .card {
@@ -59,3 +52,4 @@
     transform: translateY(-3px);
     box-shadow: 0 6px 12px rgba(0,0,0,0.15);
   }
+

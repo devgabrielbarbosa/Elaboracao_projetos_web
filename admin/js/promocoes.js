@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
           div.className = 'col-md-4 mb-4';
           div.innerHTML = `
             <div class="card shadow-sm h-100">
-              <img src="${imgSrc}" class="card-img-top" alt="${p.codigo}" style="height:180px; object-fit:cover;">
+              <img  src="${imgSrc}" class="card-img-top" alt="${p.codigo}" style="height:180px; object-fit:cover;">
               <div class="card-body d-flex flex-column justify-content-between">
                 <div>
                   <h5 class="card-title fw-semibold">${p.codigo}</h5>

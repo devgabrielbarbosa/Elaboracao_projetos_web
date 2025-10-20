@@ -1,36 +1,78 @@
 <?php
 session_start();
-require '../includes/conexao.php';
+require __DIR__ . '/../../includes/conexao.php';
 
-header('Content-Type: application/json');
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
-if(!isset($_SESSION['admin_id'], $_SESSION['loja_id'])){
-    echo json_encode(['erro'=>'Admin não logado']);
+header('Content-Type: application/json; charset=utf-8');
+
+// Função para responder em JSON
+function respostaJSON($data, $code = 200) {
+    http_response_code($code);
+    echo json_encode($data);
     exit;
 }
 
-$loja_id = (int)$_SESSION['loja_id'];
+// ===== Sessão =====
+if (!isset($_SESSION['admin_id'], $_SESSION['loja_id'])) {
+    respostaJSON(['erro' => 'Admin ou loja não logado.'], 401);
+}
 
-$nome = trim($_POST['nome'] ?? '');
-$telefone = trim($_POST['telefone'] ?? '');
-$mensagem = trim($_POST['mensagem'] ?? '');
-$horarios = $_POST['horarios'] ?? [];
+$admin_id = (int) $_SESSION['admin_id'];
+$loja_id  = (int) $_SESSION['loja_id'];
 
-// Converter horários para JSON
-$horarios_json = json_encode($horarios, JSON_UNESCAPED_UNICODE);
+// Array de dias da semana esperados
+$dias_semana = ['Segunda','Terca','Quarta','Quinta','Sexta','Sabado','Domingo'];
+
+// Recebe os horários via POST
+$horarios_post = $_POST['horarios'] ?? [];
+
+// Valida os dados recebidos
+foreach($dias_semana as $dia){
+    if(!isset($horarios_post[$dia]['hora_abertura']) || !isset($horarios_post[$dia]['hora_fechamento']) || !isset($horarios_post[$dia]['status'])){
+        echo json_encode(['erro'=>"Horário do dia $dia não informado corretamente."]);
+        exit;
+    }
+}
 
 try {
-    $stmt = $pdo->prepare("UPDATE lojas SET nome=:nome, telefone=:telefone, mensagem=:mensagem, horarios=:horarios WHERE id=:id");
-    $stmt->execute([
-        ':nome'=>$nome,
-        ':telefone'=>$telefone,
-        ':mensagem'=>$mensagem,
-        ':horarios'=>$horarios_json,
-        ':id'=>$loja_id
-    ]);
+    // Loop por cada dia da semana
+    foreach($dias_semana as $dia){
+        $hora_abertura = $horarios_post[$dia]['hora_abertura'];
+        $hora_fechamento = $horarios_post[$dia]['hora_fechamento'];
+        $status = $horarios_post[$dia]['status']; // 'aberto' ou 'fechado'
 
-    echo json_encode(['sucesso'=>'Perfil atualizado com horários!']);
+        // Verifica se já existe registro para este dia
+        $stmt = $pdo->prepare("SELECT id FROM horarios_loja WHERE loja_id=:loja_id AND dia_semana=:dia");
+        $stmt->execute([':loja_id'=>$loja_id, ':dia'=>$dia]);
+        $registro = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if($registro){
+            // Atualiza
+            $stmt = $pdo->prepare("UPDATE horarios_loja SET hora_abertura=:hora_abertura, hora_fechamento=:hora_fechamento, status=:status WHERE id=:id");
+            $stmt->execute([
+                ':hora_abertura'=>$hora_abertura,
+                ':hora_fechamento'=>$hora_fechamento,
+                ':status'=>$status,
+                ':id'=>$registro['id']
+            ]);
+        } else {
+            // Insere
+            $stmt = $pdo->prepare("INSERT INTO horarios_loja (loja_id, dia_semana, hora_abertura, hora_fechamento, status) VALUES (:loja_id, :dia, :hora_abertura, :hora_fechamento, :status)");
+            $stmt->execute([
+                ':loja_id'=>$loja_id,
+                ':dia'=>$dia,
+                ':hora_abertura'=>$hora_abertura,
+                ':hora_fechamento'=>$hora_fechamento,
+                ':status'=>$status
+            ]);
+        }
+    }
+
+    echo json_encode(['sucesso'=>'Horários atualizados com sucesso!']);
+
 } catch(PDOException $ex){
-    echo json_encode(['erro'=>'Erro ao atualizar perfil']);
+    echo json_encode(['erro'=>'Erro ao atualizar horários: '.$ex->getMessage()]);
 }
 ?>
