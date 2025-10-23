@@ -1,0 +1,98 @@
+/* ================================
+   FORMAS DE PAGAMENTO - ESTILO
+   ================================ */
+
+body {
+  background-color: #f8f9fa;
+  font-family: 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Título principal */
+h4 {
+  color: #343a40;
+  font-weight: 600;
+}
+
+/* Formulários */
+#formAdicionar input,
+#formAdicionar select {
+  font-size: 0.9rem;
+}
+
+#formAdicionar button {
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+/* Tabela */
+#formasContainer table {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+  margin-top: 10px;
+}
+
+#formasContainer th {
+  background-color: #343a40;
+  color: #fff;
+  text-align: center;
+}
+
+#formasContainer td {
+  vertical-align: middle;
+  text-align: center;
+}
+
+/* Botões de ação */
+.btn-editar {
+  background-color: #0d6efd;
+  color: #fff;
+  border: none;
+  transition: all 0.2s ease-in-out;
+}
+
+.btn-editar:hover {
+  background-color: #0b5ed7;
+}
+
+.btn-excluir {
+  background-color: #dc3545;
+  color: #fff;
+  border: none;
+  transition: all 0.2s ease-in-out;
+}
+
+.btn-excluir:hover {
+  background-color: #bb2d3b;
+}
+
+/* Modal */
+.modal-content {
+  border-radius: 12px;
+}
+
+.modal-header {
+  background-color: #0d6efd;
+  color: #fff;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+
+.modal-footer {
+  border-top: none;
+}
+
+.modal-title {
+  font-weight: 500;
+}
+
+/* Pequenas melhorias responsivas */
+@media (max-width: 768px) {
+  #formAdicionar .col-md-2 {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+  #formAdicionar button {
+    width: 100%;
+  }
+}

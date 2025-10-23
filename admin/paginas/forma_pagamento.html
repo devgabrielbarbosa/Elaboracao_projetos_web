@@ -1,119 +1,128 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-<meta charset="UTF-8">
-<title>Formas de Pagamento - Dashboard</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
-<style>
-body { background-color: #f8f9fa; }
-.card { border-radius: 0.75rem; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
-.card-header { background-color: #dc3545; color: #fff; font-weight: bold; }
-.table th, .table td { vertical-align: middle; }
-.btn-sm { min-width: 70px; margin-bottom: 3px; }
-.input-group .form-control { border-radius: 0.375rem 0 0 0.375rem; }
-.input-group .btn { border-radius: 0 0.375rem 0.375rem 0; }
-</style>
+  <meta charset="UTF-8">
+  <title>Gerenciar Formas de Pagamento</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../cs/forma_pagamento.css">
 </head>
+<body>
 
-<body class="bg-light">
- <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-danger mb-4">
-    <div class="container-fluid">
-      <img src="" id="fotoAdmin" class="profile-img me-3" alt="Foto de perfil" style="width:50px; height:50px; object-fit:cover; border-radius:50%;">
-      <a class="navbar-brand fw-bold" href="dashboard.html" id="nomeAdmin">Administrador</a>
+     <!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-danger mb-4">
+  <div class="container-fluid">
+    <img src="" id="fotoAdmin" class="profile-img me-3" alt="Foto de perfil" style="width:50px; height:50px; object-fit:cover; border-radius:50%;">
+    <a class="navbar-brand fw-bold" href="dashboard.html" id="nomeAdmin">Administrador</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarLinks" aria-controls="navbarLinks" aria-expanded="false" aria-label="Menu">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarLinks">
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        <li class="nav-item"><a class="nav-link text-light" href="dashboard.html">Dashboard</a></li>
+        <li class="nav-item"><a class="nav-link text-light" href="pedidos.html">Pedidos</a></li>
+        <li class="nav-item"><a class="nav-link text-light" href="produtos.html">Produtos</a></li>
+        <li class="nav-item"><a class="nav-link text-light" href="promocoes.html">Promoções</a></li>
+        <li class="nav-item"><a class="nav-link text-light" href="taxa_entrega.html">Taxa de Entrega</a></li>
+        <li class="nav-item"><a class="nav-link text-light" href="forma_pagamento.html">Formas de Pagamento</a></li>
+        <li class="nav-item"><a class="nav-link text-light  active fw-bold text-light" href="perfil_admin.html">Perfil</a></li>
+        <li class="nav-item"><a id="btnLogout" class="nav-link text-light fw-bold">Sair</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+  <div class="container my-4">
+    <h4 class="mb-3">Formas de Pagamento</h4>
 
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarLinks" aria-controls="navbarLinks" aria-expanded="false" aria-label="Menu">
-        <span class="navbar-toggler-icon"></span>
-      </button>
+    <!-- Formulário de adicionar -->
+    <form id="formAdicionar" class="row g-2 mb-4">
+      <div class="col-md-2">
+        <input type="text" name="novo_nome" class="form-control" placeholder="Nome da forma" required>
+      </div>
+      <div class="col-md-2">
+        <select name="tipo" class="form-select" required>
+          <option value="">Tipo</option>
+          <option value="dinheiro">Dinheiro</option>
+          <option value="cartao">Cartão</option>
+          <option value="pix">Pix</option>
+        </select>
+      </div>
+      <div class="col-md-2">
+        <input type="text" name="chave_pix" class="form-control" placeholder="Chave Pix (opcional)">
+      </div>
+      <div class="col-md-2">
+        <input type="text" name="responsavel_nome" class="form-control" placeholder="Responsável (opcional)">
+      </div>
+      <div class="col-md-2">
+        <input type="text" name="responsavel_conta" class="form-control" placeholder="Conta (opcional)">
+      </div>
+      <div class="col-md-2">
+        <input type="text" name="responsavel_doc" class="form-control" placeholder="Documento (opcional)">
+      </div>
+      <div class="col-12 mt-2">
+        <button class="btn btn-success" type="submit">Adicionar Forma</button>
+      </div>
+    </form>
 
-      <div class="collapse navbar-collapse" id="navbarLinks">
-        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-          <li class="nav-item"><a class="nav-link text-light" href="dashboard.html">Dashboard</a></li>
-          <li class="nav-item"><a class="nav-link text-light" href="pedidos.html">Pedidos</a></li>
-          <li class="nav-item"><a class="nav-link text-light  " href="produtos.html">Produtos</a></li>
-          <li class="nav-item"><a class="nav-link text-light " href="promocoes.html">Promoções</a></li>
-          <li class="nav-item"><a class="nav-link text-light" href="taxa_entrega.html">Taxa de Entrega</a></li>
-          <li class="nav-item"><a class="nav-link text-light active fw-bold text-light" href="forma_pagamento.html">Formas de Pagamento</a></li>
-          <li class="nav-item"><a class="nav-link text-light" href="perfil_admin.html">Perfil</a></li>
-          <li class="nav-item"><a   id="btnLogout" class="nav-link text-light fw-bold">Sair</a></li>
-        </ul>
+    <!-- Container de listagem -->
+    <div id="formasContainer" class="table-responsive"></div>
+  </div>
+
+  <!-- Modal de edição -->
+  <div class="modal fade" id="modalEditar" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <form id="formEditar">
+          <div class="modal-header">
+            <h5 class="modal-title">Editar Forma de Pagamento</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body">
+            <input type="hidden" name="id">
+
+            <div class="mb-2">
+              <label class="form-label">Nome</label>
+              <input type="text" name="editar_nome" class="form-control" required>
+            </div>
+            <div class="mb-2">
+              <label class="form-label">Tipo</label>
+              <select name="tipo" class="form-select" required>
+                <option value="dinheiro">Dinheiro</option>
+                <option value="cartao">Cartão</option>
+                <option value="pix">Pix</option>
+              </select>
+            </div>
+            <div class="mb-2">
+              <label class="form-label">Chave Pix</label>
+              <input type="text" name="chave_pix" class="form-control">
+            </div>
+            <div class="mb-2">
+              <label class="form-label">Responsável</label>
+              <input type="text" name="responsavel_nome" class="form-control">
+            </div>
+            <div class="mb-2">
+              <label class="form-label">Conta</label>
+              <input type="text" name="responsavel_conta" class="form-control">
+            </div>
+            <div class="mb-2">
+              <label class="form-label">Documento</label>
+              <input type="text" name="responsavel_doc" class="form-control">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-primary" type="submit">Salvar Alterações</button>
+          </div>
+        </form>
       </div>
     </div>
-  </nav>
-<div id="navbar-container"></div>
+  </div>
 
-<div class="container my-5">
-    <h3 class="text-danger mb-4">Formas de Pagamento da Loja</h3>
+  <!-- Scripts -->
 
-    <div id="mensagem"></div>
-
-    <!-- Adicionar nova forma -->
-    <div class="card mb-4">
-        <div class="card-header">Adicionar Nova Forma</div>
-        <div class="card-body">
-            <form id="formAdicionarForma" class="row g-2">
-                <div class="col-md-3">
-                    <input type="text" name="nome" class="form-control" placeholder="Nome da forma" required>
-                </div>
-                <div class="col-md-2">
-                    <select name="tipo" class="form-select" required>
-                        <option value="">Tipo</option>
-                        <option value="dinheiro">Dinheiro</option>
-                        <option value="cartao">Cartão</option>
-                        <option value="pix">PIX</option>
-                    </select>
-                </div>
-                <div class="col-md-2">
-                    <input type="text" name="chave_pix" class="form-control" placeholder="Chave PIX">
-                </div>
-                <div class="col-md-2">
-                    <input type="text" name="responsavel_nome" class="form-control" placeholder="Responsável">
-                </div>
-                <div class="col-md-2">
-                    <input type="text" name="responsavel_conta" class="form-control" placeholder="Conta/Agência">
-                </div>
-                <div class="col-md-1">
-                    <button type="submit" class="btn btn-success w-100">+</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Lista de formas -->
-    <div class="card shadow-sm mb-4">
-        <div class="card-header bg-danger text-white fw-bold">
-            Formas Cadastradas
-        </div>
-        <div class="card-body p-0">
-            <div class="table-responsive">
-                <table class="table table-hover align-middle mb-0">
-                    <thead class="table-danger text-center">
-                        <tr>
-                            <th>Nome</th>
-                            <th>Tipo</th>
-                            <th>Chave PIX</th>
-                            <th>Responsável</th>
-                            <th>Conta</th>
-                            <th>Status</th>
-                            <th>Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tabelaFormas">
-                        <tr>
-                            <td colspan="7" class="text-center text-muted py-3">Carregando...</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-<script src="../js/verificarSessao.js"></script>
-<script src="../js/navbar.js"></script>
-<script src="../js/formas_pagamento.js"></script>
+  
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../js/formas_pagamento.js"></script>
+    <script src="../js/verificarSessao.js"></script>
   <script src="../js/logout.js"></script>
 </body>
 </html>
