@@ -2,20 +2,20 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Cadastro de Promoções</title>
+  <title>Perfil da Loja</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- CSS -->
+  <link href="../css/perfil.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="../cs/promocoes.css">
-
 </head>
 <body>
 
- <!-- Navbar -->
+<!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-danger mb-4">
   <div class="container-fluid">
     <img src="" id="fotoAdmin" class="profile-img me-3" alt="Foto de perfil" style="width:50px; height:50px; object-fit:cover; border-radius:50%;">
     <a class="navbar-brand fw-bold" href="dashboard.html" id="nomeAdmin">Administrador</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarLinks" aria-controls="navbarLinks" aria-expanded="false" aria-label="Menu">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarLinks">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarLinks">
@@ -26,86 +26,206 @@
         <li class="nav-item"><a class="nav-link text-light" href="promocoes.html">Promoções</a></li>
         <li class="nav-item"><a class="nav-link text-light" href="taxa_entrega.html">Taxa de Entrega</a></li>
         <li class="nav-item"><a class="nav-link text-light" href="forma_pagamento.html">Formas de Pagamento</a></li>
-        <li class="nav-item"><a class="nav-link text-light  active fw-bold text-light" href="perfil_admin.html">Perfil</a></li>
+        <li class="nav-item"><a class="nav-link text-light fw-bold active" href="perfil.html">Perfil</a></li>
         <li class="nav-item"><a id="btnLogout" class="nav-link text-light fw-bold">Sair</a></li>
       </ul>
     </div>
   </div>
 </nav>
 
-  <!-- Formulário de Perfil -->
-  <div class="container">
-    <h3 class="text-center">Perfil do Administrador</h3>
-    <form id="formPerfil" enctype="multipart/form-data">
+<!-- Formulário de Perfil -->
+<div class="container">
+  <div id="resposta" class="mt-3"></div>
+  <h3 class="text-center">Perfil da Loja</h3>
+  <form id="formPerfil" enctype="multipart/form-data">
 
-      <div class="mb-3">
-        <label for="nome">Nome da Loja</label>
-        <input type="text" class="form-control" name="nome" id="nome" required>
+    <div class="mb-3">
+      <label for="nome">Nome da Loja</label>
+      <input type="text" class="form-control" name="nome" id="nome" required>
+    </div>
+
+    <div class="mb-3">
+      <label for="telefone">Telefone</label>
+      <input type="text" class="form-control" name="telefone" id="telefone">
+    </div>
+
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <label for="email">Email</label>
+        <input type="email" class="form-control" name="email" id="email">
       </div>
-
-      <div class="mb-3">
-        <label for="telefone">Telefone</label>
-        <input type="text" class="form-control" name="telefone" id="telefone">
+      <div class="col-md-6 mb-3">
+        <label for="taxa_entrega_padrao">Taxa de Entrega Padrão (R$)</label>
+        <input type="number" step="0.01" class="form-control" name="taxa_entrega_padrao" id="taxa_entrega_padrao">
       </div>
+    </div>
 
-      <div class="row">
-        <div class="col-md-6 mb-3">
-          <label for="email">Email</label>
-          <input type="email" class="form-control" name="email" id="email">
-        </div>
-        <div class="col-md-6 mb-3">
-          <label for="taxa_entrega_padrao">Taxa de Entrega Padrão (R$)</label>
-          <input type="number" step="0.01" class="form-control" name="taxa_entrega_padrao" id="taxa_entrega_padrao">
-        </div>
+    <div class="mb-3">
+      <label for="endereco">Endereço</label>
+      <input type="text" class="form-control" name="endereco" id="endereco">
+    </div>
+
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <label for="cidade">Cidade</label>
+        <input type="text" class="form-control" name="cidade" id="cidade">
       </div>
-
-      <div class="mb-3">
-        <label for="endereco">Endereço</label>
-        <input type="text" class="form-control" name="endereco" id="endereco">
+      <div class="col-md-3 mb-3">
+        <label for="estado">Estado</label>
+        <input type="text" class="form-control" name="estado" id="estado">
       </div>
-
-      <div class="row">
-        <div class="col-md-6 mb-3">
-          <label for="cidade">Cidade</label>
-          <input type="text" class="form-control" name="cidade" id="cidade">
-        </div>
-        <div class="col-md-3 mb-3">
-          <label for="estado">Estado</label>
-          <input type="text" class="form-control" name="estado" id="estado">
-        </div>
-        <div class="col-md-3 mb-3">
-          <label for="cep">CEP</label>
-          <input type="text" class="form-control" name="cep" id="cep">
-        </div>
+      <div class="col-md-3 mb-3">
+        <label for="cep">CEP</label>
+        <input type="text" class="form-control" name="cep" id="cep">
       </div>
+    </div>
 
-      <div class="mb-3">
-        <label for="status">Status da Loja</label>
-        <select class="form-select" name="status" id="status">
-          <option value="ativa">Ativa</option>
-          <option value="inativa">Inativa</option>
-        </select>
-      </div>
+    <div class="mb-3">
+      <label for="status">Status da Loja</label>
+      <select class="form-select" name="status" id="status">
+        <option value="ativa">Ativa</option>
+        <option value="inativa">Inativa</option>
+      </select>
+    </div>
 
-      <div class="mb-3">
-        <label for="logo">Logo da Loja</label>
-        <input type="file" class="form-control" name="logo" id="logo" accept="image/*">
-        <img id="logoPreview" alt="Prévia do logo">
-      </div>
+    <div class="mb-3">
+      <label for="logo">Logo da Loja</label>
+      <input type="file" class="form-control" name="logo" id="logo" accept="image/*">
+      <img id="logoPreview" alt="Prévia do logo" style="margin-top:10px; max-width:150px; display:block;">
+    </div>
 
-      <!-- Horários Semanais -->
-      <h5 class="mt-4 mb-3 text-danger">Horários de Funcionamento</h5>
-      <div id="horariosContainer"></div>
+    <!-- Horários Semanais -->
+    <h5 class="mt-4 mb-3 text-danger">Horários de Funcionamento</h5>
+    <div id="horariosContainer"></div>
 
-      <button type="submit" class="btn btn-danger w-100 mt-3">Salvar Alterações</button>
-      <div id="resposta" class="mt-3"></div>
-    </form>
-  </div>
+    <button type="submit" class="btn btn-danger w-100 mt-3">Salvar Alterações</button>
+  
+  </form>
+</div>
 
-  <!-- Scripts -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="../js/perfil.js"></script>
-  <script src="../js/verificarSessao.js"></script>
-  <script src="../  js/logout.js"></script>
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script> document.addEventListener("DOMContentLoaded", () => {
+
+    const diasSemana = ['Segunda','Terca','Quarta','Quinta','Sexta','Sabado','Domingo'];
+    const containerHorarios = document.getElementById('horariosContainer');
+    const logoInput = document.getElementById('logo');
+    const logoPreview = document.getElementById('logoPreview');
+    const formPerfil = document.getElementById('formPerfil');
+    const respostaDiv = document.getElementById('resposta');
+
+    // Função para criar bloco de horário (compatível com script externo)
+    function criarHorario(dia, hora_abertura = '', hora_fechamento = '', status = 'aberto') {
+        const row = document.createElement("div");
+        row.className = "row mb-2 align-items-center horario-bloco";
+        row.dataset.dia = dia;
+
+        row.innerHTML = `
+            <div class="col-md-2 horario-dia-title">${dia}</div>
+            <div class="col-md-3">
+                <input type="time" class="form-control" name="horarios[${dia}][hora_abertura]" value="${hora_abertura}">
+            </div>
+            <div class="col-md-3">
+                <input type="time" class="form-control" name="horarios[${dia}][hora_fechamento]" value="${hora_fechamento}">
+            </div>
+            <div class="col-md-2">
+                <select class="form-select" name="horarios[${dia}][status]">
+                    <option value="aberto" ${status === 'aberto' ? 'selected' : ''}>Aberto</option>
+                    <option value="fechado" ${status === 'fechado' ? 'selected' : ''}>Fechado</option>
+                </select>
+            </div>
+        `;
+        return row;
+    }
+
+    // Pré-visualização do logo
+    if(logoInput && logoPreview){
+        logoInput.addEventListener('change', e => {
+            const file = e.target.files[0];
+            if(file){
+                const reader = new FileReader();
+                reader.onload = () => { logoPreview.src = reader.result; };
+                reader.readAsDataURL(file);
+            } else {
+                logoPreview.src = '';
+            }
+        });
+    }
+
+    // Carregar dados do perfil da loja
+    async function carregarPerfil(){
+        try {
+            const res = await fetch('../php/perfil_loja.php', { credentials:'same-origin' });
+            const data = await res.json();
+
+            if(data.loja){
+                const loja = data.loja;
+
+                document.getElementById('nome').value = loja.nome || '';
+                document.getElementById('telefone').value = loja.telefone || '';
+                document.getElementById('email').value = loja.email || '';
+                document.getElementById('endereco').value = loja.endereco || '';
+                document.getElementById('cidade').value = loja.cidade || '';
+                document.getElementById('estado').value = loja.estado || '';
+                document.getElementById('cep').value = loja.cep || '';
+                document.getElementById('taxa_entrega_padrao').value = loja.taxa_entrega_padrao || '';
+                document.getElementById('status').value = loja.status || 'ativa';
+
+                // Logo
+                if(loja.logo){
+                    logoPreview.src = 'data:image/*;base64,' + loja.logo;
+                }
+
+                // Horários
+                containerHorarios.innerHTML = '';
+                diasSemana.forEach(dia => {
+                    const horario = loja.horarios[dia] || {hora_abertura:'', hora_fechamento:'', status:'aberto'};
+                    containerHorarios.appendChild(criarHorario(dia, horario.hora_abertura, horario.hora_fechamento, horario.status));
+                });
+
+            } else {
+                respostaDiv.innerHTML = `<div class="alert alert-danger">${data.erro || 'Erro ao carregar perfil.'}</div>`;
+            }
+        } catch(err){
+            console.error(err);
+            respostaDiv.innerHTML = `<div class="alert alert-danger">Erro ao carregar perfil.</div>`;
+        }
+    }
+
+    // Envio do formulário via AJAX
+    if(formPerfil){
+        formPerfil.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            respostaDiv.innerHTML = '';
+
+            const formData = new FormData(formPerfil);
+
+            try {
+                const res = await fetch('../php/perfil_loja.php', {
+                    method: 'POST',
+                    body: formData,
+                    credentials: 'same-origin'
+                });
+
+                const data = await res.json();
+                if(data.sucesso){
+                    respostaDiv.innerHTML = `<div class="alert alert-success">${data.sucesso}</div>`;
+                } else {
+                    respostaDiv.innerHTML = `<div class="alert alert-danger">${data.erro || 'Erro ao salvar perfil.'}</div>`;
+                }
+
+            } catch(err){
+                console.error(err);
+                respostaDiv.innerHTML = `<div class="alert alert-danger">Erro na requisição.</div>`;
+            }
+        });
+    }
+
+    // Inicializa o perfil
+    carregarPerfil();
+});
+</script>
+<script src="../js/verificarSessao.js"></script>
+<script src="../js/logout.js"></script>
 </body>
 </html>

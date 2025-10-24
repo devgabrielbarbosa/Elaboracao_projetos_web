@@ -1,68 +1,112 @@
-// ajax/dashboard_data.php
 <?php
-session_start();
 header('Content-Type: application/json; charset=utf-8');
-require '../includes/conexao.php';
+require __DIR__ . '/../../includes/conexao.php';
+session_start();
 
-if (!isset($_SESSION['admin_id'], $_SESSION['loja_id'])) {
-    http_response_code(401);
-    echo json_encode(['erro' => 'Administrador não logado']);
+function resposta($data) {
+    echo json_encode($data, JSON_UNESCAPED_UNICODE);
     exit;
 }
 
+// Sessão
+if (!isset($_SESSION['admin_id'], $_SESSION['loja_id'])) {
+    http_response_code(401);
+    resposta(['erro' => 'Sessão expirada. Faça login novamente.']);
+}
+
 $admin_id = (int) $_SESSION['admin_id'];
+$loja_id  = (int) $_SESSION['loja_id'];
+
+function respostaJSON($data, $code = 200) {
+    http_response_code($code);
+    echo json_encode($data, JSON_UNESCAPED_UNICODE);
+    exit;
+}
 
 try {
-    // Totais
-    $stmt = $pdo->prepare("SELECT SUM(total + taxa_entrega) AS faturamento FROM pedidos WHERE admin_id = :admin_id");
-    $stmt->execute([':admin_id' => $admin_id]);
-    $totais['faturamento'] = (float) $stmt->fetchColumn();
+    // 1) Ler resumo da VIEW dashboard_loja (se existir)
+    $sqlView = "SELECT faturamento_total, entregues, andamento, cancelados, total_clientes, total_produtos
+                FROM dashboard_loja
+                WHERE loja_id = :loja_id
+                LIMIT 1";
+    $stmt = $pdo->prepare($sqlView);
+    $stmt->execute([':loja_id' => $loja_id]);
+    $resumo = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    $stmt = $pdo->prepare("SELECT status, COUNT(*) AS qtd FROM pedidos WHERE admin_id = :admin_id GROUP BY status");
-    $stmt->execute([':admin_id' => $admin_id]);
-    $status_counts = $stmt->fetchAll(PDO::FETCH_KEY_PAIR);
-    $totais['entregues']  = (int)($status_counts['entregue'] ?? 0);
-    $totais['andamento']  = (int)(($status_counts['pendente'] ?? 0) + ($status_counts['aceito'] ?? 0) + ($status_counts['em_entrega'] ?? 0));
-    $totais['cancelados'] = (int)($status_counts['cancelado'] ?? 0);
+    // Se a view não existir ou não trouxer resultado, inicializa zeros
+    if (!$resumo) {
+        $resumo = [
+            'faturamento_total' => 0,
+            'entregues' => 0,
+            'andamento' => 0,
+            'cancelados' => 0,
+            'total_clientes' => 0,
+            'total_produtos' => 0
+        ];
+    }
 
-    $stmt = $pdo->prepare("SELECT COUNT(*) FROM clientes WHERE admin_id = :admin_id");
-    $stmt->execute([':admin_id' => $admin_id]);
-    $totais['clientes'] = (int) $stmt->fetchColumn();
-
-    $stmt = $pdo->prepare("SELECT COUNT(*) FROM produtos WHERE admin_id = :admin_id");
-    $stmt->execute([':admin_id' => $admin_id]);
-    $totais['produtos'] = (int) $stmt->fetchColumn();
-
-    // Últimos pedidos
-    $stmt = $pdo->prepare("SELECT id, total, taxa_entrega, status, metodo_pagamento, data_criacao FROM pedidos WHERE admin_id = :admin_id ORDER BY data_criacao DESC LIMIT 5");
-    $stmt->execute([':admin_id' => $admin_id]);
+    // 2) Últimos pedidos (limit 5)
+    $sqlPedidos = "SELECT id, total, taxa_entrega, status, metodo_pagamento, data_criacao
+                   FROM pedidos
+                   WHERE loja_id = :loja_id
+                   ORDER BY data_criacao DESC
+                   LIMIT 5";
+    $stmt = $pdo->prepare($sqlPedidos);
+    $stmt->execute([':loja_id' => $loja_id]);
     $ultimosPedidos = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // Gráfico faturamento últimos 7 dias
-    $stmt = $pdo->prepare("SELECT DATE(data_criacao) AS dia, SUM(total + taxa_entrega) AS total FROM pedidos WHERE admin_id = :admin_id AND data_criacao >= DATE_SUB(CURDATE(), INTERVAL 6 DAY) GROUP BY DATE(data_criacao) ORDER BY dia ASC");
-    $stmt->execute([':admin_id' => $admin_id]);
-    $grafico = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    // Normaliza campos numéricos/formatáveis para o JSON
+    foreach ($ultimosPedidos as &$p) {
+        $p['total'] = (float) $p['total'];
+        $p['taxa_entrega'] = (float) $p['taxa_entrega'];
+        // data_criacao já vem em formato 'YYYY-MM-DD HH:MM:SS' do MySQL — JS tratará para exibir
+    }
+    unset($p);
 
-    $labelsGrafico = [];
-    $valoresGrafico = [];
+    // 3) Gráfico: faturamento últimos 7 dias (somente pedidos entregues)
+    $sqlGrafico = "SELECT DATE(data_criacao) AS dia, COALESCE(SUM(total + taxa_entrega),0) AS faturamento
+                   FROM pedidos
+                   WHERE loja_id = :loja_id
+                     AND status = 'entregue'
+                     AND data_criacao >= DATE_SUB(CURDATE(), INTERVAL 6 DAY)
+                   GROUP BY dia
+                   ORDER BY dia ASC";
+    $stmt = $pdo->prepare($sqlGrafico);
+    $stmt->execute([':loja_id' => $loja_id]);
+    $dadosGrafico = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    // Monta arrays com labels (d/m) e valores (float) para os últimos 7 dias (hoje -6 ... hoje)
+    $labels = [];
+    $valores = [];
+    $mapGraf = [];
+    foreach ($dadosGrafico as $g) {
+        $mapGraf[$g['dia']] = (float) $g['faturamento'];
+    }
     for ($i = 6; $i >= 0; $i--) {
-        $dia = date('Y-m-d', strtotime("-$i days"));
-        $labelsGrafico[] = date('d/m', strtotime($dia));
-        $valoresGrafico[] = 0;
-    }
-    foreach ($grafico as $g) {
-        $idx = array_search(date('d/m', strtotime($g['dia'])), $labelsGrafico);
-        if ($idx !== false) $valoresGrafico[$idx] = (float) $g['total'];
+        $dia = date('Y-m-d', strtotime("-$i day"));
+        $labels[] = date('d/m', strtotime($dia));
+        $valores[] = isset($mapGraf[$dia]) ? $mapGraf[$dia] : 0.0;
     }
 
-    echo json_encode([
-        'totais' => $totais,
+    // Monta resposta final
+    $response = [
+        'loja_id' => $loja_id,
+        'totais' => [
+            'faturamento' => (float) $resumo['faturamento_total'],
+            'entregues' => (int) $resumo['entregues'],
+            'andamento' => (int) $resumo['andamento'],
+            'cancelados' => (int) $resumo['cancelados'],
+            'clientes' => (int) $resumo['total_clientes'],
+            'produtos' => (int) $resumo['total_produtos']
+        ],
         'ultimosPedidos' => $ultimosPedidos,
-        'labelsGrafico' => $labelsGrafico,
-        'valoresGrafico' => $valoresGrafico
-    ]);
+        'labelsGrafico' => $labels,
+        'valoresGrafico' => $valores
+    ];
+
+    respostaJSON($response);
 
 } catch (PDOException $e) {
-    http_response_code(500);
-    echo json_encode(['erro' => 'Erro no banco: ' . $e->getMessage()]);
+    // Em produção, não enviar $e->getMessage() bruto — aqui pode-se logar e retornar mensagem genérica
+    respostaJSON(['erro' => 'Erro no servidor: ' . $e->getMessage()], 500);
 }
