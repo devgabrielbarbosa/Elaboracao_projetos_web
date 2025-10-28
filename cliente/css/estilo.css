@@ -1,0 +1,6 @@
+body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f7f7f7; }
+.container-login { display: flex; min-height: 100vh; }
+.lado-form, .lado-info { flex: 1; padding: 40px; }
+.lado-info { background: #eaeaea; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+.produtos-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(200px,1fr)); gap: 20px; }
+.produtos-grid .produto { background: #fff; padding: 10px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }

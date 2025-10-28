@@ -22,17 +22,19 @@ if (!isset($_SESSION['admin_id'], $_SESSION['loja_id'])) {
 $admin_id = (int) $_SESSION['admin_id'];
 $loja_id  = (int) $_SESSION['loja_id'];
 
-
 try {
     $stmt = $pdo->prepare("SELECT id, nome, foto FROM administradores WHERE id = :id LIMIT 1");
     $stmt->execute([':id' => $admin_id]);
     $admin = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if (!$admin) resposta(['erro' => 'Administrador não encontrado.'], 404);
+    if (!$admin) {
+        respostaJSON(['erro' => 'Administrador não encontrado.'], 404);
+    }
 
     $foto = $admin['foto'] ?: 'https://placehold.co/200x150?text=Sem+Imagem';
 
-    resposta([
+    // Retorna os dados do admin e da loja
+    respostaJSON([
         'admin_id' => (int)$admin['id'],
         'nome'     => $admin['nome'],
         'foto'     => $foto,
@@ -40,5 +42,5 @@ try {
     ]);
 
 } catch (PDOException $e) {
-    resposta(['erro' => 'Erro no servidor.'], 500);
+    respostaJSON(['erro' => 'Erro no servidor: ' . $e->getMessage()], 500);
 }

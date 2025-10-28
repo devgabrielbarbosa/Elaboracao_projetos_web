@@ -12,24 +12,36 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let chartInstance = null;
 
-  // ======== Formata número para BRL ========
   const formatBRL = value => Number(value || 0).toLocaleString('pt-BR', {
     style: 'currency',
     currency: 'BRL'
   });
 
-  // ======== Função genérica de fetch JSON ========
+  // ===== Função de fetch JSON segura =====
   async function fetchJSON(url, options = {}) {
-    const res = await fetch(url, { credentials: 'include', ...options });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    return await res.json();
+    try {
+      const res = await fetch(url, { credentials: 'include', ...options });
+      const text = await res.text();
+
+      if (!res.ok) {
+        throw new Error(`HTTP ${res.status} - ${text}`);
+      }
+
+      try {
+        return JSON.parse(text);
+      } catch {
+        throw new Error(`Resposta do servidor não é JSON válido:\n${text}`);
+      }
+    } catch (err) {
+      console.error('Erro no fetchJSON:', err);
+      throw err;
+    }
   }
 
-  // ======== Função principal ========
+  // ===== Carrega dados do dashboard =====
   async function carregarDashboard() {
     try {
-      // caminho correto pro seu PHP
-      const data = await fetchJSON('../php/verificarSessao.php');
+      const data = await fetchJSON('../php/verificar_sessao.php');
 
       if (data.erro) {
         alert(data.erro);
@@ -37,22 +49,22 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
-      // ======== Atualiza cards principais ========
-      faturamentoEl.textContent = formatBRL(data.totais.faturamento);
-      entreguesEl.textContent = data.totais.entregues;
-      andamentoEl.textContent = data.totais.andamento;
-      canceladosEl.textContent = data.totais.cancelados;
-      clientesEl.textContent = data.totais.clientes;
-      produtosEl.textContent = data.totais.produtos;
+      // Atualiza cards
+      faturamentoEl.textContent = formatBRL(data.totais?.faturamento);
+      entreguesEl.textContent = data.totais?.entregues || 0;
+      andamentoEl.textContent = data.totais?.andamento || 0;
+      canceladosEl.textContent = data.totais?.cancelados || 0;
+      clientesEl.textContent = data.totais?.clientes || 0;
+      produtosEl.textContent = data.totais?.produtos || 0;
 
-      // ======== Atualiza últimos pedidos ========
+      // Últimos pedidos
       ultimosEl.innerHTML = '';
       const pedidos = data.ultimosPedidos || [];
-      if (pedidos.length === 0) {
+      if (!pedidos.length) {
         ultimosEl.innerHTML = '<li class="list-group-item text-muted small">Nenhum pedido recente</li>';
       } else {
         pedidos.forEach(p => {
-          const total = (Number(p.total) + Number(p.taxa_entrega)).toFixed(2);
+          const total = (Number(p.total) + Number(p.taxa_entrega || 0)).toFixed(2);
           const dataPedido = new Date(p.data_criacao);
           const li = document.createElement('li');
           li.className = 'list-group-item d-flex justify-content-between align-items-start';
@@ -60,8 +72,8 @@ document.addEventListener('DOMContentLoaded', () => {
             <div>
               <strong>#${p.id}</strong> — ${formatBRL(total)}
               <div class="small text-muted">
-                ${p.metodo_pagamento || 'Pagamento não informado'} —
-                ${dataPedido.toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' })}
+                ${p.metodo_pagamento || 'Pagamento não informado'} — 
+                ${dataPedido.toLocaleString('pt-BR', { day:'2-digit', month:'2-digit', hour:'2-digit', minute:'2-digit' })}
               </div>
             </div>
             <span class="badge ${
@@ -73,7 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
       }
 
-      // ======== Atualiza gráfico ========
+      // Gráfico
       if (graficoCanvas) {
         const ctx = graficoCanvas.getContext('2d');
         if (chartInstance) chartInstance.destroy();
@@ -93,34 +105,27 @@ document.addEventListener('DOMContentLoaded', () => {
           options: {
             responsive: true,
             plugins: { legend: { display: false } },
-            scales: {
-              y: {
-                beginAtZero: true,
-                ticks: { callback: v => formatBRL(v) }
-              }
-            }
+            scales: { y: { beginAtZero: true, ticks: { callback: v => formatBRL(v) } } }
           }
         });
       }
 
-      // ======== Gera e copia o link do cardápio ========
-      if (linkInput && btnCopiar) {
-        const linkLoja = `${window.location.origin}/projeto_web/cliente/index.html?loja_id=${encodeURIComponent(data.loja_id)}`;
-        linkInput.value = linkLoja;
+      // Link cardápio
+      const linkLoja = `${window.location.origin}/projeto_web/cliente/login.html?loja_id=${encodeURIComponent(data.loja_id)}`;
+linkInput.value = linkLoja;
 
-        btnCopiar.onclick = async () => {
-          try {
-            await navigator.clipboard.writeText(linkLoja);
-            alert('Link do cardápio copiado!');
-          } catch {
-            alert('Não foi possível copiar o link.');
-          }
-        };
-      }
+btnCopiar.onclick = async () => {
+  try {
+    await navigator.clipboard.writeText(linkLoja);
+    alert('Link do cardápio copiado!');
+  } catch {
+    alert('Não foi possível copiar o link.');
+  }
+}
 
     } catch (err) {
-      console.error('Erro ao carregar dados do dashboard:', err);
-      alert('Erro ao carregar dados do dashboard.');
+      console.error('Erro ao carregar dashboard:', err);
+      alert('Erro ao carregar dados do dashboard. Verifique o console.');
     }
   }
 

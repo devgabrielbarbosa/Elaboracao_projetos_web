@@ -65,7 +65,6 @@ document.addEventListener('DOMContentLoaded', () => {
     listaCategorias.innerHTML = '';
 
     data.categorias.forEach(cat => {
-      // Select
       if (cat.ativo == 1) {
         const opt = document.createElement('option');
         opt.value = cat.id;
@@ -73,7 +72,6 @@ document.addEventListener('DOMContentLoaded', () => {
         selectCategorias.appendChild(opt);
       }
 
-      // Lista no modal
       const li = document.createElement('li');
       li.className = 'list-group-item d-flex justify-content-between align-items-center';
       li.innerHTML = `
@@ -89,7 +87,6 @@ document.addEventListener('DOMContentLoaded', () => {
       listaCategorias.appendChild(li);
     });
 
-    // Botões de exclusão
     listaCategorias.querySelectorAll('.btnExcluir').forEach(btn => {
       btn.addEventListener('click', async () => {
         if (!confirm('Deseja realmente excluir esta categoria?')) return;
@@ -141,7 +138,7 @@ document.addEventListener('DOMContentLoaded', () => {
       col.className = 'col-md-4 mb-4';
       col.innerHTML = `
         <div class="card card-produto card shadow-sm h-100">
-          <img  src="${imgSrc}" class="card-img-top" alt="${p.nome}" style="height:180px; object-fit:cover;">
+          <img src="${imgSrc}" class="card-img-top" alt="${p.nome}" style="height:180px; object-fit:cover;">
           <div class="card-body d-flex flex-column justify-content-between">
             <div>
               <h5 class="card-title fw-semibold">${p.nome}</h5>
@@ -155,7 +152,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 onclick="alterarStatus(${p.id}, '${p.ativo == 1 ? 'pausar' : 'ativar'}')">
                 ${p.ativo == 1 ? 'Pausar' : 'Ativar'}
               </button>
-              <a href="produtos_editar.html?id=${p.id}" class="btn btn-sm btn-primary">Editar</a>
+              <button type="button" class="btn btn-sm btn-primary" onclick="editarProduto(${p.id}, event)">Editar</button>
               <button class="btn btn-sm btn-danger" onclick="deletarProduto(${p.id})">Excluir</button>
             </div>
           </div>
@@ -164,23 +161,67 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // ===== Adicionar Produto =====
+  // ===== Adicionar ou Editar Produto =====
   formProduto.addEventListener('submit', async e => {
     e.preventDefault();
     const formData = new FormData(formProduto);
-    formData.append('acao', 'adicionar');
+    const editandoId = formProduto.dataset.editando;
 
     if (!formData.get('categoria_id')) formData.set('categoria_id', '');
 
-    const data = await fetchJSON('../php/produtos_lojas.php', { method: 'POST', body: formData });
-    if (data.sucesso) exibirMensagem('success', data.sucesso);
-    else exibirMensagem('danger', data.erro || 'Erro ao adicionar produto.');
+    if(editandoId) formData.append('id', editandoId);
 
-    formProduto.reset();
-    previewImagem.src = '';
-    previewImagem.style.display = 'none';
-    carregarProdutos();
+    const res = await fetch('../php/editar_produto.php', { method: 'POST', body: formData });
+    const data = await res.json();
+
+    if (data.sucesso) {
+      exibirMensagem('success', data.mensagem);
+      carregarProdutos();
+      formProduto.reset();
+      delete formProduto.dataset.editando;
+      previewImagem.src = '';
+      previewImagem.style.display = 'none';
+
+      const btnSubmit = formProduto.querySelector('button[type="submit"]');
+      btnSubmit.textContent = 'Cadastrar Produto';
+      btnSubmit.classList.remove('btn-success');
+      btnSubmit.classList.add('btn-primary');
+    } else {
+      exibirMensagem('danger', data.erro || 'Erro ao salvar produto.');
+    }
   });
+
+  // ===== Editar Produto =====
+window.editarProduto = async (id, event) => {
+    if(event) event.preventDefault(); // impede qualquer redirecionamento
+    try {
+        const res = await fetch(`../php/editar_produto.php?id=${id}`);
+        if(!res.ok) throw new Error('Erro ao buscar produto');
+        const produto = await res.json();
+
+        formProduto.dataset.editando = id;
+        formProduto.querySelector('[name="nome"]').value = produto.nome || '';
+        formProduto.querySelector('[name="preco"]').value = produto.preco || '';
+        formProduto.querySelector('[name="descricao"]').value = produto.descricao || '';
+        formProduto.querySelector('[name="categoria_id"]').value = produto.categoria_id || '';
+
+        if(produto.imagem){
+            previewImagem.src = produto.imagem;
+            previewImagem.style.display = 'block';
+        }
+
+        const btnSubmit = formProduto.querySelector('button[type="submit"]');
+        btnSubmit.textContent = 'Atualizar Produto';
+        btnSubmit.classList.remove('btn-primary');
+        btnSubmit.classList.add('btn-success');
+
+        formProduto.scrollIntoView({ behavior: 'smooth' });
+    } catch(err) {
+        console.error(err);
+        exibirMensagem('danger', 'Não foi possível carregar os dados do produto.');
+    }
+};
+
 
   // ===== Alterar Status =====
   window.alterarStatus = async (id, acao) => {
