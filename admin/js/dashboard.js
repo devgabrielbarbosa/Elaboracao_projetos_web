@@ -12,23 +12,32 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let chartInstance = null;
 
-  function formatBRL(value) {
-    return Number(value).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-  }
+  // ======== Formata número para BRL ========
+  const formatBRL = value => Number(value || 0).toLocaleString('pt-BR', {
+    style: 'currency',
+    currency: 'BRL'
+  });
 
-  async function fetchJSON(url, options={}) {
-    const res = await fetch(url, { credentials:'include', ...options });
+  // ======== Função genérica de fetch JSON ========
+  async function fetchJSON(url, options = {}) {
+    const res = await fetch(url, { credentials: 'include', ...options });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     return await res.json();
   }
 
+  // ======== Função principal ========
   async function carregarDashboard() {
     try {
-      const data = await fetchJSON('../php/dashboard_data.php'); // caminho pro seu PHP
+      // caminho correto pro seu PHP
+      const data = await fetchJSON('../php/verificarSessao.php');
 
-      if (data.erro) { alert(data.erro); return; }
+      if (data.erro) {
+        alert(data.erro);
+        window.location.href = '../paginas/login.html';
+        return;
+      }
 
-      // Atualiza cards
+      // ======== Atualiza cards principais ========
       faturamentoEl.textContent = formatBRL(data.totais.faturamento);
       entreguesEl.textContent = data.totais.entregues;
       andamentoEl.textContent = data.totais.andamento;
@@ -36,50 +45,78 @@ document.addEventListener('DOMContentLoaded', () => {
       clientesEl.textContent = data.totais.clientes;
       produtosEl.textContent = data.totais.produtos;
 
-      // Atualiza últimos pedidos
+      // ======== Atualiza últimos pedidos ========
       ultimosEl.innerHTML = '';
-      if (!data.ultimosPedidos.length) {
-        const li = document.createElement('li');
-        li.className = 'list-group-item text-muted small';
-        li.textContent = 'Nenhum pedido recente';
-        ultimosEl.appendChild(li);
+      const pedidos = data.ultimosPedidos || [];
+      if (pedidos.length === 0) {
+        ultimosEl.innerHTML = '<li class="list-group-item text-muted small">Nenhum pedido recente</li>';
       } else {
-        data.ultimosPedidos.forEach(p => {
+        pedidos.forEach(p => {
+          const total = (Number(p.total) + Number(p.taxa_entrega)).toFixed(2);
+          const dataPedido = new Date(p.data_criacao);
           const li = document.createElement('li');
           li.className = 'list-group-item d-flex justify-content-between align-items-start';
-          const total = Number(p.total) + Number(p.taxa_entrega);
-          const date = new Date(p.data_criacao);
-          li.innerHTML = `<div><strong>#${p.id}</strong> — ${formatBRL(total)}
-            <div class="small text-muted">${p.metodo_pagamento} — ${date.toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}</div></div>
-            <span class="badge ${p.status==='entregue'?'bg-success':p.status==='cancelado'?'bg-danger':'bg-warning text-dark'}">${p.status}</span>`;
+          li.innerHTML = `
+            <div>
+              <strong>#${p.id}</strong> — ${formatBRL(total)}
+              <div class="small text-muted">
+                ${p.metodo_pagamento || 'Pagamento não informado'} —
+                ${dataPedido.toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' })}
+              </div>
+            </div>
+            <span class="badge ${
+              p.status === 'entregue' ? 'bg-success' :
+              p.status === 'cancelado' ? 'bg-danger' : 'bg-warning text-dark'
+            }">${p.status}</span>
+          `;
           ultimosEl.appendChild(li);
         });
       }
 
-      // Atualiza gráfico
-      const ctx = graficoCanvas.getContext('2d');
-      if (chartInstance) chartInstance.destroy();
-      chartInstance = new Chart(ctx, {
-        type: 'line',
-        data: { labels: data.labelsGrafico, datasets:[{
-          label:'Faturamento', 
-          data: data.valoresGrafico, 
-          borderColor:'rgb(220,53,69)', 
-          backgroundColor:'rgba(220,53,69,0.15)', 
-          fill:true, 
-          tension:0.25
-        }]},
-        options: { 
-          responsive:true, 
-          plugins:{legend:{display:false}}, 
-          scales:{y:{beginAtZero:true, ticks:{callback:v=>formatBRL(v)}}}
-        }
-      });
+      // ======== Atualiza gráfico ========
+      if (graficoCanvas) {
+        const ctx = graficoCanvas.getContext('2d');
+        if (chartInstance) chartInstance.destroy();
+        chartInstance = new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: data.labelsGrafico || [],
+            datasets: [{
+              label: 'Faturamento (R$)',
+              data: data.valoresGrafico || [],
+              borderColor: 'rgb(220,53,69)',
+              backgroundColor: 'rgba(220,53,69,0.15)',
+              fill: true,
+              tension: 0.25
+            }]
+          },
+          options: {
+            responsive: true,
+            plugins: { legend: { display: false } },
+            scales: {
+              y: {
+                beginAtZero: true,
+                ticks: { callback: v => formatBRL(v) }
+              }
+            }
+          }
+        });
+      }
 
-      // Link do cardápio
-      const linkLoja = `${window.location.origin}/projeto_web/cliente/index.html?loja_id=${encodeURIComponent(data.loja_id)}`;
-      linkInput.value = linkLoja;
-      btnCopiar.onclick = async () => { await navigator.clipboard.writeText(linkLoja); alert('Link do cardápio copiado!'); };
+      // ======== Gera e copia o link do cardápio ========
+      if (linkInput && btnCopiar) {
+        const linkLoja = `${window.location.origin}/projeto_web/cliente/index.html?loja_id=${encodeURIComponent(data.loja_id)}`;
+        linkInput.value = linkLoja;
+
+        btnCopiar.onclick = async () => {
+          try {
+            await navigator.clipboard.writeText(linkLoja);
+            alert('Link do cardápio copiado!');
+          } catch {
+            alert('Não foi possível copiar o link.');
+          }
+        };
+      }
 
     } catch (err) {
       console.error('Erro ao carregar dados do dashboard:', err);

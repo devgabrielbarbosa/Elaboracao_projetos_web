@@ -44,13 +44,21 @@ try {
     // Total de clientes da loja
     $totalClientes = (int) fetchColumnSafe($pdo, "SELECT COUNT(*) FROM clientes WHERE loja_id=:loja_id", [':loja_id'=>$loja_id]);
 
-    // Total de produtos ativos da loja
-    $totalProdutos = (int) fetchColumnSafe($pdo, "
-        SELECT COUNT(*) 
-        FROM produtos_lojas pl
-        JOIN produtos p ON pl.produto_id = p.id
-        WHERE pl.loja_id=:loja_id AND pl.ativo_loja=1
-    ", [':loja_id'=>$loja_id]);
+  
+    // Total de produtos ativos da loja (corrigido)
+$totalProdutos = (int) fetchColumnSafe($pdo, "
+    SELECT COUNT(*) 
+    FROM produtos
+    WHERE loja_id = :loja_id
+      AND ativo = 1
+", [':loja_id' => $loja_id]);
+
+$totalClientes = (int) fetchColumnSafe($pdo, "
+    SELECT COUNT(*) 
+    FROM clientes
+    WHERE loja_id = :loja_id
+      AND ativo = 1
+", [':loja_id' => $loja_id]);
 
     // Últimos 5 pedidos
     $stmt = $pdo->prepare("SELECT id, total, taxa_entrega, status, metodo_pagamento, data_criacao FROM pedidos WHERE loja_id=:loja_id ORDER BY data_criacao DESC LIMIT 5");
