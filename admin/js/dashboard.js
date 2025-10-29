@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
+  // ===== ELEMENTOS DO DASHBOARD =====
   const faturamentoEl = document.getElementById('faturamento');
   const entreguesEl = document.getElementById('entregues');
   const andamentoEl = document.getElementById('andamento');
@@ -12,36 +13,35 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let chartInstance = null;
 
+  // ===== FORMATADOR DE MOEDA =====
   const formatBRL = value => Number(value || 0).toLocaleString('pt-BR', {
     style: 'currency',
     currency: 'BRL'
   });
 
-  // ===== Função de fetch JSON segura =====
+  // ===== FETCH SEGURO EM JSON =====
   async function fetchJSON(url, options = {}) {
     try {
       const res = await fetch(url, { credentials: 'include', ...options });
       const text = await res.text();
 
-      if (!res.ok) {
-        throw new Error(`HTTP ${res.status} - ${text}`);
-      }
-
-      try {
-        return JSON.parse(text);
-      } catch {
-        throw new Error(`Resposta do servidor não é JSON válido:\n${text}`);
-      }
+      if (!res.ok) throw new Error(`HTTP ${res.status} - ${text}`);
+      return JSON.parse(text);
     } catch (err) {
       console.error('Erro no fetchJSON:', err);
       throw err;
     }
   }
 
-  // ===== Carrega dados do dashboard =====
+  // ===== FUNÇÃO PRINCIPAL =====
   async function carregarDashboard() {
     try {
-      const data = await fetchJSON('../php/verificar_sessao.php');
+        const res = await fetch('../php/verificar_sessao.php', { credentials: 'include' });
+    const data = await res.json();
+   if (!data.slug) {
+      linkInput.value = 'Slug da loja não encontrado.';
+      return;
+    }
 
       if (data.erro) {
         alert(data.erro);
@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
-      // Atualiza cards
+      // ===== ATUALIZA CARDS =====
       faturamentoEl.textContent = formatBRL(data.totais?.faturamento);
       entreguesEl.textContent = data.totais?.entregues || 0;
       andamentoEl.textContent = data.totais?.andamento || 0;
@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
       clientesEl.textContent = data.totais?.clientes || 0;
       produtosEl.textContent = data.totais?.produtos || 0;
 
-      // Últimos pedidos
+      // ===== ÚLTIMOS PEDIDOS =====
       ultimosEl.innerHTML = '';
       const pedidos = data.ultimosPedidos || [];
       if (!pedidos.length) {
@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
       }
 
-      // Gráfico
+      // ===== GRÁFICO =====
       if (graficoCanvas) {
         const ctx = graficoCanvas.getContext('2d');
         if (chartInstance) chartInstance.destroy();
@@ -110,24 +110,28 @@ document.addEventListener('DOMContentLoaded', () => {
         });
       }
 
-      // Link cardápio
-      const linkLoja = `${window.location.origin}/projeto_web/cliente/login.html?loja_id=${encodeURIComponent(data.loja_id)}`;
-linkInput.value = linkLoja;
+      // ===== LINK DO CARDÁPIO =====
+         // Monta link do cardápio com slug — garantidamente sem loja_id
+    const linkLoja = `${window.location.origin}/projeto_web/cliente/login.html?loja=${encodeURIComponent(data.slug)}`;
+    linkInput.value = linkLoja;
 
-btnCopiar.onclick = async () => {
-  try {
-    await navigator.clipboard.writeText(linkLoja);
-    alert('Link do cardápio copiado!');
-  } catch {
-    alert('Não foi possível copiar o link.');
+    // Copiar link
+    btnCopiar.onclick = async () => {
+      try {
+        await navigator.clipboard.writeText(linkLoja);
+        alert('Link do cardápio copiado!');
+      } catch {
+        alert('Não foi possível copiar o link.');
+      }
+    };
+
+  } catch (err) {
+    console.error('Erro ao gerar link do cardápio:', err);
+    linkInput.value = 'Erro ao gerar link.';
   }
-}
 
-    } catch (err) {
-      console.error('Erro ao carregar dashboard:', err);
-      alert('Erro ao carregar dados do dashboard. Verifique o console.');
-    }
   }
 
+  // ===== INICIALIZA DASHBOARD =====
   carregarDashboard();
 });

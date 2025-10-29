@@ -1,6 +1,33 @@
-body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f7f7f7; }
-.container-login { display: flex; min-height: 100vh; }
-.lado-form, .lado-info { flex: 1; padding: 40px; }
-.lado-info { background: #eaeaea; display: flex; flex-direction: column; justify-content: center; align-items: center; }
-.produtos-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(200px,1fr)); gap: 20px; }
-.produtos-grid .produto { background: #fff; padding: 10px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+/* Estilo geral para a página de login */
+    body {
+      background: #f8f9fa;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .login-container {
+      max-width: 950px;
+      width: 100%;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      background: #fff;
+    }
+    .lado-logo {
+      background: linear-gradient(135deg, #dc3545, #b02a37);
+      color: #fff;
+    }
+    .lado-logo img {
+      max-height: 160px;
+      border-radius: 12px;
+      background: #fff;
+      padding: 8px;
+      margin-bottom: 20px;
+    }
+    .lado-logo h3, .lado-logo p {
+      text-align: center;
+    }
+    @media (max-width: 768px) {
+      .lado-logo { display: none; }
+    }

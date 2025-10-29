@@ -143,7 +143,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (data.erro) exibirMensagem('danger', data.erro);
       else {
-        exibirMensagem('success', data.mensagem || 'Promoção cadastrada com sucesso.');
+        exibirMensagem('success', data.mensagem || `Promoção cadastrada com sucesso   ${p.id} esta deativado.`);
         formPromocao.reset();
         produtosSelecionados = [];
         renderProdutosSelecionados();

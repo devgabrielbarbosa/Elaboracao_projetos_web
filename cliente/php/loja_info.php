@@ -2,16 +2,17 @@
 header('Content-Type: application/json; charset=utf-8');
 require __DIR__ . '/../../includes/conexao.php';
 
-$loja_id = intval($_GET['loja_id'] ?? 0);
-if (!$loja_id) {
-    echo json_encode(['erro' => 'Loja não especificada']);
-    exit;
-}
-
 try {
-    // Busca informações da loja
-    $stmt = $pdo->prepare("SELECT nome_loja AS nome, CONCAT(endereco, ' - ', cidade, '/', estado) AS endereco, logo_loja AS logo FROM lojas WHERE id = :id LIMIT 1");
-    $stmt->execute([':id' => $loja_id]);
+    // Pega o slug da URL
+    $slug = $_GET['loja'] ?? null;
+    if (!$slug) {
+        echo json_encode(['erro' => 'Slug da loja não informado']);
+        exit;
+    }
+
+    // Busca informações da loja pelo slug
+    $stmt = $pdo->prepare("SELECT id, nome, endereco, logo FROM lojas WHERE slug = :slug LIMIT 1");
+    $stmt->execute([':slug' => $slug]);
     $loja = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if (!$loja) {
@@ -21,10 +22,16 @@ try {
 
     // Se a logo for longblob, converte para base64
     if ($loja['logo']) {
-        $loja['logo'] = 'data:image/png;base64,' . base64_encode($loja['logo']);
+        $loja['logo'] = base64_encode($loja['logo']);
     }
 
-    echo json_encode($loja);
+    // Retorna JSON compatível com o JS
+    echo json_encode([
+        'nome' => $loja['nome'],
+        'endereco' => $loja['endereco'] ?? '',
+        'logo' => $loja['logo'] ?? null
+    ]);
+
 } catch (PDOException $e) {
     echo json_encode(['erro' => 'Erro ao acessar o banco de dados']);
 }

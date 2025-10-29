@@ -3,7 +3,7 @@ session_start();
 require __DIR__ . '/../../includes/conexao.php';
 
 error_reporting(E_ALL);
-ini_set('display_errors', 0); // evita poluição do JSON
+ini_set('display_errors', 1);
 
 header('Content-Type: application/json; charset=utf-8');
 
@@ -20,6 +20,7 @@ if (!isset($_SESSION['admin_id'], $_SESSION['loja_id'])) {
 
 $admin_id = (int) $_SESSION['admin_id'];
 $loja_id  = (int) $_SESSION['loja_id'];
+
 
 try {
     // ===== GET: retorna dados da loja =====

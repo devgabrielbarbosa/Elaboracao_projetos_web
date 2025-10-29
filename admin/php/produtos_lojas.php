@@ -1,16 +1,26 @@
 <?php
-header('Content-Type: application/json; charset=utf-8');
-require __DIR__ . '/../../includes/conexao.php';
 session_start();
+require __DIR__ . '/../../includes/conexao.php';
 
-if (!isset($_SESSION['admin_id'], $_SESSION['loja_id'])) {
-    http_response_code(401);
-    echo json_encode(['erro' => 'Sessão expirada. Faça login novamente.']);
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+header('Content-Type: application/json; charset=utf-8');
+
+function respostaJSON($data, $code = 200) {
+    http_response_code($code);
+    echo json_encode($data);
     exit;
+}
+
+// ===== Sessão =====
+if (!isset($_SESSION['admin_id'], $_SESSION['loja_id'])) {
+    respostaJSON(['erro' => 'Admin ou loja não logado.'], 401);
 }
 
 $admin_id = (int) $_SESSION['admin_id'];
 $loja_id  = (int) $_SESSION['loja_id'];
+
 $acao     = $_REQUEST['acao'] ?? null;
 
 try {
