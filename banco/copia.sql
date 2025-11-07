@@ -39,6 +39,9 @@ CREATE TABLE IF NOT EXISTS administradores (
   CONSTRAINT fk_admin_loja FOREIGN KEY (loja_id) REFERENCES lojas(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+ALTER TABLE lojas
+ADD COLUMN slug VARCHAR(100) NOT NULL UNIQUE AFTER nome;
+
 -- -----------------------------------------------------
 -- Table clientes
 -- -----------------------------------------------------
@@ -732,5 +735,3 @@ ALTER TABLE lojas
 ADD CONSTRAINT unique_slug UNIQUE (slug);
 
 SELECT * FROM promocoes;
-ALTER TABLE promocoes
-ADD COLUMN loja_id INT NOT NULL AFTER admin_id;

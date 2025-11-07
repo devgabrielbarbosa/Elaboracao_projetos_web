@@ -1,64 +1,80 @@
-document.addEventListener('DOMContentLoaded', async () => {
-  const form = document.getElementById('formCadastro');
-  const nomeLojaEl = document.getElementById('nomeLoja');
+document.addEventListener("DOMContentLoaded", async () => {
+  const logoEl = document.getElementById("logoLoja");
+  const nomeEl = document.getElementById("nomeLoja");
+  const lojaIdInput = document.getElementById("loja_id");
+  const formCadastro = document.getElementById("formCadastro");
+  const linkLogin = document.getElementById("linkLogin");
 
-  // Pega o slug da loja da URL
-  const urlParams = new URLSearchParams(window.location.search);
-  const slugLoja = urlParams.get('loja');
+  const params = new URLSearchParams(window.location.search);
+  const slug = params.get("loja");
 
-  if (!slugLoja) {
-    alert('Loja não especificada.');
-    nomeLojaEl.textContent = 'Loja não encontrada';
+  if (!slug) {
+    nomeEl.textContent = "Loja não especificada na URL.";
     return;
   }
 
-  // Busca informações da loja
+  // ===== Carrega dados da loja =====
   try {
-    const resLoja = await fetch(`../php/loja_info.php?slug=${encodeURIComponent(slugLoja)}`);
-    const dataLoja = await resLoja.json();
+    const res = await fetch(
+      `php/get_loja.php?loja=${encodeURIComponent(slug)}`
+    );
 
-    if (dataLoja.erro) {
-      nomeLojaEl.textContent = dataLoja.erro;
-    } else {
-      nomeLojaEl.textContent = dataLoja.nome;
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+    const data = await res.json(); // já converte direto para JSON
+
+    if (data.erro) {
+      nomeEl.textContent = data.erro;
+      return;
     }
 
+    if (!data.loja) {
+      nomeEl.textContent = "Loja não encontrada.";
+      return;
+    }
+
+    const loja = data.loja;
+    nomeEl.textContent = loja.nome;
+    lojaIdInput.value = loja.id;
+
+    logoEl.src = loja.logo
+      ? `data:image/png;base64,${loja.logo}`
+      : "../imagens/default_logo.png";
   } catch (err) {
-    console.error(err);
-    nomeLojaEl.textContent = 'Erro ao carregar a loja';
+    console.error("Erro ao carregar loja:", err);
+    nomeEl.textContent = "Erro ao carregar informações da loja.";
   }
 
-  // Evento de cadastro
-  form.addEventListener('submit', async (e) => {
+  // ===== Submissão do formulário =====
+  formCadastro.addEventListener("submit", async (e) => {
     e.preventDefault();
-
-    const formData = {
-      nome: document.getElementById('nome').value,
-      cpf: document.getElementById('cpf').value,
-      telefone: document.getElementById('telefone').value,
-      email: document.getElementById('email').value,
-      senha: document.getElementById('senha').value,
-      data_nascimento: document.getElementById('data_nascimento').value,
-      slug: slugLoja
-    };
+    const formData = new FormData(formCadastro);
 
     try {
-      const res = await fetch('../php/cadastro_cliente.php', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
+      const res = await fetch("php/cadastro_cliente.php", {
+        method: "POST",
+        body: formData,
       });
-      const data = await res.json();
 
-      if (data.erro) {
-        alert(data.erro);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+      const result = await res.json(); // converte direto
+
+      if (result.sucesso) {
+        alert(result.mensagem || "Cadastro realizado com sucesso!");
+        window.location.href = `login.html?loja=${slug}`;
       } else {
-        alert('Cadastro realizado com sucesso!');
-        window.location.href = `login.html?loja=${slugLoja}`;
+        alert(result.erro || "Erro ao cadastrar. Tente novamente.");
       }
     } catch (err) {
-      console.error(err);
-      alert('Erro ao cadastrar. Tente novamente.');
+      console.error("Erro no cadastro:", err);
+      alert("Falha na comunicação com o servidor.");
     }
+  });
+
+  // ===== Link voltar ao login =====
+  linkLogin.addEventListener("click", (e) => {
+    e.preventDefault();
+    window.location.href = `login.html?loja=${slug}`;
   });
 });

@@ -1,33 +1,32 @@
-/* Estilo geral para a página de login */
-    body {
-      background: #f8f9fa;
-      height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .login-container {
-      max-width: 950px;
-      width: 100%;
-      border-radius: 10px;
-      overflow: hidden;
-      box-shadow: 0 0 15px rgba(0,0,0,0.1);
-      background: #fff;
-    }
-    .lado-logo {
-      background: linear-gradient(135deg, #dc3545, #b02a37);
-      color: #fff;
-    }
-    .lado-logo img {
-      max-height: 160px;
-      border-radius: 12px;
-      background: #fff;
-      padding: 8px;
-      margin-bottom: 20px;
-    }
-    .lado-logo h3, .lado-logo p {
-      text-align: center;
-    }
-    @media (max-width: 768px) {
-      .lado-logo { display: none; }
-    }
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    background: #f5f5f5;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    max-width: 400px;
+    margin: auto;
+    background: white;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+input, button {
+    margin: 5px 0;
+    padding: 10px;
+    font-size: 16px;
+}
+
+button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}

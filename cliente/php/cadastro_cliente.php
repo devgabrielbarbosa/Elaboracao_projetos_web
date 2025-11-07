@@ -1,65 +1,62 @@
 <?php
-session_start();
 header('Content-Type: application/json; charset=utf-8');
-require __DIR__ . '/../../includes/conexao.php';
+require_once __DIR__ . './../../includes/conexao.php';
+
+// ===== Garante que é POST =====
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    echo json_encode(['erro' => 'Método inválido.']);
+    exit;
+}
+
+// ===== Coleta e sanitiza os dados =====
+$nome     = trim($_POST['nome'] ?? '');
+$email    = trim($_POST['email'] ?? '');
+$cpf      = preg_replace('/\D/', '', $_POST['cpf'] ?? '');
+$telefone = trim($_POST['telefone'] ?? '');
+$senha    = $_POST['senha'] ?? '';
+$loja_id  = $_POST['loja_id'] ?? null;
+
+// ===== Valida campos obrigatórios =====
+if (empty($nome) || empty($email) || empty($telefone) || empty($senha) || empty($loja_id)) {
+    echo json_encode(['erro' => 'Preencha todos os campos obrigatórios.']);
+    exit;
+}
 
 try {
-    $data = json_decode(file_get_contents('php://input'), true);
-
-    // Validação dos campos obrigatórios
-    $slug = trim($data['slug'] ?? '');
-    $nome = trim($data['nome'] ?? '');
-    $cpf = trim($data['cpf'] ?? '');
-    $telefone = trim($data['telefone'] ?? '');
-    $email = trim($data['email'] ?? '');
-    $senha = trim($data['senha'] ?? '');
-    $data_nascimento = trim($data['data_nascimento'] ?? null);
-
-    if (!$slug || !$nome || !$cpf || !$telefone || !$email || !$senha) {
-        echo json_encode(['erro' => 'Campos obrigatórios não preenchidos']);
+    // ===== Verifica duplicidade de e-mail =====
+    $stmt = $pdo->prepare("SELECT id FROM clientes WHERE email = ?");
+    $stmt->execute([$email]);
+    if ($stmt->fetch()) {
+        echo json_encode(['erro' => 'E-mail já cadastrado.']);
         exit;
     }
 
-    // Busca a loja pelo slug
-    $stmtLoja = $pdo->prepare("SELECT id FROM lojas WHERE slug=:slug LIMIT 1");
-    $stmtLoja->execute([':slug' => $slug]);
-    $loja = $stmtLoja->fetch(PDO::FETCH_ASSOC);
-
-    if (!$loja) {
-        echo json_encode(['erro' => 'Loja não encontrada']);
-        exit;
+    // ===== Verifica duplicidade de CPF (se informado) =====
+    if (!empty($cpf)) {
+        $stmt = $pdo->prepare("SELECT id FROM clientes WHERE cpf = ?");
+        $stmt->execute([$cpf]);
+        if ($stmt->fetch()) {
+            echo json_encode(['erro' => 'CPF já cadastrado.']);
+            exit;
+        }
     }
 
-    $loja_id = (int)$loja['id'];
+    // ===== Criptografa a senha =====
+    $senhaHash = password_hash($senha, PASSWORD_DEFAULT);
 
-    // Verifica se o email já existe na loja
-    $stmtCheck = $pdo->prepare("SELECT id FROM clientes WHERE email=:email AND loja_id=:loja_id LIMIT 1");
-    $stmtCheck->execute([':email' => $email, ':loja_id' => $loja_id]);
-    if ($stmtCheck->fetch(PDO::FETCH_ASSOC)) {
-        echo json_encode(['erro' => 'E-mail já cadastrado nessa loja']);
-        exit;
-    }
-
-    // Insere o cliente no banco
+    // ===== Insere o cliente =====
     $stmt = $pdo->prepare("
-        INSERT INTO clientes 
-        (loja_id, nome, cpf, telefone, email, senha, data_nascimento, status, email_verificado)
-        VALUES 
-        (:loja_id, :nome, :cpf, :telefone, :email, :senha, :data_nascimento, 'ativo', 0)
+        INSERT INTO clientes (nome, cpf, telefone, email, senha, loja_id, status)
+        VALUES (?, ?, ?, ?, ?, ?, 'ativo')
     ");
+    $stmt->execute([$nome, $cpf, $telefone, $email, $senhaHash, $loja_id]);
 
-    $stmt->execute([
-        ':loja_id' => $loja_id,
-        ':nome' => $nome,
-        ':cpf' => $cpf,
-        ':telefone' => $telefone,
-        ':email' => $email,
-        ':senha' => password_hash($senha, PASSWORD_DEFAULT),
-        ':data_nascimento' => $data_nascimento ?: null
+    // ===== Retorna sucesso =====
+    echo json_encode([
+        'sucesso' => true,
+        'mensagem' => 'Cadastro realizado com sucesso!'
     ]);
-
-    echo json_encode(['sucesso' => true]);
-
 } catch (PDOException $e) {
-    echo json_encode(['erro' => 'Erro no servidor: '.$e->getMessage()]);
+    // Só retorna JSON, nunca o objeto PDO
+    echo json_encode(['erro' => 'Erro ao salvar cliente: ' . $e->getMessage()]);
 }

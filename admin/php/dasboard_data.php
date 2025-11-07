@@ -7,14 +7,12 @@ ini_set('display_errors', 1);
 
 header('Content-Type: application/json; charset=utf-8');
 
-// Função para responder em JSON
 function respostaJSON($data, $code = 200) {
     http_response_code($code);
     echo json_encode($data);
     exit;
 }
 
-// ===== Sessão =====
 if (!isset($_SESSION['admin_id'], $_SESSION['loja_id'])) {
     respostaJSON(['erro' => 'Admin ou loja não logado.'], 401);
 }
@@ -22,9 +20,7 @@ if (!isset($_SESSION['admin_id'], $_SESSION['loja_id'])) {
 $admin_id = (int) $_SESSION['admin_id'];
 $loja_id  = (int) $_SESSION['loja_id'];
 
-
 try {
-    // Função para consultas seguras retornando valor único
     function fetchColumnSafe($pdo, $sql, $params = [], $default = 0){
         try {
             $stmt = $pdo->prepare($sql);
@@ -35,37 +31,15 @@ try {
         }
     }
 
-    // Totais de pedidos
+    // ======== TOTAIS ========
     $totalFaturamento   = (float) fetchColumnSafe($pdo, "SELECT IFNULL(SUM(total + taxa_entrega),0) FROM pedidos WHERE status='entregue' AND loja_id=:loja_id", [':loja_id'=>$loja_id]);
     $pedidosEntregues   = (int) fetchColumnSafe($pdo, "SELECT COUNT(*) FROM pedidos WHERE status='entregue' AND loja_id=:loja_id", [':loja_id'=>$loja_id]);
     $pedidosAndamento   = (int) fetchColumnSafe($pdo, "SELECT COUNT(*) FROM pedidos WHERE status IN ('pendente','aceito','em_entrega') AND loja_id=:loja_id", [':loja_id'=>$loja_id]);
     $pedidosCancelados  = (int) fetchColumnSafe($pdo, "SELECT COUNT(*) FROM pedidos WHERE status='cancelado' AND loja_id=:loja_id", [':loja_id'=>$loja_id]);
+    $totalClientes      = (int) fetchColumnSafe($pdo, "SELECT COUNT(*) FROM clientes WHERE loja_id=:loja_id", [':loja_id'=>$loja_id]);
+    $totalProdutos      = (int) fetchColumnSafe($pdo, "SELECT COUNT(*) FROM produtos WHERE loja_id=:loja_id AND ativo=1", [':loja_id'=>$loja_id]);
 
-    // Total de clientes da loja
-    $totalClientes = (int) fetchColumnSafe($pdo, "SELECT COUNT(*) FROM clientes WHERE loja_id=:loja_id", [':loja_id'=>$loja_id]);
-
-  
-    // Total de produtos ativos da loja (corrigido)
-$totalProdutos = (int) fetchColumnSafe($pdo, "
-    SELECT COUNT(*) 
-    FROM produtos
-    WHERE loja_id = :loja_id
-      AND ativo = 1
-", [':loja_id' => $loja_id]);
-
-$totalClientes = (int) fetchColumnSafe($pdo, "
-    SELECT COUNT(*) 
-    FROM clientes
-    WHERE loja_id = :loja_id
-      AND ativo = 1
-", [':loja_id' => $loja_id]);
-
-    // Últimos 5 pedidos
-    $stmt = $pdo->prepare("SELECT id, total, taxa_entrega, status, metodo_pagamento, data_criacao FROM pedidos WHERE loja_id=:loja_id ORDER BY data_criacao DESC LIMIT 5");
-    $stmt->execute([':loja_id'=>$loja_id]);
-    $ultimosPedidos = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-    // Faturamento últimos 7 dias
+    // ======== FATURAMENTO DIÁRIO (7 DIAS) ========
     $stmt = $pdo->prepare("
         SELECT DATE(data_criacao) AS dia, COALESCE(SUM(total + taxa_entrega),0) AS faturamento
         FROM pedidos
@@ -76,7 +50,6 @@ $totalClientes = (int) fetchColumnSafe($pdo, "
     $stmt->execute([':loja_id'=>$loja_id]);
     $dadosGrafico = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // Monta labels e valores para gráfico
     $mapGraf = [];
     foreach($dadosGrafico as $g){
         $mapGraf[$g['dia']] = (float)$g['faturamento'];
@@ -90,9 +63,41 @@ $totalClientes = (int) fetchColumnSafe($pdo, "
         $valores[] = $mapGraf[$dia] ?? 0.0;
     }
 
-    // Monta resposta final
+    // ======== LINK PÚBLICO DA LOJA ========
+    $stmt = $pdo->prepare("SELECT slug FROM lojas WHERE id = ?");
+    $stmt->execute([$loja_id]);
+    $slug = $stmt->fetchColumn();
+
+    if (!$slug) {
+        respostaJSON(['erro' => 'Slug da loja não encontrado.'], 500);
+    }
+
+    // Verifica se já existe link na tabela links_lojas
+    $stmt = $pdo->prepare("SELECT url_completa FROM links_lojas WHERE loja_id = ? AND nome_link = 'Página inicial'");
+    $stmt->execute([$loja_id]);
+    $url = $stmt->fetchColumn();
+
+    // Se não existir, cria automaticamente
+    if (!$url) {
+        $stmt = $pdo->prepare("INSERT INTO links_lojas (loja_id, nome_link, slug, tipo, ativo)
+                               VALUES (?, 'Página inicial', ?, 'publico', 1)");
+        $stmt->execute([$loja_id, $slug]);
+
+        $url = '/loja/' . $slug;
+    }
+
+    // Últimos 5 pedidos
+    $stmt = $pdo->prepare("SELECT id, total, taxa_entrega, status, metodo_pagamento, data_criacao 
+                           FROM pedidos 
+                           WHERE loja_id=:loja_id 
+                           ORDER BY data_criacao DESC LIMIT 5");
+    $stmt->execute([':loja_id'=>$loja_id]);
+    $ultimosPedidos = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    // ======== RESPOSTA FINAL ========
     $response = [
         'loja_id' => $loja_id,
+        'link_publico' => $url,
         'totais' => [
             'faturamento' => $totalFaturamento,
             'entregues'   => $pedidosEntregues,
@@ -109,5 +114,5 @@ $totalClientes = (int) fetchColumnSafe($pdo, "
     respostaJSON($response);
 
 } catch (PDOException $e){
-    respostaJSON(['erro'=>'Erro no servidor.'], 500);
+    respostaJSON(['erro'=>'Erro: ' . $e->getMessage()], 500);
 }

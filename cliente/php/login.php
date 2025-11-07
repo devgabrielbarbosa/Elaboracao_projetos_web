@@ -1,30 +1,39 @@
 <?php
-session_start();
 header('Content-Type: application/json; charset=utf-8');
-require __DIR__ . '/../../includes/conexao.php';
 
-$data = $_POST;
-$loja_id = intval($data['loja_id'] ?? 0);
-$email = trim($data['email'] ?? '');
-$senha = trim($data['senha'] ?? '');
+// Caminho correto para a conexão
+require_once __DIR__ . '/../../includes/conexao.php';
 
-if (!$loja_id || !$email || !$senha) {
-    echo json_encode(['erro' => 'Campos obrigatórios não preenchidos']);
+$slug = $_GET['loja'] ?? '';
+if (empty($slug)) {
+    echo json_encode(['erro' => 'Parâmetro "loja" não informado.']);
     exit;
 }
 
-$stmt = $pdo->prepare("SELECT id, senha, nome FROM clientes WHERE email=:email AND loja_id=:loja_id AND status='ativo' LIMIT 1");
-$stmt->execute([':email'=>$email, ':loja_id'=>$loja_id]);
-$cliente = $stmt->fetch(PDO::FETCH_ASSOC);
+// Busca a loja pelo slug (não mais pelo ID)
+$stmt = $pdo->prepare("SELECT * FROM lojas WHERE slug = ?");
+$stmt->execute([$slug]);
+$loja = $stmt->fetch(PDO::FETCH_ASSOC);
 
-if (!$cliente || !password_verify($senha, $cliente['senha'])) {
-    echo json_encode(['erro' => 'Email ou senha inválidos']);
+if (!$loja) {
+    echo json_encode(['erro' => 'Loja não encontrada.']);
     exit;
 }
 
-// Autentica cliente na sessão
-$_SESSION['cliente_id'] = $cliente['id'];
-$_SESSION['loja_id'] = $loja_id;
-$_SESSION['cliente_nome'] = $cliente['nome'];
+if($_SERVER['REQUEST_METHOD'] === 'POST'){
+    $email = $_POST['email'];
+    $senha = $_POST['senha'];
+    $loja_id = $_POST['loja_id'];
 
-echo json_encode(['sucesso'=>true]);
+    $sql = "SELECT * FROM clientes WHERE email = :email AND loja_id = :loja_id";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([':email' => $email, ':loja_id' => $loja_id]);
+    $cliente = $stmt->fetch();
+
+    if($cliente && password_verify($senha, $cliente['senha'])){
+        echo json_encode(['success' => true, 'msg' => 'Login realizado']);
+    } else {
+        echo json_encode(['success' => false, 'msg' => 'Email ou senha incorretos']);
+    }
+}
+?>

@@ -54,7 +54,7 @@ try {
     $pdo->commit();
 
     echo json_encode([
-        'sucesso' => true,
+        'sucesso' => 'Loja e administrador criados com sucesso!',
         'mensagem' => 'Loja e administrador criados com sucesso!',
         'loja_id' => $loja_id
     ]);

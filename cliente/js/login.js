@@ -1,69 +1,37 @@
 document.addEventListener('DOMContentLoaded', async () => {
-  const logoEl = document.getElementById('logoLoja');
-  const nomeEl = document.getElementById('nomeLoja');
-  const enderecoEl = document.getElementById('enderecoLoja');
+  const params = new URLSearchParams(window.location.search);
+  const lojaParam = params.get('loja');
+  const nomeLojaEl = document.getElementById('nomeLoja');
+  const logoLojaEl = document.getElementById('logoLoja');
 
-  // Pega o slug da URL
-  const urlParams = new URLSearchParams(window.location.search);
-  const slugLoja = urlParams.get('loja');
-
-  if (!slugLoja) {
-    nomeEl.textContent = "Loja não encontrada";
-    enderecoEl.textContent = "";
-    logoEl.src = "https://placehold.co/200x150?text=Erro";
+  if (!lojaParam) {
+    nomeLojaEl.textContent = 'Loja não especificada';
     return;
   }
 
   try {
-    // Faz a requisição ao back-end passando o slug
-    const res = await fetch(`../php/get_loja.php?slug=${encodeURIComponent(slugLoja)}`);
-    const loja = await res.json();
+    const res = await fetch(`../php/get_loja.php?loja=${encodeURIComponent(lojaParam)}`);
+    const data = await res.json();
 
-    if (!loja || loja.erro) {
-      nomeEl.textContent = "Loja não encontrada";
-      enderecoEl.textContent = "";
-      logoEl.src = "https://placehold.co/200x150?text=Erro";
+    if (data.erro) {
+      nomeLojaEl.textContent = data.erro;
       return;
     }
 
-    // Preenche os campos da loja
-    nomeEl.textContent = loja.nome;
-    enderecoEl.textContent = loja.endereco || '';
-    logoEl.src = loja.logo ? `data:image/png;base64,${loja.logo}` : "https://placehold.co/200x150?text=Sem+Logo";
+    if (data.sucesso && data.loja) {
+      const loja = data.loja;
+      nomeLojaEl.textContent = `Bem-vindo à ${loja.nome}`;
+      if (loja.logo) {
+        logoLojaEl.src = `data:image/png;base64,${loja.logo}`;
+      } else {
+        logoLojaEl.src = '../imagens/default_logo.png';
+      }
+    } else {
+      nomeLojaEl.textContent = 'Erro: dados da loja inválidos.';
+    }
 
   } catch (err) {
-    console.error('Erro ao carregar dados da loja:', err);
-    nomeEl.textContent = "Erro ao carregar loja";
-    enderecoEl.textContent = "";
-    logoEl.src = "https://placehold.co/200x150?text=Erro";
+    console.error('Erro ao carregar loja:', err);
+    nomeLojaEl.textContent = 'Erro ao carregar loja.';
   }
-
-  // Aqui você pode adicionar a lógica do login via fetch/ajax
-  const formLogin = document.getElementById('formLogin');
-  formLogin.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    // Pega valores
-    const email = document.getElementById('email').value;
-    const senha = document.getElementById('senha').value;
-
-    // Exemplo de requisição de login
-    try {
-      const resp = await fetch('../php/login_cliente.php', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, senha, slug: slugLoja })
-      });
-      const data = await resp.json();
-
-      if (data.erro) {
-        alert(data.erro);
-      } else {
-        // Redireciona para página do cliente
-        window.location.href = `./dashboard.html?loja=${slugLoja}`;
-      }
-    } catch (err) {
-      console.error(err);
-      alert('Erro ao efetuar login.');
-    }
-  });
 });
