@@ -166,7 +166,7 @@
           const formData = new FormData(form);
 
           try {
-            const res = await fetch("php/cadastro_cliente.php", {
+            const res = await fetch("./php/cadastro_cliente.php ", {
               method: "POST",
               body: formData,
             });
